@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="העוזר הניהולי">
+<meta name="theme-color" content="#203550">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>העוזר הניהולי</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --navy:#203550;--navy2:#2d4a70;--navy3:#3a5d88;--deep:#142338;
+  --gold:#CFAB6F;--gold2:#E8D3A6;--gold3:#A8864A;
+  --cream:#F4F1EA;--cream2:#EAE4D6;--card:#FFFDF8;
+  --ink:#1B2A3E;--muted:#6E7787;
+  --red:#C0392B;--orange:#D9822B;--green:#2E8B57;--maroon:#7A1F1F;
+  --safe-top:env(safe-area-inset-top,0px);--safe-bot:env(safe-area-inset-bottom,0px);
+}
+html,body{height:100%;background:var(--cream)}
+body{font-family:'Heebo',-apple-system,'Segoe UI',Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;overflow:hidden}
+button{font-family:inherit}
+.en{display:block;font-size:.5em;font-weight:500;letter-spacing:.3px;opacity:.75;direction:ltr;text-align:inherit;unicode-bidi:isolate}
+.ttl .en{text-align:right}
+.en.inl{display:inline;margin-inline-start:6px}
+
+/* ── screens ── */
+.screen{position:fixed;inset:0;display:none;flex-direction:column;background:var(--cream);
+  background-image:radial-gradient(circle at 20% 0%,rgba(207,171,111,.10),transparent 45%),radial-gradient(circle at 100% 100%,rgba(32,53,80,.07),transparent 50%)}
+.screen.active{display:flex}
+.body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px calc(24px + var(--safe-bot))}
+
+/* ── header ── */
+.hdr{flex-shrink:0;position:relative;color:#fff;padding:calc(var(--safe-top) + 12px) 16px 14px;
+  background:linear-gradient(160deg,var(--navy3) 0%,var(--navy) 55%,var(--deep) 100%);
+  box-shadow:0 6px 18px rgba(20,35,56,.35);border-bottom:3px solid var(--gold)}
+.hdr-row{display:flex;align-items:center;gap:12px}
+.logo{width:56px;height:56px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#fff;
+  border:2.5px solid var(--gold);box-shadow:0 0 0 3px rgba(207,171,111,.25),0 4px 10px rgba(0,0,0,.35)}
+.ttl{flex:1;min-width:0}
+.ttl h1{font-size:26px;font-weight:900;line-height:1.1;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+.ttl h1 .en{color:var(--gold2)}
+.sub{font-size:14px;color:rgba(255,255,255,.8);margin-top:8px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.sub b{color:var(--gold2);font-weight:700}
+.pills{display:flex;gap:6px;flex-shrink:0}
+.pill{padding:6px 14px;border-radius:999px;border:2px solid rgba(207,171,111,.55);background:transparent;
+  color:rgba(255,255,255,.7);font-size:16px;font-weight:800;cursor:pointer}
+.pill.on{background:linear-gradient(180deg,var(--gold2),var(--gold));color:var(--deep);border-color:var(--gold2);box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.back{flex-shrink:0;border:2px solid rgba(207,171,111,.6);background:rgba(255,255,255,.08);color:#fff;
+  border-radius:14px;padding:8px 14px;font-size:16px;font-weight:800;cursor:pointer;line-height:1.1}
+.back .en{color:var(--gold2)}
+
+/* ── home tiles (3D) ── */
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px 14px}
+.tile{position:relative;border:none;cursor:pointer;border-radius:24px;min-height:150px;padding:16px 8px 14px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#fff;text-align:center;
+  background:linear-gradient(165deg,#3B5E8A 0%,#24405F 48%,#182C45 100%);
+  box-shadow:0 8px 0 #0E1A2A,0 16px 26px rgba(16,28,46,.45),inset 0 2px 0 rgba(255,255,255,.22),inset 0 -8px 16px rgba(0,0,0,.28);
+  border-top:2px solid rgba(232,211,166,.55);transition:transform .09s,box-shadow .09s;-webkit-user-select:none;user-select:none;overflow:hidden}
+.tile::before{content:'';position:absolute;left:8%;right:8%;top:5px;height:42%;border-radius:20px 20px 50% 50%;
+  background:linear-gradient(180deg,rgba(255,255,255,.20),rgba(255,255,255,0));pointer-events:none}
+.tile::after{content:'';position:absolute;inset:0;border-radius:24px;border:1.5px solid rgba(207,171,111,.35);pointer-events:none}
+.tile:active{transform:translateY(7px);box-shadow:0 1px 0 #0E1A2A,0 4px 10px rgba(16,28,46,.4),inset 0 2px 0 rgba(255,255,255,.2),inset 0 -4px 10px rgba(0,0,0,.3)}
+.tile svg{width:74px;height:74px;filter:drop-shadow(0 5px 6px rgba(0,0,0,.4))}
+.tile .lbl{font-size:21px;font-weight:900;line-height:1.15;text-shadow:0 2px 3px rgba(0,0,0,.35)}
+.tile .lbl .en{color:var(--gold2);margin-top:2px}
+.badge{position:absolute;top:10px;left:10px;min-width:30px;height:30px;padding:0 8px;border-radius:15px;
+  font-size:15px;font-weight:900;display:flex;align-items:center;justify-content:center;color:#fff;
+  background:linear-gradient(180deg,#E25544,var(--red));box-shadow:0 3px 6px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.35)}
+.badge[hidden]{display:none}
+.badge.gold{background:linear-gradient(180deg,var(--gold2),var(--gold3));color:var(--deep)}
+.badge.ok{background:linear-gradient(180deg,#45B07A,var(--green))}
+
+.rikuz-btn{display:flex;align-items:center;justify-content:center;gap:14px;margin:26px auto 8px;width:78%;
+  border:none;cursor:pointer;border-radius:22px;padding:14px 18px;color:var(--deep);
+  background:linear-gradient(170deg,#F3E3BE 0%,var(--gold) 55%,#B8955A 100%);
+  box-shadow:0 7px 0 #8A6C3A,0 14px 22px rgba(120,90,40,.4),inset 0 2px 0 rgba(255,255,255,.6),inset 0 -6px 12px rgba(120,90,40,.3);
+  transition:transform .09s,box-shadow .09s}
+.rikuz-btn:active{transform:translateY(6px);box-shadow:0 1px 0 #8A6C3A,0 4px 8px rgba(120,90,40,.4),inset 0 2px 0 rgba(255,255,255,.5)}
+.rikuz-btn svg{width:46px;height:46px;filter:drop-shadow(0 3px 3px rgba(0,0,0,.3))}
+.rikuz-btn .lbl{font-size:24px;font-weight:900;line-height:1.1}
+.rikuz-btn .en{opacity:.8}
+
+.foot{text-align:center;color:var(--muted);font-size:13px;margin-top:22px;line-height:1.7}
+.foot a{color:var(--muted)}
+.mini-row{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.mini{border:1.5px solid var(--gold);background:var(--card);color:var(--navy);border-radius:14px;padding:8px 14px;
+  font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 3px 0 var(--cream2),0 4px 8px rgba(0,0,0,.08)}
+
+/* ── cards ── */
+.card{background:var(--card);border-radius:20px;padding:16px;margin-bottom:14px;border:1px solid var(--cream2);
+  box-shadow:0 2px 0 rgba(207,171,111,.35),0 6px 16px rgba(32,53,80,.08)}
+.card h2{font-size:20px;font-weight:900;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.card h2 .en{display:inline;font-size:12px;color:var(--gold3);opacity:1}
+.card h2 .cnt{margin-inline-start:auto;font-size:14px;background:var(--navy);color:var(--gold2);border-radius:999px;padding:2px 10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:#EEF2F8;color:var(--navy);border-radius:999px;padding:7px 13px;font-size:16px;font-weight:700;border:1px solid #DCE3EE}
+.chip.g{background:#FBF4E6;border-color:#EBDDBF;color:#6B5226}
+.chip.r{background:#FBEAE8;border-color:#F1CFCB;color:#8E2A20}
+.row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #EFEADF}
+.row:last-child{border-bottom:none}
+.row .ic{font-size:28px;width:38px;text-align:center;flex-shrink:0}
+.row .tx{flex:1;min-width:0}
+.row .nm{font-size:17px;font-weight:800}
+.row .ds{font-size:14px;color:var(--muted);margin-top:2px}
+.tag{flex-shrink:0;border-radius:999px;padding:5px 12px;font-size:14px;font-weight:900;color:#fff;background:var(--navy)}
+.tag.gold{background:var(--gold);color:var(--deep)}
+.tag.past{background:#B9BEC7}
+.sq{width:46px;height:46px;border-radius:13px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:900;color:#fff;box-shadow:inset 0 -3px 0 rgba(0,0,0,.2)}
+.empty{color:var(--muted);font-size:16px;padding:6px 0}
+.ok{color:var(--green);font-weight:800}
+.note{font-size:13px;color:var(--muted);margin-top:8px}
+
+.open-full{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:6px;padding:15px;border:none;
+  border-radius:18px;cursor:pointer;color:#fff;font-size:19px;font-weight:900;
+  background:linear-gradient(170deg,var(--navy3),var(--navy) 60%,var(--deep));
+  box-shadow:0 6px 0 #0E1A2A,0 12px 18px rgba(16,28,46,.35),inset 0 2px 0 rgba(255,255,255,.2);border-top:2px solid var(--gold)}
+.open-full:active{transform:translateY(5px);box-shadow:0 1px 0 #0E1A2A,0 3px 8px rgba(16,28,46,.35)}
+.open-full .en{display:inline;font-size:13px;color:var(--gold2)}
+
+/* day navigator */
+.daynav{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px}
+.daynav button{width:42px;height:42px;border-radius:50%;border:1.5px solid var(--gold);background:var(--card);color:var(--navy);
+  font-size:20px;font-weight:900;cursor:pointer;box-shadow:0 3px 0 var(--cream2)}
+.daynav .d{font-size:18px;font-weight:900;color:var(--navy);min-width:170px;text-align:center;line-height:1.15}
+.daynav .d small{display:block;font-size:12px;color:var(--gold3);font-weight:700}
+
+/* ── ריכוז יומי ── */
+.rk{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;
+  grid-template-areas:"orders spira" "expiry sidur" "quality sidur" "tech tech"}
+.pn{background:var(--card);border-radius:18px;padding:12px;border:1px solid var(--cream2);cursor:pointer;
+  box-shadow:0 2px 0 rgba(207,171,111,.4),0 5px 14px rgba(32,53,80,.08);overflow:hidden;min-height:120px}
+.pn:active{transform:scale(.98)}
+.pn h3{font-size:16px;font-weight:900;color:#fff;margin:-12px -12px 9px;padding:8px 12px;
+  background:linear-gradient(170deg,var(--navy3),var(--navy));border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:6px}
+.pn h3 .en{display:inline;font-size:10px;color:var(--gold2);margin-inline-start:auto}
+.pn .it{font-size:14px;line-height:1.45;margin-bottom:4px}
+.pn .k{font-weight:900;color:var(--navy)}
+.pn .mut{font-size:13px;color:var(--muted)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-inline-end:5px;vertical-align:middle}
+.photo-btn{display:flex;align-items:center;justify-content:center;gap:10px;margin:18px auto 4px;width:80%;padding:13px;border:none;cursor:pointer;
+  border-radius:20px;font-size:20px;font-weight:900;color:var(--deep);
+  background:linear-gradient(170deg,#F3E3BE,var(--gold) 55%,#B8955A);
+  box-shadow:0 6px 0 #8A6C3A,0 12px 18px rgba(120,90,40,.35),inset 0 2px 0 rgba(255,255,255,.6)}
+.photo-btn:active{transform:translateY(5px);box-shadow:0 1px 0 #8A6C3A}
+
+/* ── תמונה מרוכזת (poster) ── */
+#screen-photo{background:var(--deep)}
+#poster{flex:1;display:flex;flex-direction:column;background:var(--cream);padding:calc(var(--safe-top) + 8px) 8px calc(8px + var(--safe-bot));overflow:hidden}
+.ps-top{display:flex;align-items:center;gap:8px;background:linear-gradient(160deg,var(--navy3),var(--navy) 60%,var(--deep));
+  border-radius:14px;padding:6px 10px;color:#fff;border-bottom:2px solid var(--gold);flex-shrink:0}
+.ps-top img{width:34px;height:34px;border-radius:50%;border:2px solid var(--gold);background:#fff}
+.ps-top .t{flex:1;font-size:15px;font-weight:900;line-height:1.1}
+.ps-top .t small{display:block;font-size:10px;color:var(--gold2);font-weight:600}
+.ps-top .dt{font-size:20px;font-weight:900;color:var(--gold2);white-space:nowrap}
+.ps-grid{flex:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px;margin-top:6px;min-height:0;
+  grid-template-areas:"orders spira" "expiry sidur" "quality sidur" "tech tech";grid-template-rows:1.25fr 1fr .8fr .75fr}
+.ps{background:var(--card);border:1.5px solid var(--navy);border-radius:10px;padding:5px 7px;overflow:hidden;min-height:0}
+.ps h4{font-size:13px;font-weight:900;color:var(--navy);border-bottom:1.5px solid var(--gold);padding-bottom:2px;margin-bottom:3px}
+.ps .it{font-size:11.5px;line-height:1.32}
+.ps .k{font-weight:900;color:var(--navy)}
+.ps-bar{display:flex;gap:8px;padding:8px 10px calc(8px + var(--safe-bot));background:var(--deep);flex-shrink:0}
+.ps-bar button{flex:1;padding:12px 6px;border-radius:14px;border:none;font-size:16px;font-weight:900;cursor:pointer}
+.ps-bar .p{background:linear-gradient(170deg,#F3E3BE,var(--gold));color:var(--deep)}
+.ps-bar .s{background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(207,171,111,.5)}
+
+/* ── frame (full app inside shell) ── */
+#screen-frame iframe{flex:1;border:none;width:100%;background:#fff}
+
+/* ── settings table ── */
+table.al{width:100%;border-collapse:collapse;font-size:15px}
+table.al th{background:var(--navy);color:var(--gold2);padding:8px 6px;font-size:13px;text-align:right}
+table.al td{padding:6px;border-bottom:1px solid #EFEADF;vertical-align:middle}
+table.al input{width:100%;border:1px solid #DCD5C4;border-radius:8px;padding:7px;font:inherit;font-size:14px;background:#fff}
+table.al td.x{width:34px;text-align:center}
+.xbtn{border:none;background:#FBEAE8;color:var(--red);border-radius:8px;width:30px;height:30px;font-size:16px;cursor:pointer}
+.add{border:1.5px dashed var(--gold);background:transparent;color:var(--navy);border-radius:12px;padding:10px;width:100%;font-size:16px;font-weight:800;margin-top:10px;cursor:pointer}
+.step{display:flex;gap:10px;margin:8px 0;font-size:15px;line-height:1.5}
+.step b.n{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--navy);color:var(--gold2);display:flex;align-items:center;justify-content:center;font-size:14px}
+
+.toast{position:fixed;left:50%;bottom:calc(30px + var(--safe-bot));transform:translateX(-50%);background:var(--deep);color:#fff;
+  padding:10px 18px;border-radius:14px;font-size:15px;font-weight:700;z-index:99;border:1.5px solid var(--gold);display:none}
+.src{font-size:11px;color:var(--muted);text-align:center;margin-top:6px}
+</style>
+</head>
+<body>
+
+<!-- ═══ illustrations (SVG symbols) ═══ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <linearGradient id="gGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6E6C2"/><stop offset=".55" stop-color="#CFAB6F"/><stop offset="1" stop-color="#9C7A42"/></linearGradient>
+  <linearGradient id="gCream" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E4DCCB"/></linearGradient>
+  <linearGradient id="gRed" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F06A5B"/><stop offset="1" stop-color="#A82B20"/></linearGradient>
+  <linearGradient id="gGreen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6FD39A"/><stop offset="1" stop-color="#22794A"/></linearGradient>
+  <linearGradient id="gBlue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FB6E8"/><stop offset="1" stop-color="#3B67A3"/></linearGradient>
+  <linearGradient id="gSteel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F1F4F8"/><stop offset=".5" stop-color="#B9C3D0"/><stop offset="1" stop-color="#7D8898"/></linearGradient>
+  <linearGradient id="gBox" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9C48A"/><stop offset="1" stop-color="#B07F3E"/></linearGradient>
+
+  <!-- פגי תוקף: לוח שנה + שעון -->
+  <symbol id="i-expiry" viewBox="0 0 64 64">
+    <rect x="6" y="10" width="44" height="44" rx="7" fill="url(#gCream)" stroke="#9C7A42" stroke-width="1.5"/>
+    <path d="M6 17a7 7 0 0 1 7-7h30a7 7 0 0 1 7 7v6H6z" fill="url(#gRed)"/>
+    <rect x="15" y="5" width="4" height="11" rx="2" fill="url(#gGold)"/><rect x="37" y="5" width="4" height="11" rx="2" fill="url(#gGold)"/>
+    <g fill="#C9BFA9"><rect x="12" y="28" width="7" height="6" rx="1.5"/><rect x="24" y="28" width="7" height="6" rx="1.5"/><rect x="36" y="28" width="7" height="6" rx="1.5"/><rect x="12" y="39" width="7" height="6" rx="1.5"/></g>
+    <rect x="24" y="39" width="7" height="6" rx="1.5" fill="#C0392B"/>
+    <circle cx="47" cy="45" r="14" fill="url(#gGold)" stroke="#fff" stroke-width="2"/>
+    <circle cx="47" cy="45" r="9.5" fill="#FFFDF8"/>
+    <path d="M47 39v6.5l4.5 3" stroke="#203550" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  </symbol>
+  <!-- מה סופרים: לוח עם רשימה וסורק -->
+  <symbol id="i-count" viewBox="0 0 64 64">
+    <rect x="9" y="9" width="38" height="50" rx="6" fill="url(#gBox)" stroke="#8A6534" stroke-width="1.2"/>
+    <rect x="13" y="15" width="30" height="40" rx="3" fill="url(#gCream)"/>
+    <rect x="19" y="5" width="18" height="9" rx="3" fill="url(#gSteel)" stroke="#6E7787" stroke-width="1"/>
+    <g stroke-linecap="round" stroke-width="2.6" fill="none">
+      <path d="M17 24l2.5 2.5 4.5-5" stroke="#2E8B57"/><path d="M17 34l2.5 2.5 4.5-5" stroke="#2E8B57"/><path d="M17 44l2.5 2.5 4.5-5" stroke="#CFAB6F"/>
+    </g>
+    <g fill="#9AA6B6"><rect x="27" y="23" width="12" height="3" rx="1.5"/><rect x="27" y="33" width="12" height="3" rx="1.5"/><rect x="27" y="43" width="9" height="3" rx="1.5"/></g>
+    <g transform="translate(40 34) rotate(18)">
+      <rect x="0" y="0" width="16" height="24" rx="4" fill="url(#gBlue)" stroke="#203550" stroke-width="1.3"/>
+      <rect x="3" y="3" width="10" height="8" rx="1.5" fill="#D8F0FF"/>
+      <g fill="#203550"><rect x="4" y="5" width="1" height="4"/><rect x="6" y="5" width="2" height="4"/><rect x="9" y="5" width="1" height="4"/><rect x="11" y="5" width="1" height="4"/></g>
+      <circle cx="8" cy="17" r="3" fill="url(#gGold)"/>
+    </g>
+  </symbol>
+  <!-- סידור עבודה: אנשים + לוח -->
+  <symbol id="i-sidur" viewBox="0 0 64 64">
+    <rect x="4" y="30" width="56" height="28" rx="6" fill="url(#gCream)" stroke="#9C7A42" stroke-width="1.3"/>
+    <rect x="4" y="30" width="56" height="7" rx="3" fill="url(#gGold)"/>
+    <g fill="#B8C7DA"><rect x="9" y="41" width="9" height="5" rx="1.5"/><rect x="21" y="41" width="9" height="5" rx="1.5"/><rect x="45" y="41" width="9" height="5" rx="1.5"/><rect x="9" y="49" width="9" height="5" rx="1.5"/><rect x="33" y="49" width="9" height="5" rx="1.5"/><rect x="45" y="49" width="9" height="5" rx="1.5"/></g>
+    <g fill="#2E8B57"><rect x="33" y="41" width="9" height="5" rx="1.5"/><rect x="21" y="49" width="9" height="5" rx="1.5"/></g>
+    <circle cx="18" cy="13" r="6" fill="url(#gBlue)"/><path d="M8 29c0-7 4.5-10 10-10s10 3 10 10z" fill="url(#gBlue)"/>
+    <circle cx="46" cy="13" r="6" fill="url(#gBlue)"/><path d="M36 29c0-7 4.5-10 10-10s10 3 10 10z" fill="url(#gBlue)"/>
+    <circle cx="32" cy="10" r="7" fill="url(#gGold)" stroke="#fff" stroke-width="1.2"/><path d="M20 29c0-8 5.5-12 12-12s12 4 12 12z" fill="url(#gGold)" stroke="#fff" stroke-width="1.2"/>
+  </symbol>
+  <!-- מה מזמינים: משאית עם ארגזים -->
+  <symbol id="i-orders" viewBox="0 0 64 64">
+    <rect x="3" y="18" width="36" height="28" rx="4" fill="url(#gCream)" stroke="#6E7787" stroke-width="1.2"/>
+    <rect x="9" y="25" width="11" height="10" rx="1.5" fill="url(#gBox)"/><rect x="22" y="25" width="11" height="10" rx="1.5" fill="url(#gBox)"/><rect x="15" y="14" width="11" height="10" rx="1.5" fill="url(#gBox)"/>
+    <path d="M11 25v4M28 25v4M20 14v4" stroke="#8A6534" stroke-width="1.5"/>
+    <path d="M39 26h12l8 10v10H39z" fill="url(#gRed)" stroke="#7A1F1F" stroke-width="1.2"/>
+    <path d="M43 29h7l5 7H43z" fill="#D8F0FF"/>
+    <rect x="3" y="44" width="56" height="5" rx="2" fill="#4A5566"/>
+    <circle cx="15" cy="51" r="6" fill="#2B2F36"/><circle cx="15" cy="51" r="2.6" fill="url(#gSteel)"/>
+    <circle cx="49" cy="51" r="6" fill="#2B2F36"/><circle cx="49" cy="51" r="2.6" fill="url(#gSteel)"/>
+    <path d="M46 8l6 6-6 6M52 14H38" stroke="url(#gGold)" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <!-- איכות ותברואה: מגן + ניצוצות + תרסיס -->
+  <symbol id="i-quality" viewBox="0 0 64 64">
+    <path d="M28 5l20 7v15c0 14-9 24-20 29C17 51 8 41 8 27V12z" fill="url(#gGreen)" stroke="#fff" stroke-width="2"/>
+    <path d="M18 29l7 7 13-14" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <g transform="translate(42 30)">
+      <rect x="4" y="10" width="14" height="22" rx="4" fill="url(#gBlue)" stroke="#203550" stroke-width="1.2"/>
+      <rect x="6" y="3" width="9" height="8" rx="1.5" fill="url(#gSteel)"/><path d="M15 5h5v3h-5" fill="#6E7787"/>
+      <rect x="7" y="16" width="8" height="8" rx="1.5" fill="#fff" opacity=".8"/>
+    </g>
+    <g fill="url(#gGold)"><path d="M52 6l1.6 4 4 1.6-4 1.6-1.6 4-1.6-4-4-1.6 4-1.6z"/><path d="M58 20l1 2.4 2.4 1-2.4 1-1 2.4-1-2.4-2.4-1 2.4-1z"/></g>
+  </symbol>
+  <!-- מצב טכני: מפתח + גלגל שיניים -->
+  <symbol id="i-tech" viewBox="0 0 64 64">
+    <g transform="translate(36 30)">
+      <path d="M-3-22h6l1.5 6 5 2 5-3.5 4.3 4.3-3.5 5 2 5 6 1.5v6l-6 1.5-2 5 3.5 5-4.3 4.3-5-3.5-5 2-1.5 6h-6l-1.5-6-5-2-5 3.5-4.3-4.3 3.5-5-2-5-6-1.5v-6l6-1.5 2-5-3.5-5 4.3-4.3 5 3.5 5-2z" fill="url(#gGold)" stroke="#8A6C3A" stroke-width="1.2"/>
+      <circle r="8" fill="#203550"/><circle r="4" fill="url(#gSteel)"/>
+    </g>
+    <g transform="rotate(-45 22 40)">
+      <rect x="18" y="26" width="8" height="34" rx="4" fill="url(#gSteel)" stroke="#5E6878" stroke-width="1.2"/>
+      <path d="M12 20a10 10 0 0 1 20 0l-5 0v6h-10v-6z" fill="url(#gSteel)" stroke="#5E6878" stroke-width="1.2"/>
+      <rect x="20" y="44" width="4" height="12" rx="2" fill="#C0392B"/>
+    </g>
+  </symbol>
+  <!-- ריכוז יומי: דוח + כוכב -->
+  <symbol id="i-rikuz" viewBox="0 0 64 64">
+    <rect x="10" y="6" width="38" height="52" rx="6" fill="url(#gCream)" stroke="#203550" stroke-width="2"/>
+    <rect x="10" y="6" width="38" height="11" rx="5" fill="#203550"/>
+    <rect x="16" y="35" width="6" height="16" rx="1.5" fill="url(#gBlue)"/><rect x="26" y="27" width="6" height="24" rx="1.5" fill="url(#gGreen)"/><rect x="36" y="31" width="6" height="20" rx="1.5" fill="url(#gRed)"/>
+    <g fill="#9AA6B6"><rect x="16" y="21" width="20" height="3" rx="1.5"/></g>
+    <path d="M50 26l3.2 6.6 7.3 1-5.3 5.1 1.3 7.2-6.5-3.4-6.5 3.4 1.3-7.2-5.3-5.1 7.3-1z" fill="url(#gGold)" stroke="#fff" stroke-width="1.5"/>
+  </symbol>
+  <symbol id="i-camera" viewBox="0 0 64 64">
+    <rect x="6" y="18" width="52" height="36" rx="8" fill="#203550"/>
+    <path d="M22 18l4-7h12l4 7z" fill="#203550"/>
+    <circle cx="32" cy="36" r="12" fill="url(#gGold)"/><circle cx="32" cy="36" r="7" fill="#142338"/><circle cx="29" cy="33" r="2" fill="#fff" opacity=".8"/>
+  </symbol>
+</defs>
+</svg>
+
+<!-- ═══════════ HOME ═══════════ -->
+<div id="screen-home" class="screen active">
+  <div class="hdr">
+    <div class="hdr-row">
+      <img src="et-mark.png" class="logo" alt="ET studio">
+      <div class="ttl"><h1>העוזר הניהולי<span class="en">Management Assistant</span></h1></div>
+      <div class="pills"><button class="pill" data-b="118">118</button><button class="pill" data-b="208">208</button></div>
+    </div>
+    <div class="sub"><span id="hBranch"></span><b id="hDate"></b></div>
+  </div>
+  <div class="body">
+    <div class="grid">
+      <button class="tile" data-go="expiry"><span class="badge" id="bExpiry" hidden></span><svg><use href="#i-expiry"/></svg><span class="lbl">פגי תוקף<span class="en">Expiry</span></span></button>
+      <button class="tile" data-go="spira"><span class="badge gold" id="bSpira" hidden></span><svg><use href="#i-count"/></svg><span class="lbl">מה סופרים היום<span class="en">Today's counts</span></span></button>
+      <button class="tile" data-go="sidur"><span class="badge gold" id="bSidur" hidden></span><svg><use href="#i-sidur"/></svg><span class="lbl">סידור עבודה<span class="en">Work schedule</span></span></button>
+      <button class="tile" data-go="orders"><span class="badge gold" id="bOrders" hidden></span><svg><use href="#i-orders"/></svg><span class="lbl">מה מזמינים היום<span class="en">Today's orders</span></span></button>
+      <button class="tile" data-go="quality"><svg><use href="#i-quality"/></svg><span class="lbl">מעקב איכות ותברואה<span class="en">Quality &amp; sanitation</span></span></button>
+      <button class="tile" data-go="tech"><span class="badge" id="bTech" hidden></span><svg><use href="#i-tech"/></svg><span class="lbl">מצב טכני<span class="en">Technical status</span></span></button>
+    </div>
+    <button class="rikuz-btn" data-go="rikuz"><svg><use href="#i-rikuz"/></svg><span class="lbl">ריכוז יומי<span class="en">Daily summary</span></span></button>
+    <div class="mini-row">
+      <button class="mini" data-go="access">👥 מורשי גישה</button>
+      <button class="mini" data-go="install">📲 התקנה</button>
+    </div>
+    <div class="foot">© 2026 ET studio · Evgeniy Tsipis — All rights reserved · כל הזכויות שמורות</div>
+    <div class="src" id="srcInfo"></div>
+  </div>
+</div>
+
+<!-- ═══════════ generic app screen ═══════════ -->
+<div id="screen-app" class="screen">
+  <div class="hdr">
+    <div class="hdr-row">
+      <img src="et-mark.png" class="logo" alt="ET studio">
+      <div class="ttl"><h1 id="appTitle"></h1></div>
+      <button class="back" data-back>חזרה<span class="en">Back</span></button>
+    </div>
+    <div class="sub"><span id="appBranch"></span><b id="appDate"></b></div>
+  </div>
+  <div class="body" id="appBody"></div>
+</div>
+
+<!-- ═══════════ ריכוז יומי ═══════════ -->
+<div id="screen-rikuz" class="screen">
+  <div class="hdr">
+    <div class="hdr-row">
+      <img src="et-mark.png" class="logo" alt="ET studio">
+      <div class="ttl"><h1>ריכוז יומי<span class="en">Daily summary</span></h1></div>
+      <button class="back" data-back>חזרה<span class="en">Back</span></button>
+    </div>
+    <div class="sub"><span id="rkBranch"></span></div>
+  </div>
+  <div class="body">
+    <div class="daynav"><button data-day="-1">›</button><div class="d" id="rkDate"></div><button data-day="1">‹</button></div>
+    <div class="rk" id="rkGrid"></div>
+    <button class="photo-btn" data-go="photo"><svg width="34" height="34"><use href="#i-camera"/></svg>תמונה מרוכזת</button>
+    <div class="foot">© 2026 ET studio · Evgeniy Tsipis</div>
+  </div>
+</div>
+
+<!-- ═══════════ תמונה מרוכזת ═══════════ -->
+<div id="screen-photo" class="screen">
+  <div id="poster">
+    <div class="ps-top">
+      <img src="et-mark.png" alt="ET">
+      <div class="t">ריכוז יומי · <span id="psBranch"></span><small>העוזר הניהולי · Management Assistant</small></div>
+      <div class="dt" id="psDate"></div>
+    </div>
+    <div class="ps-grid" id="psGrid"></div>
+  </div>
+  <div class="ps-bar">
+    <button class="p" id="btnSave">💾 שמור כתמונה</button>
+    <button class="s" id="btnShare">📤 שתף</button>
+    <button class="s" data-back>✕</button>
+  </div>
+</div>
+
+<!-- ═══════════ full app inside the shell ═══════════ -->
+<div id="screen-frame" class="screen">
+  <div class="hdr" style="padding-bottom:10px">
+    <div class="hdr-row">
+      <img src="et-mark.png" class="logo" style="width:44px;height:44px" alt="ET studio">
+      <div class="ttl"><h1 id="frTitle" style="font-size:20px"></h1></div>
+      <button class="back" id="frExt" style="font-size:14px">↗</button>
+      <button class="back" data-back>חזרה<span class="en">Back</span></button>
+    </div>
+  </div>
+  <iframe id="frame" title="app"></iframe>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="data-snapshot.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});</script>
+
+<script type="module">
+/* ═════════════ CONFIG ═════════════ */
+const APPS = {
+  expiry: {url:'https://leafy-belekoy-06f768.netlify.app/', he:'פגי תוקף', en:'Expiry Tracker'},
+  spira:  {url:'https://evgenchuk1.github.io/order-schedule/spira.html', he:'מה סופרים היום', en:"Today's counts"},
+  sidur:  {url:'https://evgenchuk1.github.io/sidur-avoda/', he:'סידור עבודה', en:'Work schedule'},
+  orders: {url:'https://evgenchuk1.github.io/order-schedule/', he:'מה מזמינים היום', en:"Today's orders"},
+  quality:{url:null, he:'מעקב איכות ותברואה', en:'Quality & sanitation'},
+  tech:   {url:'https://evgenchuk1.github.io/-ticket-tracker-/', he:'מצב טכני', en:'Technical status'},
+};
+const BRANCHES = {118:'סניף 118 · אילת', 208:'סניף 208 · נחל אורה'};
+const TECH_CAT = {refrigeration:'❄️',lighting:'💡',equipment:'⚙️',bakery:'🥖',infrastructure:'🏗️',safety:'🦺',shelving:'🗄️',plumbing:'🚿',electrical:'⚡',general:'🔧'};
+const EXP_CAT = {cheese:'🧀 גבינות',milk:'🥛 חלב',sausages:'🌭 נקניקים',meat:'🥩 בשר ועוף',fish:'🐟 דגים',vegetables:'🥦 ירקות',
+  choc:'🍫 שוקולד',cakes:'🎂 עוגות',bakery:'🥖 מאפייה',spreads:'🫙 ממרחים',sweet:'🍯 ממרחים מתוקים',green:'🥬 גרין',drinks:'🥤 משקאות',
+  dairy:'🧈 מוצרי חלב',serials:'🥜 דגנים ואגוזים',alcoholic:'🍷 אלכוהול',frozen:'🧊 קפואים',snacks:'🍿 חטיפים',coffee:'☕ קפה ועוגיות',canned:'🥫 שימורים'};
+const DAYS = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+const DAYS_EN = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MON = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+
+/* ═════════════ STATE ═════════════ */
+const ls = { get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch{return d}},
+             set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}} };
+let branch = ls.get('ma_branch',118);
+let D = window.SNAPSHOT || {};
+let dataSrc = 'עותק שמור';
+let expiry = [], expiryLive = false;
+let tickets = [], ticketsLive = false;
+let day = startOfDay(new Date());
+const stack = ['home'];
+
+/* ═════════════ helpers ═════════════ */
+function startOfDay(d){const x=new Date(d);x.setHours(0,0,0,0);return x}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function fullDate(d){return 'יום '+DAYS[d.getDay()]+', '+d.getDate()+' ב'+MON[d.getMonth()]+' '+d.getFullYear()}
+function shortDate(d){return d.getDate()+'.'+(d.getMonth()+1)+" · יום "+'אבגדהוש'[d.getDay()]+"'"}
+function isToday(d){return iso(d)===iso(new Date())}
+function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function dd(s){return s?s.split('-').reverse().slice(0,2).join('/'):''}
+function daysFrom(s,ref=day){return Math.round((startOfDay(new Date(s+'T00:00:00'))-ref)/86400000)}
+function toast(t){const e=document.getElementById('toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',2200)}
+
+/* extract `const NAME = …;` from page source of the original apps */
+function extract(src,name){
+  const m=new RegExp('(?:const|let|var)\\s+'+name+'\\s*=\\s*').exec(src); if(!m) return null;
+  let i=m.index+m[0].length,start=i,depth=0,q=null;
+  for(;i<src.length;i++){const c=src[i];
+    if(q){if(c==='\\'){i++;continue}if(c===q)q=null;continue}
+    if(c==='"'||c==="'"||c==='`'){q=c;continue}
+    if(c==='/'&&src[i+1]==='/'){i=src.indexOf('\n',i);continue}
+    if('[{('.includes(c))depth++;else if(']})'.includes(c))depth--;else if(c===';'&&depth===0)break}
+  try{return Function('"use strict";return ('+src.slice(start,i)+')')()}catch{return null}
+}
+async function loadLive(){
+  const get=u=>fetch(u+(u.includes('?')?'&':'?')+'t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject());
+  let ok=0;
+  try{const s=await get(APPS.spira.url);for(const n of ['CHOR','PACHAT','YOMI']){const v=extract(s,n);if(v){D[n]=v;ok++}}}catch{}
+  try{const s=await get(APPS.orders.url);const v=extract(s,'SCH');if(v){D.SCH=v;ok++}}catch{}
+  try{const s=await get(APPS.sidur.url);for(const n of ['SEED','SEED_LABEL','DEPTS']){const v=extract(s,n);if(v){D[n]=v;ok++}}}catch{}
+  if(ok>=7) dataSrc='מעודכן מהאפליקציות';
+  else if(ok) dataSrc='חלקית מעודכן';
+  renderAll();
+}
+
+/* ═════════════ DATA PER DAY ═════════════ */
+function spiraFor(d){
+  const ds=iso(d),dow=d.getDay();
+  const chor=(D.CHOR||[]).find(c=>c.dow===dow);
+  const yomi=(D.YOMI||[]).find(y=>y.d===ds);
+  const pachat=(D.PACHAT||[]).find(p=>p.d===ds);
+  const nextPachat=(D.PACHAT||[]).find(p=>p.d>ds&&!p.cancelled);
+  return {chor,yomi,pachat,nextPachat};
+}
+function ordersFor(d){
+  const list=(D.SCH||{})[d.getDay()]||[];
+  const now=new Date();
+  return list.map(o=>{const [h,m]=o.dl.split(':').map(Number);
+    const past=isToday(d)&&(now.getHours()*60+now.getMinutes())>(h*60+m);
+    return {...o,past}}).sort((a,b)=>a.dl.localeCompare(b.dl));
+}
+function sidurWeekStart(){
+  const m=/(\d+)\s*[–-]\s*(\d+)\/(\d+)/.exec(D.SEED_LABEL||'');if(!m)return null;
+  let start=+m[1],end=+m[2],mon=+m[3];
+  const y=new Date().getFullYear();
+  // התחלה בחודש קודם (למשל 29–4/11)
+  const sm=start>end?mon-1:mon;
+  return startOfDay(new Date(y,sm-1,start));
+}
+function isOff(v){const s=(v||'').trim();
+  if(!s||['-','–','—','+'].includes(s))return true;
+  return /חופש|מחלה|בריאות|חל"?ת|חלת/.test(s)||s.startsWith('חג')||s.startsWith('צום')}
+function sidurFor(d){
+  const ws=sidurWeekStart();if(!ws||!D.SEED)return {ok:false};
+  const idx=Math.round((d-ws)/86400000);
+  if(idx<0||idx>5)return {ok:false,label:D.SEED_LABEL};
+  const depts=(D.DEPTS||[]).map(dep=>{
+    const rows=(D.SEED[dep.id]?.rows)||[];
+    const work=[],off=[];
+    rows.forEach(r=>{const v=(r.cells||[])[idx]||'';(isOff(v)?off:work).push({name:r.name,v:v.trim()})});
+    return {name:dep.name,work,off:off.filter(o=>o.v)};
+  });
+  return {ok:true,label:D.SEED_LABEL,depts,total:depts.reduce((s,x)=>s+x.work.length,0)};
+}
+function expiryFor(d){
+  const items=expiry.filter(p=>p.expiryDate).map(p=>({...p,diff:daysFrom(p.expiryDate,d)}));
+  return {
+    expired:items.filter(p=>p.diff<0).sort((a,b)=>a.diff-b.diff),
+    today:items.filter(p=>p.diff===0),
+    tomorrow:items.filter(p=>p.diff===1),
+    soon:items.filter(p=>p.diff>=2&&p.diff<=3),
+    total:items.length};
+}
+function techOpen(){
+  return tickets.filter(t=>t.status==='open').map(t=>({...t,age:t.dateReported?-daysFrom(t.dateReported,startOfDay(new Date())):0}))
+    .sort((a,b)=>b.age-a.age);
+}
+function ageColor(a){return a>=9?'#7A1F1F':a>=6?'#C0392B':a>=3?'#D9822B':'#2E8B57'}
+
+/* ═════════════ NAVIGATION ═════════════ */
+const SCREENS=['home','app','rikuz','photo','frame'];
+function show(id){SCREENS.forEach(s=>document.getElementById('screen-'+s).classList.toggle('active',s===id))}
+function go(key){
+  if(key==='rikuz'){stack.push('rikuz');renderRikuz();show('rikuz');return}
+  if(key==='photo'){stack.push('photo');renderPhoto();show('photo');return}
+  stack.push('app:'+key);renderApp(key);show('app');
+  document.getElementById('appBody').scrollTop=0;
+}
+function back(){
+  stack.pop();const top=stack[stack.length-1]||'home';
+  if(top==='home'){renderHome();show('home')}
+  else if(top==='rikuz'){renderRikuz();show('rikuz')}
+  else if(top.startsWith('app:')){renderApp(top.slice(4));show('app')}
+  else show(top);
+  if(document.getElementById('frame').src&&top!=='frame')document.getElementById('frame').src='about:blank';
+}
+function openFull(key){
+  const a=APPS[key];if(!a.url){toast('האפליקציה בפיתוח — בקרוב');return}
+  document.getElementById('frTitle').innerHTML=esc(a.he)+'<span class="en">'+esc(a.en)+'</span>';
+  document.getElementById('frame').src=a.url;
+  document.getElementById('frExt').onclick=()=>window.open(a.url,'_blank');
+  stack.push('frame');show('frame');
+}
+document.addEventListener('click',e=>{
+  const g=e.target.closest('[data-go]');if(g){go(g.dataset.go);return}
+  if(e.target.closest('[data-back]')){back();return}
+  const f=e.target.closest('[data-full]');if(f){openFull(f.dataset.full);return}
+  const p=e.target.closest('[data-b]');if(p){branch=+p.dataset.b;ls.set('ma_branch',branch);subscribeExpiry();renderAll();return}
+  const dn=e.target.closest('[data-day]');if(dn){day=new Date(day.getTime()+(+dn.dataset.day)*86400000);renderRikuz();return}
+  const ap=e.target.closest('[data-panel]');if(ap){go(ap.dataset.panel);return}
+});
+
+/* ═════════════ RENDER: HOME ═════════════ */
+function badge(id,n,cls){const b=document.getElementById(id);if(!b)return;b.hidden=!n;b.textContent=n;if(cls)b.className='badge '+cls}
+function renderHome(){
+  const t=startOfDay(new Date());
+  document.querySelectorAll('.pill').forEach(p=>p.classList.toggle('on',+p.dataset.b===branch));
+  document.getElementById('hBranch').textContent=BRANCHES[branch];
+  document.getElementById('hDate').textContent=fullDate(t);
+  const e=expiryFor(t);badge('bExpiry',e.expired.length+e.today.length+e.tomorrow.length);
+  const s=spiraFor(t);badge('bSpira',(s.chor?1:0)+(s.yomi&&!s.yomi.cancelled?1:0)+(s.pachat&&!s.pachat.cancelled?1:0));
+  badge('bOrders',ordersFor(t).filter(o=>!o.past).length);
+  const sd=sidurFor(t);badge('bSidur',sd.ok?sd.total:0);
+  badge('bTech',techOpen().length);
+  document.getElementById('srcInfo').textContent='נתונים: '+dataSrc+(expiryLive?' · פגי תוקף ✓':'')+(ticketsLive?' · תקלות ✓':'');
+}
+
+/* ═════════════ RENDER: APP SCREENS ═════════════ */
+function hdrApp(key){
+  const a=APPS[key];
+  document.getElementById('appTitle').innerHTML=esc(a.he)+'<span class="en">'+esc(a.en)+'</span>';
+  document.getElementById('appBranch').textContent=BRANCHES[branch];
+  document.getElementById('appDate').textContent=fullDate(day);
+}
+function fullBtn(key){const a=APPS[key];
+  return `<button class="open-full" data-full="${key}">פתח את האפליקציה המלאה <span class="en">Open full app</span></button>`}
+function card(title,en,inner,cnt){return `<div class="card"><h2>${title}<span class="en">${en}</span>${cnt!=null?`<span class="cnt">${cnt}</span>`:''}</h2>${inner}</div>`}
+
+function renderApp(key){
+  hdrApp(key);
+  let h='';
+  if(key==='spira'){
+    const {chor,yomi,pachat,nextPachat}=spiraFor(day);
+    h+=card('🕳️ חור במדף','Hole on the shelf',chor?`<div class="chips">${chor.items.map(i=>`<span class="chip">${esc(i)}</span>`).join('')}</div>`:'<div class="empty">אין ספירת חור במדף היום</div>',chor?chor.items.length:null);
+    h+=card('📋 מדיניות זמינות','Availability policy',yomi?(yomi.cancelled?'<div class="empty">🚫 בוטל — '+esc(yomi.items.join(', '))+'</div>':`<div class="chips">${yomi.items.map(i=>`<span class="chip g">${esc(i)}</span>`).join('')}${yomi.special?`<span class="chip r">⭐ ${esc(yomi.special)}</span>`:''}</div>`):'<div class="empty">אין היום</div>');
+    let p;
+    if(pachat&&!pachat.cancelled)p=`<div class="chips">${pachat.items.map(i=>`<span class="chip r">${esc(i)}</span>`).join('')}</div><div class="note">קודים: ${pachat.codes.join(', ')}</div>`;
+    else if(pachat)p='<div class="empty">🚫 בוטל השבוע</div>';
+    else p='<div class="empty">אין ספירת פחת היום</div>'+(nextPachat?`<div class="note">⏳ הבאה: ${esc(nextPachat.items.join(', '))} — ${dd(nextPachat.d)} (בעוד ${daysFrom(nextPachat.d)} ימים)</div>`:'');
+    h+=card('📉 פחת','Shrinkage',p);
+  }
+  if(key==='orders'){
+    const list=ordersFor(day);
+    h+=card('🚚 הזמנות היום','Orders today',list.length?list.map(o=>`<div class="row" style="${o.past?'opacity:.5':''}"><div class="ic">${o.ic||'📦'}</div><div class="tx"><div class="nm">${esc(o.nm)}</div><div class="ds">${esc(o.nt||'—')} · אספקה: ${esc(o.dlDay)}</div></div><span class="tag ${o.past?'past':'gold'}">${o.past?'עבר':'עד '+o.dl}</span></div>`).join(''):'<div class="empty">אין הזמנות היום</div>',list.length);
+    if(branch===208)h+='<div class="note" style="margin:-6px 4px 12px">* מוצג לוח הזמנות של סניף 118</div>';
+  }
+  if(key==='sidur'){
+    const s=sidurFor(day);
+    if(!s.ok)h+=card('👥 סידור עבודה','Work schedule',`<div class="empty">${day.getDay()===6?'שבת — אין עבודה':'אין סידור לתאריך זה (השבוע השמור: '+esc(s.label||'—')+')'}</div>`);
+    else s.depts.forEach(dp=>{
+      h+=card('👥 '+esc(dp.name),'',dp.work.length?dp.work.map(w=>`<div class="row"><div class="sq" style="background:var(--navy)">${esc(w.name[0]||'?')}</div><div class="tx"><div class="nm">${esc(w.name)}</div></div><span class="tag gold">${esc(w.v)}</span></div>`).join('')+(dp.off.length?`<div class="note">לא עובדים: ${dp.off.map(o=>esc(o.name)+' ('+esc(o.v)+')').join(', ')}</div>`:''):'<div class="empty">אין עובדים</div>',dp.work.length);
+    });
+    if(branch===208)h+='<div class="note" style="margin:-6px 4px 12px">* מוצג סידור העבודה של סניף 118</div>';
+  }
+  if(key==='expiry'){
+    const e=expiryFor(day);
+    const row=p=>`<div class="row"><div class="sq" style="background:${p.diff<0?'#7A1F1F':p.diff===0?'#C0392B':p.diff===1?'#D9822B':'#B8955A'}">${p.diff<0?'✕':p.diff}</div><div class="tx"><div class="nm">${esc(p.name||'—')}</div><div class="ds">${esc(EXP_CAT[p.category]||p.category||'')} · ${dd(p.expiryDate)}</div></div></div>`;
+    if(!expiryLive)h+='<div class="card"><div class="empty">⏳ טוען נתונים…</div></div>';
+    h+=card('⛔ פג תוקף','Expired',e.expired.length?e.expired.map(row).join(''):'<div class="ok">✓ אין</div>',e.expired.length);
+    h+=card('🔴 היום','Today',e.today.length?e.today.map(row).join(''):'<div class="ok">✓ אין</div>',e.today.length);
+    h+=card('🟠 מחר','Tomorrow',e.tomorrow.length?e.tomorrow.map(row).join(''):'<div class="ok">✓ אין</div>',e.tomorrow.length);
+    h+=card('🟡 בעוד 2–3 ימים','In 2–3 days',e.soon.length?e.soon.map(row).join(''):'<div class="ok">✓ אין</div>',e.soon.length);
+  }
+  if(key==='tech'){
+    const t=techOpen();
+    if(!ticketsLive)h+='<div class="card"><div class="empty">⏳ טוען נתונים…</div></div>';
+    h+=card('🔧 תקלות פתוחות','Open tickets',t.length?t.map(x=>`<div class="row"><div class="sq" style="background:${ageColor(x.age)}">${x.age}</div><div class="tx"><div class="nm">${TECH_CAT[x.category]||'🔧'} ${esc(x.description||'תקלה')}</div><div class="ds">נפתח ${dd(x.dateReported)} · ${x.age} ימים</div></div></div>`).join(''):'<div class="ok">✓ אין תקלות פתוחות</div>',t.length);
+  }
+  if(key==='quality'){
+    h+=`<div class="card" style="text-align:center;padding:28px 16px"><svg width="96" height="96"><use href="#i-quality"/></svg>
+      <h2 style="justify-content:center;margin-top:10px">בקרוב</h2><div class="empty">אפליקציית מעקב איכות ותברואה נמצאת בתכנון.<br>כאן יופיעו משימות הבדיקה של היום.</div></div>`;
+  }
+  if(key==='access') return renderAccess();
+  if(key==='install') return renderInstall();
+  if(APPS[key]?.url)h+=fullBtn(key);
+  document.getElementById('appBody').innerHTML=h;
+}
+
+/* ═════════════ מורשי גישה ═════════════ */
+function renderAccess(){
+  document.getElementById('appTitle').innerHTML='מורשי גישה<span class="en">Authorized recipients</span>';
+  document.getElementById('appBranch').textContent=BRANCHES[branch];
+  document.getElementById('appDate').textContent='';
+  const list=ls.get('ma_access',[{name:'',email:'',phone:''}]);
+  const draw=()=>{
+    document.getElementById('appBody').innerHTML=`
+    <div class="card"><h2>👥 מקבלי הדוח היומי<span class="en">Daily report recipients</span></h2>
+      <div class="note" style="margin:0 0 10px">כל מי שברשימה יקבל כל בוקר בשעה <b>06:30</b> את „תמונה מרוכזת” במייל, ב-WhatsApp ובהתראת Push.</div>
+      <table class="al"><tr><th>שם</th><th>אימייל</th><th>נייד</th><th></th></tr>
+      ${list.map((r,i)=>`<tr><td><input data-i="${i}" data-f="name" value="${esc(r.name)}" placeholder="שם"></td>
+        <td><input data-i="${i}" data-f="email" value="${esc(r.email)}" placeholder="mail@…" dir="ltr" inputmode="email"></td>
+        <td><input data-i="${i}" data-f="phone" value="${esc(r.phone)}" placeholder="05X-…" dir="ltr" inputmode="tel"></td>
+        <td class="x"><button class="xbtn" data-del="${i}">✕</button></td></tr>`).join('')}
+      </table>
+      <button class="add" id="addRow">＋ הוסף מורשה</button>
+      <div class="note">⚠️ גרסת ניסיון: הרשימה נשמרת רק במכשיר הזה. השליחה האוטומטית תופעל בשלב הבא.</div>
+    </div>`;
+    document.querySelectorAll('table.al input').forEach(inp=>inp.oninput=()=>{list[+inp.dataset.i][inp.dataset.f]=inp.value;ls.set('ma_access',list)});
+    document.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{list.splice(+b.dataset.del,1);if(!list.length)list.push({name:'',email:'',phone:''});ls.set('ma_access',list);draw()});
+    document.getElementById('addRow').onclick=()=>{list.push({name:'',email:'',phone:''});ls.set('ma_access',list);draw()};
+  };
+  draw();
+}
+function renderInstall(){
+  document.getElementById('appTitle').innerHTML='התקנה בלחיצה אחת<span class="en">One-click install</span>';
+  document.getElementById('appBranch').textContent='';document.getElementById('appDate').textContent='';
+  document.getElementById('appBody').innerHTML=`
+  <div class="card"><h2>📲 מתקינים רק את העוזר<span class="en">Install once</span></h2>
+    <div class="empty" style="color:var(--ink)">כל האפליקציות (פגי תוקף, ספירות, הזמנות, סידור עבודה, תקלות) נפתחות <b>בתוך</b> העוזר — אין צורך להתקין כל אחת בנפרד.</div>
+    <div class="step"><b class="n">1</b><span>פתחו את הקישור של העוזר ב-<b>Safari</b> (iPhone) או ב-<b>Chrome</b> (Android).</span></div>
+    <div class="step"><b class="n">2</b><span>iPhone: כפתור השיתוף <b>⬆️</b> ← „הוסף למסך הבית”.<br>Android: תפריט <b>⋮</b> ← „התקן אפליקציה”.</span></div>
+    <div class="step"><b class="n">3</b><span>פתחו את „העוזר הניהולי” מהמסך הראשי ואשרו קבלת התראות.</span></div>
+  </div>`;
+}
+
+/* ═════════════ RENDER: ריכוז יומי ═════════════ */
+function panelData(d){
+  const s=spiraFor(d),o=ordersFor(d),sd=sidurFor(d),e=expiryFor(d),t=techOpen();
+  const spira=[
+    s.chor?`<div class="it"><span class="k">🕳️ חור במדף:</span> ${esc(s.chor.items.join(', '))}</div>`:'',
+    s.yomi?`<div class="it"><span class="k">📋 זמינות:</span> ${s.yomi.cancelled?'🚫 בוטל':esc(s.yomi.items.join(', '))}${s.yomi.special?' · ⭐ '+esc(s.yomi.special):''}</div>`:'',
+    s.pachat?`<div class="it"><span class="k">📉 פחת:</span> ${s.pachat.cancelled?'🚫 בוטל':esc(s.pachat.items.join(', '))+' ['+s.pachat.codes.join(',')+']'}</div>`:'',
+  ].join('')||'<div class="mut">אין ספירות היום</div>';
+  const orders=o.length?o.map(x=>`<div class="it" style="${x.past?'opacity:.45':''}">${x.ic||'📦'} ${esc(x.nm)} <span class="k">${x.dl}</span></div>`).join(''):'<div class="mut">אין הזמנות</div>';
+  const sidur=sd.ok?sd.depts.map(dp=>`<div class="it"><span class="k">${esc(dp.name)} (${dp.work.length}):</span> ${dp.work.map(w=>esc(w.name)).join(', ')||'—'}</div>`).join(''):`<div class="mut">${d.getDay()===6?'שבת':'אין סידור לתאריך זה'}</div>`;
+  const ex=(arr)=>arr.map(p=>esc(p.name)).join(', ');
+  const expiryH=!expiryLive?'<div class="mut">טוען…</div>':
+    (e.expired.length?`<div class="it" style="color:var(--maroon)"><span class="k" style="color:var(--maroon)">⛔ פג (${e.expired.length}):</span> ${ex(e.expired.slice(0,4))}${e.expired.length>4?'…':''}</div>`:'')+
+    `<div class="it"><span class="k" style="color:var(--red)">🔴 היום (${e.today.length}):</span> ${ex(e.today)||'—'}</div>`+
+    `<div class="it"><span class="k" style="color:var(--orange)">🟠 מחר (${e.tomorrow.length}):</span> ${ex(e.tomorrow)||'—'}</div>`;
+  const techH=!ticketsLive?'<div class="mut">טוען…</div>':(t.length?t.slice(0,6).map(x=>`<div class="it"><span class="dot" style="background:${ageColor(x.age)}"></span>${esc(x.description)} <span class="mut">(${x.age} י׳)</span></div>`).join('')+(t.length>6?`<div class="mut">+ עוד ${t.length-6}</div>`:''):'<div class="it ok">✓ אין תקלות פתוחות</div>');
+  const quality='<div class="mut">בקרוב — אפליקציה בפיתוח</div>';
+  return {spira,orders,sidur,expiry:expiryH,tech:techH,quality,counts:{orders:o.length,sidur:sd.ok?sd.total:0,tech:t.length}};
+}
+const PANELS=[
+  ['orders','🚚 הזמנות','Orders'],['spira','📋 ספירות','Counts'],['expiry','⏰ פגי תוקף היום ומחר','Expiry'],
+  ['sidur','👥 סידור עבודה להיום','Staff'],['quality','🛡️ איכות ותברואה','Quality'],['tech','🔧 תקלות','Tickets']];
+function renderRikuz(){
+  document.getElementById('rkBranch').textContent=BRANCHES[branch];
+  document.getElementById('rkDate').innerHTML=fullDate(day)+'<small>'+(isToday(day)?'היום · Today':DAYS_EN[day.getDay()])+'</small>';
+  const p=panelData(day);
+  document.getElementById('rkGrid').innerHTML=PANELS.map(([k,he,en])=>
+    `<div class="pn" style="grid-area:${k}" data-panel="${k}"><h3>${he}${p.counts[k]!=null?' ('+p.counts[k]+')':''}<span class="en">${en}</span></h3>${p[k]}</div>`).join('');
+}
+function renderPhoto(){
+  document.getElementById('psBranch').textContent=BRANCHES[branch];
+  document.getElementById('psDate').textContent=day.getDate()+'.'+(day.getMonth()+1)+" · יום "+'אבגדהוש'[day.getDay()]+"'";
+  const p=panelData(day);
+  document.getElementById('psGrid').innerHTML=PANELS.map(([k,he])=>
+    `<div class="ps" style="grid-area:${k}"><h4>${he}${p.counts[k]!=null?' ('+p.counts[k]+')':''}</h4>${p[k].replaceAll('class="it"','class="it"').replaceAll('class="mut"','class="it" style="color:#6E7787"')}</div>`).join('');
+}
+async function posterCanvas(){
+  return html2canvas(document.getElementById('poster'),{scale:2,backgroundColor:'#F4F1EA',useCORS:true});
+}
+document.getElementById('btnSave').onclick=async()=>{
+  try{const c=await posterCanvas();const a=document.createElement('a');a.download='ריכוז-יומי-'+iso(day)+'.png';a.href=c.toDataURL('image/png');a.click();toast('התמונה נשמרה')}
+  catch{toast('לא הצלחתי ליצור תמונה — צלמו מסך')}
+};
+document.getElementById('btnShare').onclick=async()=>{
+  try{const c=await posterCanvas();c.toBlob(async b=>{
+    const f=new File([b],'ריכוז-יומי-'+iso(day)+'.png',{type:'image/png'});
+    if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],title:'ריכוז יומי'});
+    else window.open(URL.createObjectURL(b),'_blank');});}catch{toast('השיתוף לא זמין')}
+};
+
+function renderAll(){
+  renderHome();
+  const top=stack[stack.length-1];
+  if(top==='rikuz')renderRikuz();else if(top==='photo')renderPhoto();
+  else if(top?.startsWith('app:'))renderApp(top.slice(4));
+}
+
+/* ═════════════ FIREBASE (פגי תוקף + תקלות) ═════════════ */
+// קריאה קלה דרך REST — רק השדות הנחוצים (בלי תמונות), רענון כל 2 דקות
+const FS_BASE='https://firestore.googleapis.com/v1/projects/expiry-tracker-ebf92/databases/(default)/documents/';
+const FS_KEY='AIzaSyCRBmBDYpcERv_tbwd0E7GEskm-_xHYBhk';
+async function fsList(col,fields){
+  const out=[];let tok='';
+  do{
+    const u=FS_BASE+col+'?pageSize=300&key='+FS_KEY+fields.map(f=>'&mask.fieldPaths='+f).join('')+(tok?'&pageToken='+encodeURIComponent(tok):'');
+    const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error(r.status);
+    const j=await r.json();
+    (j.documents||[]).forEach(d=>{const o={id:d.name.split('/').pop()};
+      for(const [k,v] of Object.entries(d.fields||{}))o[k]=v.stringValue??v.integerValue??v.booleanValue??v.timestampValue??null;out.push(o)});
+    tok=j.nextPageToken;
+  }while(tok);
+  return out;
+}
+async function loadExpiry(){
+  const b=branch;
+  try{const list=await fsList(b===118?'products':'products_208',['name','category','expiryDate']);
+    if(b!==branch)return;expiry=list;expiryLive=true;renderAll()}catch(e){console.log('expiry',e.message)}
+}
+async function loadTickets(){
+  try{tickets=await fsList('tickets',['description','category','dateReported','status']);ticketsLive=true;renderAll()}catch(e){console.log('tickets',e.message)}
+}
+function subscribeExpiry(){expiryLive=false;expiry=[];loadExpiry()}
+function initFirebase(){loadExpiry();loadTickets();setInterval(()=>{loadExpiry();loadTickets()},120000)}
+
+/* ═════════════ INIT ═════════════ */
+// ?day=2026-11-08 — לבדיקה של יום אחר
+const qd=new URLSearchParams(location.search).get('day');if(qd)day=startOfDay(new Date(qd+'T00:00:00'));
+const qs=new URLSearchParams(location.search).get('screen');
+renderHome();
+if(qs)go(qs);
+loadLive();
+initFirebase();
+// מעבר יום אוטומטי אחרי חצות
+setInterval(()=>{if(!qd&&iso(day)!==iso(new Date())&&stack.length===1){day=startOfDay(new Date());renderAll()}},60000);
+</script>
+</body>
+</html>
