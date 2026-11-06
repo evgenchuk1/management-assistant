@@ -42,7 +42,13 @@ button{font-family:inherit}
   border:2.5px solid var(--gold);box-shadow:0 0 0 3px rgba(207,171,111,.25),0 4px 10px rgba(0,0,0,.35)}
 .ttl{flex:1;min-width:0}
 .ttl h1{font-size:39px;font-weight:900;line-height:1.05;text-shadow:0 2px 4px rgba(0,0,0,.3)}
-.hdate{font-size:28px;font-weight:800;color:var(--gold2);line-height:1.15;margin-top:4px}
+.hdate{font-size:28px;font-weight:800;color:var(--gold2);line-height:1.15;white-space:nowrap;cursor:pointer;text-align:center;flex:1;min-width:0}
+.hdate-row{display:flex;align-items:center;gap:6px;margin-top:8px}
+.dbtn{flex-shrink:0;width:40px;height:40px;border-radius:50%;border:2px solid rgba(207,171,111,.6);background:rgba(255,255,255,.08);
+  color:var(--gold2);font-size:26px;font-weight:900;line-height:1;cursor:pointer;display:flex;direction:ltr;unicode-bidi:isolate;align-items:center;justify-content:center;padding-bottom:3px}
+.dbtn:active{background:rgba(207,171,111,.3)}
+.hdate.other{color:#fff}
+.hdate small{display:block;font-size:13px;font-weight:700;color:var(--gold2);opacity:.85}
 .hdr-ctl{display:flex;gap:8px;margin-top:12px}
 .pill{flex:1;padding:10px 12px;border-radius:999px;border:2px solid rgba(207,171,111,.55);background:transparent;
   color:rgba(255,255,255,.75);font-size:20px;font-weight:800;cursor:pointer}
@@ -340,8 +346,8 @@ table.al td.x{width:34px;text-align:center}
   <div class="hdr">
     <div class="hdr-row">
       <img src="et-mark.png" class="logo" alt="ET studio">
-      <div class="ttl"><h1>העוזר הניהולי</h1><div class="hdate" id="hDate"></div></div>
-    </div>
+      <div class="ttl"><h1>העוזר הניהולי</h1></div></div>
+    <div class="hdate-row"><button class="dbtn" data-day="-1" aria-label="יום קודם">›</button><div class="hdate" id="hDate" data-today></div><button class="dbtn" data-day="1" aria-label="יום הבא">‹</button></div>
     <div class="hdr-ctl"><button class="pill" data-b="118">סניף 118</button><button class="pill" data-b="208">סניף 208</button></div>
     <div class="cats"></div>
   </div>
@@ -369,8 +375,8 @@ table.al td.x{width:34px;text-align:center}
   <div class="hdr">
     <div class="hdr-row">
       <img src="et-mark.png" class="logo" alt="ET studio">
-      <div class="ttl"><h1 id="appTitle"></h1><div class="hdate" id="appDate"></div></div>
-    </div>
+      <div class="ttl"><h1 id="appTitle"></h1></div></div>
+    <div class="hdate-row"><button class="dbtn" data-day="-1" aria-label="יום קודם">›</button><div class="hdate" id="appDate" data-today></div><button class="dbtn" data-day="1" aria-label="יום הבא">‹</button></div>
     <div class="hdr-ctl"><button class="pill" data-b="118">סניף 118</button><button class="pill" data-b="208">סניף 208</button><button class="back" data-back>חזרה ›</button></div>
     <div class="cats"></div>
   </div>
@@ -382,13 +388,12 @@ table.al td.x{width:34px;text-align:center}
   <div class="hdr">
     <div class="hdr-row">
       <img src="et-mark.png" class="logo" alt="ET studio">
-      <div class="ttl"><h1>ריכוז יומי</h1><div class="hdate" id="rkHdrDate"></div></div>
-    </div>
+      <div class="ttl"><h1>ריכוז יומי</h1></div></div>
+    <div class="hdate-row"><button class="dbtn" data-day="-1" aria-label="יום קודם">›</button><div class="hdate" id="rkHdrDate" data-today></div><button class="dbtn" data-day="1" aria-label="יום הבא">‹</button></div>
     <div class="hdr-ctl"><button class="pill" data-b="118">סניף 118</button><button class="pill" data-b="208">סניף 208</button><button class="back" data-back>חזרה ›</button></div>
     <div class="cats"></div>
   </div>
   <div class="body">
-    <div class="daynav"><button data-day="-1">›</button><div class="d" id="rkDate"></div><button data-day="1">‹</button></div>
     <div class="rk" id="rkGrid"></div>
     <button class="photo-btn" data-go="photo"><svg width="34" height="34"><use href="#i-camera"/></svg>תמונה מרוכזת</button>
     <div class="foot"><span class="cp-link" data-cp>© 2026 ET studio · Evgeniy Tsipis — All rights reserved · כל הזכויות שמורות</span></div>
@@ -488,6 +493,8 @@ function startOfDay(d){const x=new Date(d);x.setHours(0,0,0,0);return x}
 function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function fullDate(d){return 'יום '+DAYS[d.getDay()]+', '+d.getDate()+' ב'+MON[d.getMonth()]+' '+d.getFullYear()}
 function hdrDate(d){return 'יום '+DAYS[d.getDay()]+', '+d.getDate()+' ב'+MON[d.getMonth()]}
+function paintDates(){['hDate','appDate','rkHdrDate'].forEach(id=>{const el=document.getElementById(id);if(!el)return;
+  el.classList.toggle('other',!isToday(day));el.innerHTML=esc(hdrDate(day))+(isToday(day)?'':'<small>הקש לחזרה להיום</small>')})}
 function shortDate(d){return d.getDate()+'.'+(d.getMonth()+1)+" · יום "+'אבגדהוש'[d.getDay()]+"'"}
 function isToday(d){return iso(d)===iso(new Date())}
 function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
@@ -600,7 +607,8 @@ document.addEventListener('click',e=>{
   if(e.target.closest('[data-back]')){back();return}
   const f=e.target.closest('[data-full]');if(f){openFull(f.dataset.full);return}
   const p=e.target.closest('[data-b]');if(p){branch=+p.dataset.b;ls.set('ma_branch',branch);subscribeExpiry();renderAll();return}
-  const dn=e.target.closest('[data-day]');if(dn){day=new Date(day.getTime()+(+dn.dataset.day)*86400000);renderRikuz();return}
+  const dn=e.target.closest('[data-day]');if(dn){const x=new Date(day);x.setDate(x.getDate()+(+dn.dataset.day));day=startOfDay(x);renderAll();return}
+  if(e.target.closest('[data-today]')&&!isToday(day)){day=startOfDay(new Date());renderAll();return}
   const ap=e.target.closest('[data-panel]');if(ap){go(ap.dataset.panel);return}
   if(e.target.closest('[data-cp]')){document.getElementById('cpOv').classList.add('active');return}
   if(e.target.id==='cpClose'||e.target.id==='cpOv'){document.getElementById('cpOv').classList.remove('active');return}
@@ -614,9 +622,9 @@ document.querySelectorAll('.cats').forEach(el=>el.innerHTML=CATS.map(([k,he])=>
 /* ═════════════ RENDER: HOME ═════════════ */
 function badge(id,n,cls){const b=document.getElementById(id);if(!b)return;b.hidden=!n;b.textContent=n;if(cls)b.className='badge '+cls}
 function renderHome(){
-  const t=startOfDay(new Date());
+  const t=day;
   document.querySelectorAll('.pill').forEach(p=>p.classList.toggle('on',+p.dataset.b===branch));
-  document.getElementById('hDate').textContent=hdrDate(t);
+  paintDates();
   const e=expiryFor(t);badge('bExpiry',e.expired.length+e.today.length+e.tomorrow.length);
   const s=spiraFor(t);badge('bSpira',(s.chor?1:0)+(s.yomi&&!s.yomi.cancelled?1:0)+(s.pachat&&!s.pachat.cancelled?1:0));
   badge('bOrders',ordersFor(t).filter(o=>!o.past).length);
@@ -629,11 +637,11 @@ function renderHome(){
 function hdrApp(key){
   const a=APPS[key];
   document.getElementById('appTitle').textContent=a.he;
-  document.getElementById('appDate').textContent=hdrDate(day);
+  paintDates();
 }
 function fullBtn(key){return `<button class="open-full" data-full="${key}">פתח את האפליקציה המלאה</button>`}
 function card(title,en,inner,cnt){return `<div class="card"><h2>${title}${cnt!=null?`<span class="cnt">${cnt}</span>`:''}</h2>${inner}</div>`}
-const SCALE={spira:2,expiry:1.5,orders:1.5};
+const SCALE={spira:1.5,expiry:1.125,orders:1.125};
 const shortH=v=>v.replace(/(\d{1,2}):00\b/g,'$1');
 
 /* סידור: מקטינים את הגופן עד שהכול נכנס במסך אחד בלי גלילה */
@@ -699,7 +707,6 @@ function renderApp(key){
 /* ═════════════ מורשי גישה ═════════════ */
 function renderAccess(){
   document.getElementById('appTitle').textContent='מורשי גישה';
-  document.getElementById('appDate').textContent='';
   const list=ls.get('ma_access',[{name:'',email:'',phone:''}]);
   const draw=()=>{
     document.getElementById('appBody').innerHTML=`
@@ -722,7 +729,6 @@ function renderAccess(){
 }
 function renderInstall(){
   document.getElementById('appTitle').textContent='התקנה';
-  document.getElementById('appDate').textContent='';
   document.getElementById('appBody').innerHTML=`
   <div class="card"><h2>📲 מתקינים רק את העוזר</h2>
     <div class="empty" style="color:var(--ink)">כל האפליקציות (פגי תוקף, ספירות, הזמנות, סידור עבודה, תקלות) נפתחות <b>בתוך</b> העוזר — אין צורך להתקין כל אחת בנפרד.</div>
@@ -755,8 +761,7 @@ const PANELS=[
   ['orders','🚚 הזמנות','Orders'],['spira','📋 ספירות','Counts'],['expiry','⏰ פגי תוקף היום ומחר','Expiry'],
   ['sidur','👥 סידור עבודה להיום','Staff'],['quality','🛡️ איכות ותברואה','Quality'],['tech','🔧 תקלות','Tickets']];
 function renderRikuz(){
-  document.getElementById('rkHdrDate').textContent=hdrDate(startOfDay(new Date()));
-  document.getElementById('rkDate').innerHTML=fullDate(day)+(isToday(day)?'<small>היום</small>':'');
+  paintDates();
   const p=panelData(day);
   document.getElementById('rkGrid').innerHTML=PANELS.map(([k,he])=>
     `<div class="pn" style="grid-area:${k}" data-panel="${k}"><h3>${he}${p.counts[k]!=null?' ('+p.counts[k]+')':''}</h3>${p[k]}</div>`).join('');
@@ -825,7 +830,13 @@ if(qs)go(qs);
 loadLive();
 initFirebase();
 // מעבר יום אוטומטי אחרי חצות
-setInterval(()=>{if(!qd&&iso(day)!==iso(new Date())&&stack.length===1){day=startOfDay(new Date());renderAll()}},60000);
+// בכל פתיחה — היום. אחרי חצות, או חזרה לאפליקציה אחרי 10+ דקות ברקע — חוזרים להיום
+let lastToday=iso(new Date()),hiddenAt=0;
+setInterval(()=>{const t=iso(new Date());if(t!==lastToday){if(!qd&&iso(day)===lastToday)day=startOfDay(new Date());lastToday=t;renderAll()}},60000);
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){hiddenAt=Date.now();return}
+  if(!qd&&hiddenAt&&Date.now()-hiddenAt>10*60000&&!isToday(day)){day=startOfDay(new Date());renderAll()}
+});
 </script>
 </body>
 </html>
