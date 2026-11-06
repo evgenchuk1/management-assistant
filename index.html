@@ -25,9 +25,7 @@
 html,body{height:100%;background:var(--cream)}
 body{font-family:'Heebo',-apple-system,'Segoe UI',Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;overflow:hidden}
 button{font-family:inherit}
-.en{display:block;font-size:.5em;font-weight:500;letter-spacing:.3px;opacity:.75;direction:ltr;text-align:inherit;unicode-bidi:isolate}
-.ttl .en{text-align:right}
-.en.inl{display:inline;margin-inline-start:6px}
+.en{display:none!important}
 
 /* ── screens ── */
 .screen{position:fixed;inset:0;display:none;flex-direction:column;background:var(--cream);
@@ -43,17 +41,20 @@ button{font-family:inherit}
 .logo{width:56px;height:56px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#fff;
   border:2.5px solid var(--gold);box-shadow:0 0 0 3px rgba(207,171,111,.25),0 4px 10px rgba(0,0,0,.35)}
 .ttl{flex:1;min-width:0}
-.ttl h1{font-size:26px;font-weight:900;line-height:1.1;text-shadow:0 2px 4px rgba(0,0,0,.3)}
-.ttl h1 .en{color:var(--gold2)}
-.sub{font-size:14px;color:rgba(255,255,255,.8);margin-top:8px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
-.sub b{color:var(--gold2);font-weight:700}
-.pills{display:flex;gap:6px;flex-shrink:0}
-.pill{padding:6px 14px;border-radius:999px;border:2px solid rgba(207,171,111,.55);background:transparent;
-  color:rgba(255,255,255,.7);font-size:16px;font-weight:800;cursor:pointer}
+.ttl h1{font-size:39px;font-weight:900;line-height:1.05;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+.hdate{font-size:28px;font-weight:800;color:var(--gold2);line-height:1.15;margin-top:4px}
+.hdr-ctl{display:flex;gap:8px;margin-top:12px}
+.pill{flex:1;padding:10px 12px;border-radius:999px;border:2px solid rgba(207,171,111,.55);background:transparent;
+  color:rgba(255,255,255,.75);font-size:20px;font-weight:800;cursor:pointer}
 .pill.on{background:linear-gradient(180deg,var(--gold2),var(--gold));color:var(--deep);border-color:var(--gold2);box-shadow:0 2px 6px rgba(0,0,0,.3)}
 .back{flex-shrink:0;border:2px solid rgba(207,171,111,.6);background:rgba(255,255,255,.08);color:#fff;
-  border-radius:14px;padding:8px 14px;font-size:16px;font-weight:800;cursor:pointer;line-height:1.1}
-.back .en{color:var(--gold2)}
+  border-radius:999px;padding:8px 18px;font-size:19px;font-weight:800;cursor:pointer;line-height:1.1}
+.cats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px}
+.cat{height:60px;border:none;cursor:pointer;border-radius:16px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(170deg,#F3E3BE 0%,var(--gold) 55%,#B8955A 100%);
+  box-shadow:0 5px 0 #8A6C3A,0 8px 14px rgba(0,0,0,.35),inset 0 2px 0 rgba(255,255,255,.6);transition:transform .09s,box-shadow .09s}
+.cat:active{transform:translateY(4px);box-shadow:0 1px 0 #8A6C3A,0 3px 6px rgba(0,0,0,.3)}
+.cat svg{width:46px;height:46px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}
 
 /* ── home tiles (3D) ── */
 .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px 14px}
@@ -87,42 +88,58 @@ button{font-family:inherit}
 .rikuz-btn .en{opacity:.8}
 
 .foot{text-align:center;color:var(--muted);font-size:13px;margin-top:22px;line-height:1.7}
-.foot a{color:var(--muted)}
+.cp-link{cursor:pointer;text-decoration:underline;color:rgba(32,53,80,.55)}
+.ov{position:fixed;inset:0;background:rgba(20,35,56,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:90}
+.ov.active{display:flex}
+.cp-box{background:#fff;border-radius:20px;padding:20px 18px;max-width:360px;width:100%;max-height:88vh;overflow-y:auto;
+  border-top:4px solid var(--gold);box-shadow:0 8px 40px rgba(32,53,80,.28)}
+.cp-box h3{font-size:18px;font-weight:900;color:var(--navy);margin-bottom:12px;text-align:center}
+.cp-logo{display:block;width:110px;margin:0 auto 10px;border-radius:12px}
+.cp-sep{border:none;border-top:1px solid #eee;margin:14px 0}
+.cp-text{font-size:13.5px;line-height:1.8;color:#444}
+.cp-close{display:block;width:100%;margin-top:16px;padding:12px;border:none;border-radius:14px;font-size:17px;font-weight:900;cursor:pointer;
+  color:#fff;background:linear-gradient(170deg,var(--navy3),var(--navy))}
 .mini-row{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
 .mini{border:1.5px solid var(--gold);background:var(--card);color:var(--navy);border-radius:14px;padding:8px 14px;
   font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 3px 0 var(--cream2),0 4px 8px rgba(0,0,0,.08)}
 
 /* ── cards ── */
-.card{background:var(--card);border-radius:20px;padding:16px;margin-bottom:14px;border:1px solid var(--cream2);
+.card{background:var(--card);border-radius:20px;padding:16px;margin-bottom:14px;border:1px solid var(--cream2);font-size:calc(var(--k,1)*16px);
   box-shadow:0 2px 0 rgba(207,171,111,.35),0 6px 16px rgba(32,53,80,.08)}
-.card h2{font-size:20px;font-weight:900;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.card h2 .en{display:inline;font-size:12px;color:var(--gold3);opacity:1}
-.card h2 .cnt{margin-inline-start:auto;font-size:14px;background:var(--navy);color:var(--gold2);border-radius:999px;padding:2px 10px}
+.card h2{font-size:calc(var(--k,1)*20px);font-weight:900;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.card h2 .cnt{margin-inline-start:auto;font-size:calc(var(--k,1)*14px);background:var(--navy);color:var(--gold2);border-radius:999px;padding:2px 10px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{background:#EEF2F8;color:var(--navy);border-radius:999px;padding:7px 13px;font-size:16px;font-weight:700;border:1px solid #DCE3EE}
+.chip{background:#EEF2F8;color:var(--navy);border-radius:999px;padding:.44em .8em;font-size:calc(var(--k,1)*16px);font-weight:700;border:1px solid #DCE3EE}
 .chip.g{background:#FBF4E6;border-color:#EBDDBF;color:#6B5226}
 .chip.r{background:#FBEAE8;border-color:#F1CFCB;color:#8E2A20}
 .row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #EFEADF}
 .row:last-child{border-bottom:none}
-.row .ic{font-size:28px;width:38px;text-align:center;flex-shrink:0}
+.row .ic{font-size:calc(var(--k,1)*28px);width:calc(var(--k,1)*38px);text-align:center;flex-shrink:0}
 .row .tx{flex:1;min-width:0}
-.row .nm{font-size:17px;font-weight:800}
-.row .ds{font-size:14px;color:var(--muted);margin-top:2px}
-.tag{flex-shrink:0;border-radius:999px;padding:5px 12px;font-size:14px;font-weight:900;color:#fff;background:var(--navy)}
+.row .nm{font-size:calc(var(--k,1)*17px);font-weight:800}
+.row .ds{font-size:calc(var(--k,1)*14px);color:var(--muted);margin-top:2px}
+.tag{flex-shrink:0;border-radius:999px;padding:.35em .85em;font-size:calc(var(--k,1)*14px);font-weight:900;color:#fff;background:var(--navy)}
 .tag.gold{background:var(--gold);color:var(--deep)}
-.tag.past{background:#B9BEC7}
-.sq{width:46px;height:46px;border-radius:13px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
-  font-size:18px;font-weight:900;color:#fff;box-shadow:inset 0 -3px 0 rgba(0,0,0,.2)}
-.empty{color:var(--muted);font-size:16px;padding:6px 0}
+.sq{width:calc(var(--k,1)*46px);height:calc(var(--k,1)*46px);border-radius:13px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  font-size:calc(var(--k,1)*18px);font-weight:900;color:#fff;box-shadow:inset 0 -3px 0 rgba(0,0,0,.2)}
+.empty{color:var(--muted);font-size:calc(var(--k,1)*16px);padding:6px 0}
 .ok{color:var(--green);font-weight:800}
-.note{font-size:13px;color:var(--muted);margin-top:8px}
+.note{font-size:calc(var(--k,1)*13px);color:var(--muted);margin-top:8px}
+
+/* ── סידור עבודה: שתי עמודות, מתכווץ למסך אחד ── */
+.sd2{columns:2;column-gap:10px;font-size:var(--sf,15px);line-height:1.25}
+.sdh{background:linear-gradient(170deg,var(--navy3),var(--navy));color:var(--gold2);font-weight:900;padding:.15em .5em;border-radius:.4em;
+  margin:.35em 0 .15em;break-after:avoid;break-inside:avoid}
+.sd2 .sdh:first-child{margin-top:0}
+.sdr{display:flex;justify-content:space-between;gap:.4em;padding:.07em .3em;border-bottom:1px solid #EAE3D3;break-inside:avoid}
+.sdr span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.sdr b{color:var(--navy);direction:ltr;white-space:nowrap;font-weight:800}
 
 .open-full{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:6px;padding:15px;border:none;
   border-radius:18px;cursor:pointer;color:#fff;font-size:19px;font-weight:900;
   background:linear-gradient(170deg,var(--navy3),var(--navy) 60%,var(--deep));
   box-shadow:0 6px 0 #0E1A2A,0 12px 18px rgba(16,28,46,.35),inset 0 2px 0 rgba(255,255,255,.2);border-top:2px solid var(--gold)}
 .open-full:active{transform:translateY(5px);box-shadow:0 1px 0 #0E1A2A,0 3px 8px rgba(16,28,46,.35)}
-.open-full .en{display:inline;font-size:13px;color:var(--gold2)}
 
 /* day navigator */
 .daynav{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px}
@@ -287,6 +304,34 @@ table.al td.x{width:34px;text-align:center}
     <path d="M22 18l4-7h12l4 7z" fill="#203550"/>
     <circle cx="32" cy="36" r="12" fill="url(#gGold)"/><circle cx="32" cy="36" r="7" fill="#142338"/><circle cx="29" cy="33" r="2" fill="#fff" opacity=".8"/>
   </symbol>
+  <!-- כפתורי קטגוריה: דג / בשר / פירות וירקות / עובד -->
+  <symbol id="c-fish" viewBox="0 0 64 64">
+    <path d="M47 32l14-12v24z" fill="url(#gBlue)" stroke="#203550" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M24 19c3-6 10-8 15-6-2 3-3 6-3 8z" fill="#3B67A3" stroke="#203550" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M3 32c7-11 19-15 30-13 7 1 12 6 16 13-4 7-9 12-16 13-11 2-23-2-30-13z" fill="url(#gBlue)" stroke="#203550" stroke-width="2"/>
+    <path d="M16 23c3 5 3 13 0 18" stroke="#203550" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    <g stroke="#fff" stroke-width="1.6" fill="none" opacity=".7" stroke-linecap="round"><path d="M24 27q3 2.5 0 5"/><path d="M30 27q3 2.5 0 5"/><path d="M27 33q3 2.5 0 5"/><path d="M33 33q3 2.5 0 5"/></g>
+    <circle cx="10" cy="29.5" r="2.6" fill="#fff"/><circle cx="10" cy="29.5" r="1.4" fill="#142338"/>
+  </symbol>
+  <symbol id="c-meat" viewBox="0 0 64 64">
+    <path d="M6 31C5 17 18 8 33 9c15 1 26 10 25 23-1 14-14 23-29 22C15 53 7 44 6 31z" fill="#FBEFE2" stroke="#8E2A20" stroke-width="2"/>
+    <path d="M12 31c-1-10 9-17 21-16 12 1 20 8 19 17-1 10-11 16-23 15-10-1-16-7-17-16z" fill="url(#gRed)"/>
+    <g stroke="#FBEFE2" stroke-width="2" fill="none" stroke-linecap="round" opacity=".9"><path d="M30 22c5 2 9 6 10 12"/><path d="M38 20c4 3 7 6 8 10"/><path d="M28 38c4 1 8 0 11-3"/></g>
+    <circle cx="21" cy="30" r="6" fill="#FFF8EC" stroke="#C9B79C" stroke-width="2"/><circle cx="21" cy="30" r="2.3" fill="#E4D5BC"/>
+  </symbol>
+  <symbol id="c-produce" viewBox="0 0 64 64">
+    <path d="M36 61c-1-1 5-23 9-32 2-5 9-4 10 1-1 9-16 32-19 31z" fill="#EE8A2E" stroke="#B4561A" stroke-width="1.6"/>
+    <g stroke="#B4561A" stroke-width="1.3" stroke-linecap="round"><path d="M44 38l4 2"/><path d="M41 46l4 2"/><path d="M47 31l3 1"/></g>
+    <g stroke="#2E8B57" stroke-width="3.2" stroke-linecap="round" fill="none"><path d="M51 27c-1-6 0-12 3-15"/><path d="M52 28c3-5 7-8 10-8"/><path d="M50 27c-4-4-5-9-4-13"/></g>
+    <path d="M20 23c-7-4-17 0-17 12 0 11 8 22 15 22 2.5 0 3.5-1.2 6-1.2s3.5 1.2 6 1.2c7 0 13-11 13-20 0-12-10-17-17-14-2 1-3.5 1-6 0z" fill="url(#gRed)" stroke="#8E2A20" stroke-width="1.6"/>
+    <path d="M10 33c0-5 3-8 6-9" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".55"/>
+    <path d="M23 23c0-5 1.5-9 4-11" stroke="#6B4423" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    <path d="M26 15c4-6 11-6 13-3-4 5-9 5-13 3z" fill="url(#gGreen)" stroke="#22794A" stroke-width="1"/>
+  </symbol>
+  <symbol id="c-person" viewBox="0 0 64 64">
+    <circle cx="32" cy="19" r="12" fill="#203550"/>
+    <path d="M9 60c0-16 10-25 23-25s23 9 23 25z" fill="#203550"/>
+  </symbol>
 </defs>
 </svg>
 
@@ -295,26 +340,26 @@ table.al td.x{width:34px;text-align:center}
   <div class="hdr">
     <div class="hdr-row">
       <img src="et-mark.png" class="logo" alt="ET studio">
-      <div class="ttl"><h1>העוזר הניהולי<span class="en">Management Assistant</span></h1></div>
-      <div class="pills"><button class="pill" data-b="118">118</button><button class="pill" data-b="208">208</button></div>
+      <div class="ttl"><h1>העוזר הניהולי</h1><div class="hdate" id="hDate"></div></div>
     </div>
-    <div class="sub"><span id="hBranch"></span><b id="hDate"></b></div>
+    <div class="hdr-ctl"><button class="pill" data-b="118">סניף 118</button><button class="pill" data-b="208">סניף 208</button></div>
+    <div class="cats"></div>
   </div>
   <div class="body">
     <div class="grid">
-      <button class="tile" data-go="expiry"><span class="badge" id="bExpiry" hidden></span><svg><use href="#i-expiry"/></svg><span class="lbl">פגי תוקף<span class="en">Expiry</span></span></button>
-      <button class="tile" data-go="spira"><span class="badge gold" id="bSpira" hidden></span><svg><use href="#i-count"/></svg><span class="lbl">מה סופרים היום<span class="en">Today's counts</span></span></button>
-      <button class="tile" data-go="sidur"><span class="badge gold" id="bSidur" hidden></span><svg><use href="#i-sidur"/></svg><span class="lbl">סידור עבודה<span class="en">Work schedule</span></span></button>
-      <button class="tile" data-go="orders"><span class="badge gold" id="bOrders" hidden></span><svg><use href="#i-orders"/></svg><span class="lbl">מה מזמינים היום<span class="en">Today's orders</span></span></button>
-      <button class="tile" data-go="quality"><svg><use href="#i-quality"/></svg><span class="lbl">מעקב איכות ותברואה<span class="en">Quality &amp; sanitation</span></span></button>
-      <button class="tile" data-go="tech"><span class="badge" id="bTech" hidden></span><svg><use href="#i-tech"/></svg><span class="lbl">מצב טכני<span class="en">Technical status</span></span></button>
+      <button class="tile" data-go="expiry"><span class="badge" id="bExpiry" hidden></span><svg><use href="#i-expiry"/></svg><span class="lbl">פגי תוקף</span></button>
+      <button class="tile" data-go="spira"><span class="badge gold" id="bSpira" hidden></span><svg><use href="#i-count"/></svg><span class="lbl">מה סופרים היום</span></button>
+      <button class="tile" data-go="sidur"><span class="badge gold" id="bSidur" hidden></span><svg><use href="#i-sidur"/></svg><span class="lbl">סידור עבודה</span></button>
+      <button class="tile" data-go="orders"><span class="badge gold" id="bOrders" hidden></span><svg><use href="#i-orders"/></svg><span class="lbl">מה מזמינים היום</span></button>
+      <button class="tile" data-go="quality"><svg><use href="#i-quality"/></svg><span class="lbl">מעקב איכות ותברואה</span></button>
+      <button class="tile" data-go="tech"><span class="badge" id="bTech" hidden></span><svg><use href="#i-tech"/></svg><span class="lbl">מצב טכני</span></button>
     </div>
-    <button class="rikuz-btn" data-go="rikuz"><svg><use href="#i-rikuz"/></svg><span class="lbl">ריכוז יומי<span class="en">Daily summary</span></span></button>
+    <button class="rikuz-btn" data-go="rikuz"><svg><use href="#i-rikuz"/></svg><span class="lbl">ריכוז יומי</span></button>
     <div class="mini-row">
       <button class="mini" data-go="access">👥 מורשי גישה</button>
       <button class="mini" data-go="install">📲 התקנה</button>
     </div>
-    <div class="foot">© 2026 ET studio · Evgeniy Tsipis — All rights reserved · כל הזכויות שמורות</div>
+    <div class="foot"><span class="cp-link" data-cp>© 2026 ET studio · Evgeniy Tsipis — All rights reserved · כל הזכויות שמורות</span></div>
     <div class="src" id="srcInfo"></div>
   </div>
 </div>
@@ -324,10 +369,10 @@ table.al td.x{width:34px;text-align:center}
   <div class="hdr">
     <div class="hdr-row">
       <img src="et-mark.png" class="logo" alt="ET studio">
-      <div class="ttl"><h1 id="appTitle"></h1></div>
-      <button class="back" data-back>חזרה<span class="en">Back</span></button>
+      <div class="ttl"><h1 id="appTitle"></h1><div class="hdate" id="appDate"></div></div>
     </div>
-    <div class="sub"><span id="appBranch"></span><b id="appDate"></b></div>
+    <div class="hdr-ctl"><button class="pill" data-b="118">סניף 118</button><button class="pill" data-b="208">סניף 208</button><button class="back" data-back>חזרה ›</button></div>
+    <div class="cats"></div>
   </div>
   <div class="body" id="appBody"></div>
 </div>
@@ -337,16 +382,16 @@ table.al td.x{width:34px;text-align:center}
   <div class="hdr">
     <div class="hdr-row">
       <img src="et-mark.png" class="logo" alt="ET studio">
-      <div class="ttl"><h1>ריכוז יומי<span class="en">Daily summary</span></h1></div>
-      <button class="back" data-back>חזרה<span class="en">Back</span></button>
+      <div class="ttl"><h1>ריכוז יומי</h1><div class="hdate" id="rkHdrDate"></div></div>
     </div>
-    <div class="sub"><span id="rkBranch"></span></div>
+    <div class="hdr-ctl"><button class="pill" data-b="118">סניף 118</button><button class="pill" data-b="208">סניף 208</button><button class="back" data-back>חזרה ›</button></div>
+    <div class="cats"></div>
   </div>
   <div class="body">
     <div class="daynav"><button data-day="-1">›</button><div class="d" id="rkDate"></div><button data-day="1">‹</button></div>
     <div class="rk" id="rkGrid"></div>
     <button class="photo-btn" data-go="photo"><svg width="34" height="34"><use href="#i-camera"/></svg>תמונה מרוכזת</button>
-    <div class="foot">© 2026 ET studio · Evgeniy Tsipis</div>
+    <div class="foot"><span class="cp-link" data-cp>© 2026 ET studio · Evgeniy Tsipis — All rights reserved · כל הזכויות שמורות</span></div>
   </div>
 </div>
 
@@ -355,7 +400,7 @@ table.al td.x{width:34px;text-align:center}
   <div id="poster">
     <div class="ps-top">
       <img src="et-mark.png" alt="ET">
-      <div class="t">ריכוז יומי · <span id="psBranch"></span><small>העוזר הניהולי · Management Assistant</small></div>
+      <div class="t">ריכוז יומי · <span id="psBranch"></span><small>העוזר הניהולי</small></div>
       <div class="dt" id="psDate"></div>
     </div>
     <div class="ps-grid" id="psGrid"></div>
@@ -374,10 +419,32 @@ table.al td.x{width:34px;text-align:center}
       <img src="et-mark.png" class="logo" style="width:44px;height:44px" alt="ET studio">
       <div class="ttl"><h1 id="frTitle" style="font-size:20px"></h1></div>
       <button class="back" id="frExt" style="font-size:14px">↗</button>
-      <button class="back" data-back>חזרה<span class="en">Back</span></button>
+      <button class="back" data-back>חזרה ›</button>
     </div>
   </div>
   <iframe id="frame" title="app"></iframe>
+</div>
+
+<!-- ═══════════ זכויות יוצרים ═══════════ -->
+<div class="ov" id="cpOv">
+  <div class="cp-box">
+    <img class="cp-logo" src="et-logo.jpg" alt="ET studio">
+    <h3>זכויות יוצרים · Copyright</h3>
+    <div class="cp-text">
+      © כל הזכויות שמורות ליבגני ציפיס, ET studio 2026<br><br>
+      יישום זה פותח ועוצב על ידי יבגני ציפיס (ET studio) עבור מנהלי סניפי שופרסל 118 ו-208, לריכוז המידע הניהולי היומי של הסניף: ספירות, הזמנות, פגי תוקף, סידור עבודה ותקלות.<br><br>
+      חל איסור על העתקה, הפצה או שימוש מסחרי בכל חלק מהיישום ללא אישור בכתב מהמחבר.<br><br>
+      כל הסימנים המסחריים הם רכושם של בעליהם בהתאמה.
+    </div>
+    <hr class="cp-sep">
+    <div class="cp-text" style="text-align:left;direction:ltr">
+      © 2026 Evgeniy Tsipis, ET studio. All rights reserved.<br><br>
+      This application was developed and designed by Evgeniy Tsipis (ET studio) for the managers of Shufersal branches 118 and 208, to bring together the branch's daily management information: counts, orders, expiry dates, work schedule and technical issues.<br><br>
+      Copying, distribution or commercial use of any part of this application without the author's written permission is prohibited.<br><br>
+      All trademarks are the property of their respective owners.
+    </div>
+    <button class="cp-close" id="cpClose">סגירה</button>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -420,6 +487,7 @@ const stack = ['home'];
 function startOfDay(d){const x=new Date(d);x.setHours(0,0,0,0);return x}
 function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function fullDate(d){return 'יום '+DAYS[d.getDay()]+', '+d.getDate()+' ב'+MON[d.getMonth()]+' '+d.getFullYear()}
+function hdrDate(d){return 'יום '+DAYS[d.getDay()]+', '+d.getDate()+' ב'+MON[d.getMonth()]}
 function shortDate(d){return d.getDate()+'.'+(d.getMonth()+1)+" · יום "+'אבגדהוש'[d.getDay()]+"'"}
 function isToday(d){return iso(d)===iso(new Date())}
 function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
@@ -522,7 +590,7 @@ function back(){
 }
 function openFull(key){
   const a=APPS[key];if(!a.url){toast('האפליקציה בפיתוח — בקרוב');return}
-  document.getElementById('frTitle').innerHTML=esc(a.he)+'<span class="en">'+esc(a.en)+'</span>';
+  document.getElementById('frTitle').textContent=a.he;
   document.getElementById('frame').src=a.url;
   document.getElementById('frExt').onclick=()=>window.open(a.url,'_blank');
   stack.push('frame');show('frame');
@@ -534,15 +602,21 @@ document.addEventListener('click',e=>{
   const p=e.target.closest('[data-b]');if(p){branch=+p.dataset.b;ls.set('ma_branch',branch);subscribeExpiry();renderAll();return}
   const dn=e.target.closest('[data-day]');if(dn){day=new Date(day.getTime()+(+dn.dataset.day)*86400000);renderRikuz();return}
   const ap=e.target.closest('[data-panel]');if(ap){go(ap.dataset.panel);return}
+  if(e.target.closest('[data-cp]')){document.getElementById('cpOv').classList.add('active');return}
+  if(e.target.id==='cpClose'||e.target.id==='cpOv'){document.getElementById('cpOv').classList.remove('active');return}
+  const ct=e.target.closest('[data-cat]');if(ct){toast(CATS.find(c=>c[0]===ct.dataset.cat)[1]+' — בקרוב');return}
 });
+/* 4 כפתורי קטגוריה בכותרת (הפעולה תוגדר בהמשך) */
+const CATS=[['fish','דגים'],['meat','בשר'],['produce','פירות וירקות'],['person','עובדים']];
+document.querySelectorAll('.cats').forEach(el=>el.innerHTML=CATS.map(([k,he])=>
+  `<button class="cat" data-cat="${k}" aria-label="${he}" title="${he}"><svg><use href="#c-${k}"/></svg></button>`).join(''));
 
 /* ═════════════ RENDER: HOME ═════════════ */
 function badge(id,n,cls){const b=document.getElementById(id);if(!b)return;b.hidden=!n;b.textContent=n;if(cls)b.className='badge '+cls}
 function renderHome(){
   const t=startOfDay(new Date());
   document.querySelectorAll('.pill').forEach(p=>p.classList.toggle('on',+p.dataset.b===branch));
-  document.getElementById('hBranch').textContent=BRANCHES[branch];
-  document.getElementById('hDate').textContent=fullDate(t);
+  document.getElementById('hDate').textContent=hdrDate(t);
   const e=expiryFor(t);badge('bExpiry',e.expired.length+e.today.length+e.tomorrow.length);
   const s=spiraFor(t);badge('bSpira',(s.chor?1:0)+(s.yomi&&!s.yomi.cancelled?1:0)+(s.pachat&&!s.pachat.cancelled?1:0));
   badge('bOrders',ordersFor(t).filter(o=>!o.past).length);
@@ -554,16 +628,25 @@ function renderHome(){
 /* ═════════════ RENDER: APP SCREENS ═════════════ */
 function hdrApp(key){
   const a=APPS[key];
-  document.getElementById('appTitle').innerHTML=esc(a.he)+'<span class="en">'+esc(a.en)+'</span>';
-  document.getElementById('appBranch').textContent=BRANCHES[branch];
-  document.getElementById('appDate').textContent=fullDate(day);
+  document.getElementById('appTitle').textContent=a.he;
+  document.getElementById('appDate').textContent=hdrDate(day);
 }
-function fullBtn(key){const a=APPS[key];
-  return `<button class="open-full" data-full="${key}">פתח את האפליקציה המלאה <span class="en">Open full app</span></button>`}
-function card(title,en,inner,cnt){return `<div class="card"><h2>${title}<span class="en">${en}</span>${cnt!=null?`<span class="cnt">${cnt}</span>`:''}</h2>${inner}</div>`}
+function fullBtn(key){return `<button class="open-full" data-full="${key}">פתח את האפליקציה המלאה</button>`}
+function card(title,en,inner,cnt){return `<div class="card"><h2>${title}${cnt!=null?`<span class="cnt">${cnt}</span>`:''}</h2>${inner}</div>`}
+const SCALE={spira:2,expiry:1.5,orders:1.5};
+const shortH=v=>v.replace(/(\d{1,2}):00\b/g,'$1');
+
+/* סידור: מקטינים את הגופן עד שהכול נכנס במסך אחד בלי גלילה */
+function fitSidur(){
+  const body=document.getElementById('appBody'),box=document.getElementById('sd2');if(!box)return;
+  let f=22;box.style.setProperty('--sf',f+'px');
+  while(f>7&&body.scrollHeight>body.clientHeight+1){f-=.5;box.style.setProperty('--sf',f+'px')}
+}
+addEventListener('resize',()=>{if(stack[stack.length-1]==='app:sidur')fitSidur()});
 
 function renderApp(key){
   hdrApp(key);
+  document.getElementById('appBody').style.setProperty('--k',SCALE[key]||1);
   let h='';
   if(key==='spira'){
     const {chor,yomi,pachat,nextPachat}=spiraFor(day);
@@ -577,15 +660,15 @@ function renderApp(key){
   }
   if(key==='orders'){
     const list=ordersFor(day);
-    h+=card('🚚 הזמנות היום','Orders today',list.length?list.map(o=>`<div class="row" style="${o.past?'opacity:.5':''}"><div class="ic">${o.ic||'📦'}</div><div class="tx"><div class="nm">${esc(o.nm)}</div><div class="ds">${esc(o.nt||'—')} · אספקה: ${esc(o.dlDay)}</div></div><span class="tag ${o.past?'past':'gold'}">${o.past?'עבר':'עד '+o.dl}</span></div>`).join(''):'<div class="empty">אין הזמנות היום</div>',list.length);
+    h+=card('🚚 הזמנות היום','Orders today',list.length?list.map(o=>`<div class="row" style="${o.past?'opacity:.5':''}"><div class="ic">${o.ic||'📦'}</div><div class="tx"><div class="nm">${esc(o.nm)}</div><div class="ds">${esc(o.nt||'—')} · אספקה: ${esc(o.dlDay)}</div></div>${o.past?'':`<span class="tag gold">עד ${o.dl}</span>`}</div>`).join(''):'<div class="empty">אין הזמנות היום</div>',list.length);
     if(branch===208)h+='<div class="note" style="margin:-6px 4px 12px">* מוצג לוח הזמנות של סניף 118</div>';
   }
   if(key==='sidur'){
     const s=sidurFor(day);
     if(!s.ok)h+=card('👥 סידור עבודה','Work schedule',`<div class="empty">${day.getDay()===6?'שבת — אין עבודה':'אין סידור לתאריך זה (השבוע השמור: '+esc(s.label||'—')+')'}</div>`);
-    else s.depts.forEach(dp=>{
-      h+=card('👥 '+esc(dp.name),'',dp.work.length?dp.work.map(w=>`<div class="row"><div class="sq" style="background:var(--navy)">${esc(w.name[0]||'?')}</div><div class="tx"><div class="nm">${esc(w.name)}</div></div><span class="tag gold">${esc(w.v)}</span></div>`).join('')+(dp.off.length?`<div class="note">לא עובדים: ${dp.off.map(o=>esc(o.name)+' ('+esc(o.v)+')').join(', ')}</div>`:''):'<div class="empty">אין עובדים</div>',dp.work.length);
-    });
+    else h+='<div class="sd2" id="sd2">'+s.depts.filter(dp=>dp.work.length).map(dp=>
+      `<div class="sdh">${esc(dp.name)} (${dp.work.length})</div>`+
+      dp.work.map(w=>`<div class="sdr"><span>${esc(w.name)}</span><b>${esc(shortH(w.v))}</b></div>`).join('')).join('')+'</div>';
     if(branch===208)h+='<div class="note" style="margin:-6px 4px 12px">* מוצג סידור העבודה של סניף 118</div>';
   }
   if(key==='expiry'){
@@ -610,17 +693,17 @@ function renderApp(key){
   if(key==='install') return renderInstall();
   if(APPS[key]?.url)h+=fullBtn(key);
   document.getElementById('appBody').innerHTML=h;
+  if(key==='sidur')requestAnimationFrame(fitSidur);
 }
 
 /* ═════════════ מורשי גישה ═════════════ */
 function renderAccess(){
-  document.getElementById('appTitle').innerHTML='מורשי גישה<span class="en">Authorized recipients</span>';
-  document.getElementById('appBranch').textContent=BRANCHES[branch];
+  document.getElementById('appTitle').textContent='מורשי גישה';
   document.getElementById('appDate').textContent='';
   const list=ls.get('ma_access',[{name:'',email:'',phone:''}]);
   const draw=()=>{
     document.getElementById('appBody').innerHTML=`
-    <div class="card"><h2>👥 מקבלי הדוח היומי<span class="en">Daily report recipients</span></h2>
+    <div class="card"><h2>👥 מקבלי הדוח היומי</h2>
       <div class="note" style="margin:0 0 10px">כל מי שברשימה יקבל כל בוקר בשעה <b>06:30</b> את „תמונה מרוכזת” במייל, ב-WhatsApp ובהתראת Push.</div>
       <table class="al"><tr><th>שם</th><th>אימייל</th><th>נייד</th><th></th></tr>
       ${list.map((r,i)=>`<tr><td><input data-i="${i}" data-f="name" value="${esc(r.name)}" placeholder="שם"></td>
@@ -638,10 +721,10 @@ function renderAccess(){
   draw();
 }
 function renderInstall(){
-  document.getElementById('appTitle').innerHTML='התקנה בלחיצה אחת<span class="en">One-click install</span>';
-  document.getElementById('appBranch').textContent='';document.getElementById('appDate').textContent='';
+  document.getElementById('appTitle').textContent='התקנה';
+  document.getElementById('appDate').textContent='';
   document.getElementById('appBody').innerHTML=`
-  <div class="card"><h2>📲 מתקינים רק את העוזר<span class="en">Install once</span></h2>
+  <div class="card"><h2>📲 מתקינים רק את העוזר</h2>
     <div class="empty" style="color:var(--ink)">כל האפליקציות (פגי תוקף, ספירות, הזמנות, סידור עבודה, תקלות) נפתחות <b>בתוך</b> העוזר — אין צורך להתקין כל אחת בנפרד.</div>
     <div class="step"><b class="n">1</b><span>פתחו את הקישור של העוזר ב-<b>Safari</b> (iPhone) או ב-<b>Chrome</b> (Android).</span></div>
     <div class="step"><b class="n">2</b><span>iPhone: כפתור השיתוף <b>⬆️</b> ← „הוסף למסך הבית”.<br>Android: תפריט <b>⋮</b> ← „התקן אפליקציה”.</span></div>
@@ -672,11 +755,11 @@ const PANELS=[
   ['orders','🚚 הזמנות','Orders'],['spira','📋 ספירות','Counts'],['expiry','⏰ פגי תוקף היום ומחר','Expiry'],
   ['sidur','👥 סידור עבודה להיום','Staff'],['quality','🛡️ איכות ותברואה','Quality'],['tech','🔧 תקלות','Tickets']];
 function renderRikuz(){
-  document.getElementById('rkBranch').textContent=BRANCHES[branch];
-  document.getElementById('rkDate').innerHTML=fullDate(day)+'<small>'+(isToday(day)?'היום · Today':DAYS_EN[day.getDay()])+'</small>';
+  document.getElementById('rkHdrDate').textContent=hdrDate(startOfDay(new Date()));
+  document.getElementById('rkDate').innerHTML=fullDate(day)+(isToday(day)?'<small>היום</small>':'');
   const p=panelData(day);
-  document.getElementById('rkGrid').innerHTML=PANELS.map(([k,he,en])=>
-    `<div class="pn" style="grid-area:${k}" data-panel="${k}"><h3>${he}${p.counts[k]!=null?' ('+p.counts[k]+')':''}<span class="en">${en}</span></h3>${p[k]}</div>`).join('');
+  document.getElementById('rkGrid').innerHTML=PANELS.map(([k,he])=>
+    `<div class="pn" style="grid-area:${k}" data-panel="${k}"><h3>${he}${p.counts[k]!=null?' ('+p.counts[k]+')':''}</h3>${p[k]}</div>`).join('');
 }
 function renderPhoto(){
   document.getElementById('psBranch').textContent=BRANCHES[branch];
