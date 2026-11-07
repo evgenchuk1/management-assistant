@@ -40,6 +40,21 @@ main{max-width:620px;margin:0 auto;padding:16px}
   background:linear-gradient(170deg,#F3E3BE,var(--gold) 55%,#B8955A);box-shadow:0 5px 0 #8A6C3A}
 footer{text-align:center;font-size:12px;color:var(--muted);padding:10px 16px 30px}
 [dir=ltr] .step h2,[dir=ltr] .step p,[dir=ltr] .intro{text-align:left}
+.osh{font-size:24px;font-weight:900;color:var(--navy);margin:18px 0 10px;padding-bottom:6px;border-bottom:3px solid var(--gold)}
+body.print .langs,body.print .os,body.print .cta{display:none}
+body.print .step,body.print .qr{break-inside:avoid;page-break-inside:avoid}
+body.print main{max-width:none}
+body.print #steps{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+body.print #steps .osh,body.print #steps .tip{grid-column:1/-1}
+body.print .step{margin:0;padding:10px}
+body.print .step h2{font-size:16px}
+body.print .step p{font-size:13px;margin-bottom:6px}
+body.print .shot svg{max-width:175px}
+body.print header{padding:10px}
+body.print header img{width:60px;height:60px}
+body.print .osh{break-before:page}
+body.print .osh.first{break-before:auto}
+@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style>
 </head>
 <body>
@@ -192,14 +207,17 @@ const shots={
 /* ───── render ───── */
 let lang=(()=>{const q=new URLSearchParams(location.search).get('lang');if(q&&T[q])return q;const n=(navigator.language||'').slice(0,2);return T[n]?n:'he'})();
 let os=/android/i.test(navigator.userAgent)?'and':'ios';
+const PRINT=new URLSearchParams(location.search).has('print');if(PRINT)document.body.classList.add('print');
 function render(){
   const t=T[lang];document.documentElement.lang=lang;document.documentElement.dir=t.dir;
   document.getElementById('sub').textContent=t.sub;document.getElementById('intro').innerHTML=t.intro;
   document.getElementById('qrT').textContent=t.qr;document.getElementById('cta').textContent=t.cta;
   document.querySelectorAll('[data-l]').forEach(b=>b.classList.toggle('on',b.dataset.l===lang));
   document.querySelectorAll('[data-os]').forEach(b=>b.classList.toggle('on',b.dataset.os===os));
-  document.getElementById('steps').innerHTML=t[os].map((s,i)=>`<div class="step"><h2><span class="n">${i+1}</span>${s[0]}</h2><p>${s[1]}</p><div class="shot">${shots[s[2]](t.L)}</div></div>`).join('')+
-    `<div class="tip">💡 ${t.tip}</div>`;
+  const one=o=>t[o].map((s,i)=>`<div class="step"><h2><span class="n">${i+1}</span>${s[0]}</h2><p>${s[1]}</p><div class="shot">${shots[s[2]](t.L)}</div></div>`).join('');
+  document.getElementById('steps').innerHTML=PRINT?
+    `<div class="osh first">🍎 iPhone</div>${one('ios')}<div class="osh">🤖 Android</div>${one('and')}<div class="tip">💡 ${t.tip}</div>`:
+    one(os)+`<div class="tip">💡 ${t.tip}</div>`;
 }
 document.addEventListener('click',e=>{const l=e.target.closest('[data-l]');if(l){lang=l.dataset.l;render()}const o=e.target.closest('[data-os]');if(o){os=o.dataset.os;render()}});
 render();

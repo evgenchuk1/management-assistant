@@ -294,6 +294,10 @@ body.fab .home .foot{padding-right:62px}
   border-radius:999px;padding:8px 16px;font:inherit;font-size:16px;font-weight:800;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 #intro .in-skip{left:14px}
 #intro .in-snd{right:14px;padding:8px 12px}
+#intro .in-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:150px;height:150px;border-radius:50%;padding:0;font-size:56px;line-height:1;
+  background:rgba(20,35,56,.55);border:3px solid #CFAB6F;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+#intro .in-play[hidden]{display:none}
+#intro .in-play small{font-size:14px;font-weight:800}
 #intro .in-snd.ask{background:rgba(207,171,111,.85);color:#142338;border-color:#fff;animation:pulse 1.2s infinite}
 @keyframes pulse{50%{transform:scale(1.08)}}
 .clean .cl{display:flex;align-items:center;gap:10px;padding:12px 4px;border-bottom:1px solid #EFEADF;text-decoration:none;color:inherit;font-size:18px}
@@ -638,7 +642,7 @@ table.al td.x{width:34px;text-align:center}
 </div>
 
 <div id="intro" hidden><video id="introV" playsinline preload="auto" poster="intro.jpg"><source src="intro.mp4" type="video/mp4"></video>
-  <button class="in-skip" id="introSkip">דלג ›</button><button class="in-snd" id="introSnd" aria-label="קול">🔊</button></div>
+  <button class="in-skip" id="introSkip">דלג ›</button><button class="in-snd" id="introSnd" aria-label="קול">🔊</button><button class="in-play" id="introPlay" hidden>▶<small>הפעלה עם קול</small></button></div>
 <div id="lens"></div>
 <div class="bc-ov" id="bcOv"><div class="bc-card"><div class="bc-name" id="bcName"></div><div id="bcBox"></div><div class="bc-hint">הקישו בכל מקום לסגירה</div></div></div>
 <button class="cart-btn cart-fab" aria-label="עגלה"><svg><use href="#i-cart"/></svg><span class="plus">+</span></button>
@@ -859,7 +863,7 @@ function renderHome(){
 
 /* ═════════════ RENDER: APP SCREENS ═════════════ */
 function hdrApp(key){
-  const a=APPS[key];
+  const a=APPS[key]||{he:{access:'מורשי גישה',install:'התקנה'}[key]||''}; // מסכים שאינם אפליקציה
   document.getElementById('appTitle').textContent=a.he;
   paintDates();
 }
@@ -1477,9 +1481,11 @@ const qs=new URLSearchParams(location.search).get('screen');
   v.addEventListener('ended',end);v.addEventListener('error',end);document.getElementById('introSkip').onclick=end;
   snd.onclick=()=>{v.muted=!v.muted;snd.textContent=v.muted?'🔇':'🔊';snd.classList.remove('ask');if(v.paused)v.play().catch(()=>{})};
   // קודם עם קול; אם המכשיר חוסם קול בהפעלה אוטומטית — מנגנים בלי קול ומבקשים הקשה להפעלת הקול
-  v.muted=false;v.play().then(()=>{snd.textContent='🔊'}).catch(()=>{v.muted=true;snd.textContent='🔇 הקישו לקול';snd.classList.add('ask');v.play().catch(()=>{})});
-  box.addEventListener('click',ev=>{if(ev.target===v&&v.muted){v.muted=false;snd.textContent='🔊';snd.classList.remove('ask')}});
-  setTimeout(end,13000); // ביטחון: לא נתקעים על הסרטון
+  // ברירת מחדל: עם קול (🔊 משתיק). אם הטלפון חוסם קול בלי הקשה (iPhone) — מחכים להקשה אחת על ▶ ומנגנים עם קול.
+  const pb=document.getElementById('introPlay');let safety=setTimeout(end,13000);
+  v.muted=false;v.play().then(()=>{snd.textContent='🔊'}).catch(()=>{
+    clearTimeout(safety);pb.hidden=false;snd.hidden=true;safety=setTimeout(end,8000); // בלי הקשה תוך 8 שניות — ממשיכים לאפליקציה
+    pb.onclick=()=>{clearTimeout(safety);pb.hidden=true;snd.hidden=false;v.muted=false;v.play().catch(()=>{v.muted=true;v.play()});snd.textContent=v.muted?'🔇':'🔊';safety=setTimeout(end,13000)}});
 })();
 renderHome();document.body.classList.add('fab');pushLabel();
 /* עגלה צפה: אפשר לגרור אותה (בחלק התחתון של המסך); המיקום נשמר */
