@@ -167,7 +167,7 @@ button{font-family:inherit}
 .sdr span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .sdr b{color:var(--navy);direction:ltr;white-space:nowrap;font-weight:800}
 .fit .sd2{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:none}
-#lens{position:fixed;width:120px;height:120px;border-radius:50%;overflow:hidden;pointer-events:none;z-index:80;display:none;
+#lens{position:fixed;width:180px;height:180px;border-radius:50%;overflow:hidden;pointer-events:none;z-index:80;display:none;
   background:var(--cream);border:3px solid var(--gold);box-shadow:0 8px 24px rgba(20,35,56,.45),inset 0 0 0 2px rgba(255,255,255,.6)}
 #lens .sd2{position:absolute;left:0;top:0;transform-origin:0 0;margin:0}
 
@@ -266,6 +266,26 @@ body.fab .home .foot{padding-right:62px}
 .pru{font-size:13px;font-weight:800;color:var(--navy);margin-inline-start:auto}
 .pru.soon{color:#D9822B}.pru.old{color:var(--muted)}
 .old-pr{opacity:.6}
+.pr-top{display:flex;gap:8px;align-items:center;position:sticky;top:-16px;z-index:6}
+.pr-top .sbox{flex:1;margin-bottom:12px;position:static}
+.pr-addbtn{flex-shrink:0;margin-bottom:12px;border:none;border-radius:14px;padding:12px 16px;font:inherit;font-size:17px;font-weight:900;cursor:pointer;color:var(--deep);
+  background:linear-gradient(170deg,#F3E3BE,var(--gold) 55%,#B8955A);box-shadow:0 3px 0 #8A6C3A}
+.prl .pr2{border-bottom:1px solid #EFEADF;font-size:21px}
+.prl .pr2:last-child{border-bottom:none}
+.pr2h{display:flex;align-items:center;gap:8px;padding:10px 0;position:relative}
+.pr2n{flex:1;min-width:0;text-align:right;border:none;background:none;font:inherit;font-weight:800;color:var(--ink);cursor:pointer;padding:0}
+.pr2.open .pr2n{color:var(--navy)}
+.pr2p{flex-shrink:0;color:#C0392B;font-weight:900;font-size:23px;white-space:nowrap}
+.pr2p small{font-size:14px;color:var(--navy)}
+.pr2m{flex-shrink:0;width:36px;height:36px;border-radius:50%;border:1px solid var(--cream2);background:#fff;font-size:22px;font-weight:900;line-height:1;color:var(--navy);cursor:pointer}
+.pmenu{position:absolute;left:0;top:46px;z-index:60;background:#fff;border:1.5px solid var(--gold);border-radius:14px;box-shadow:0 10px 24px rgba(20,35,56,.25);overflow:hidden;min-width:150px}
+.pmenu button{display:block;width:100%;text-align:right;border:none;background:#fff;font:inherit;font-size:17px;font-weight:700;padding:11px 14px;cursor:pointer;color:var(--ink)}
+.pmenu button+button{border-top:1px solid #EFEADF}
+.pmenu .del{color:#C0392B}
+.pr2d{background:#FBF8F0;border-radius:12px;padding:10px 12px;margin-bottom:10px;font-size:17px;line-height:1.6}
+.pr2d span{color:var(--muted);font-weight:700}
+.pr2d s{color:var(--muted)}
+.pr2d .prc{gap:6px;margin-top:2px}
 #intro{position:fixed;inset:0;z-index:200;background:#000;transition:opacity .5s}
 #intro[hidden]{display:none}
 #intro.out{opacity:0;pointer-events:none}
@@ -274,6 +294,8 @@ body.fab .home .foot{padding-right:62px}
   border-radius:999px;padding:8px 16px;font:inherit;font-size:16px;font-weight:800;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 #intro .in-skip{left:14px}
 #intro .in-snd{right:14px;padding:8px 12px}
+#intro .in-snd.ask{background:rgba(207,171,111,.85);color:#142338;border-color:#fff;animation:pulse 1.2s infinite}
+@keyframes pulse{50%{transform:scale(1.08)}}
 .clean .cl{display:flex;align-items:center;gap:10px;padding:12px 4px;border-bottom:1px solid #EFEADF;text-decoration:none;color:inherit;font-size:18px}
 .clean .cl:last-child{border-bottom:none}
 .clean .cl:active{background:#FBF4E6}
@@ -615,8 +637,8 @@ table.al td.x{width:34px;text-align:center}
   </div>
 </div>
 
-<div id="intro" hidden><video id="introV" playsinline muted preload="auto" poster="intro.jpg"><source src="intro.mp4" type="video/mp4"></video>
-  <button class="in-skip" id="introSkip">דלג ›</button><button class="in-snd" id="introSnd" aria-label="קול">🔇</button></div>
+<div id="intro" hidden><video id="introV" playsinline preload="auto" poster="intro.jpg"><source src="intro.mp4" type="video/mp4"></video>
+  <button class="in-skip" id="introSkip">דלג ›</button><button class="in-snd" id="introSnd" aria-label="קול">🔊</button></div>
 <div id="lens"></div>
 <div class="bc-ov" id="bcOv"><div class="bc-card"><div class="bc-name" id="bcName"></div><div id="bcBox"></div><div class="bc-hint">הקישו בכל מקום לסגירה</div></div></div>
 <button class="cart-btn cart-fab" aria-label="עגלה"><svg><use href="#i-cart"/></svg><span class="plus">+</span></button>
@@ -867,7 +889,7 @@ function fitScreen(key){
   if(!fits()&&body.clientHeight)body.classList.remove('fit'); // מסך קטן מדי — מאפשרים גלילה
 }
 /* זכוכית מגדלת בסידור: לחיצה ארוכה → עיגול עם הגדלה ×1.5 מעל האצבע */
-const LENS_R=60,LENS_Z=1.5,LENS_UP=85;
+const LENS_R=90,LENS_Z=1.5,LENS_UP=120;
 function initLens(){
   const box=document.getElementById('sd2'),lens=document.getElementById('lens');if(!box)return;
   let timer=null,on=false,sx=0,sy=0,clone=null;
@@ -976,7 +998,9 @@ function renderAccess(){
 function renderInstall(){
   document.getElementById('appTitle').textContent='התקנה';
   document.getElementById('appBody').innerHTML=`
-  <div class="card"><h2>📲 מתקינים רק את העוזר</h2>
+  <a class="open-full" href="install.html" style="width:100%;margin:0 0 10px;padding:14px;font-size:17px;text-decoration:none">📖 מדריך התקנה מצולם · Guide · Инструкция</a>
+  <button class="open-full" data-act="share-inst" style="width:100%;margin:0 0 14px;padding:12px;font-size:16px;background:linear-gradient(170deg,#F3E3BE,var(--gold) 55%,#B8955A);color:var(--deep)">📤 שליחת המדריך לעובד חדש</button>
+  <div class="card"><h2>📲 מתקינים רק את ניהול+</h2>
     <div class="empty" style="color:var(--ink)">כל האפליקציות (פגי תוקף, ספירות, הזמנות, סידור עבודה, תקלות) נפתחות <b>בתוך</b> העוזר — אין צורך להתקין כל אחת בנפרד.</div>
     <div class="step"><b class="n">1</b><span>פתחו את הקישור של העוזר ב-<b>Safari</b> (iPhone) או ב-<b>Chrome</b> (Android).</span></div>
     <div class="step"><b class="n">2</b><span>iPhone: כפתור השיתוף <b>⬆️</b> ← „הוסף למסך הבית”.<br>Android: תפריט <b>⋮</b> ← „התקן אפליקציה”.</span></div>
@@ -1020,7 +1044,7 @@ async function decEmps(enc,code){
   return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv},key,ct))).list;
 }
 /* צוות הניקיון (מתוך רשימת העובדים המוצפנת של סניף 118; הטלפונים לא נשמרים בקוד) */
-const CLEAN_TEAM=[['e9','אבי'],['x7','יוהנס'],['e8','טואלדה'],[null,'קובי'],['e7','מאלאס'],[null,'מולו']];
+const CLEAN_TEAM=[['e9','אבי'],['x7','יוהנס'],['e8','טואלדה'],['x8','קובי'],['e7','מאלאס'],[null,'מולו']];
 function renderCleaners(){
   const head='<div class="card clean"><h2>🧹 בינתיים — צוות עובדי ניקיון</h2>';
   if(OWN(branch))return head+'<div class="empty">רשימת צוות הניקיון קיימת כרגע לסניף 118 בלבד.</div></div>';
@@ -1061,14 +1085,17 @@ function renderLibrary(){
       <rect x="12" y="18" width="18" height="14" rx="2" fill="url(#gBlue)"/><g stroke="#203550" stroke-width="2.6" stroke-linecap="round"><path d="M34 20h12M34 26h12M12 38h34M12 45h26"/></g>
       <path d="M52 22h6v28a4 4 0 0 1-8 0V22z" fill="url(#gGold)"/>
       <path d="M44 4l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z" fill="#C0392B"/></svg>
-      <span class="lbl">ידיעון</span><span class="sub2">עדכונים וחדשות</span></button></div>`;
+      <span class="lbl">ידיעון</span><span class="sub2">עדכונים וחדשות</span></button></div>
+    <div class="card" style="text-align:center;padding:16px;margin-top:16px"><div style="font-size:40px">🚧</div>
+      <h2 style="justify-content:center;margin:6px 0 4px">הדף בבנייה</h2><div class="empty" style="padding:0">בקרוב יתווספו כאן הנוהלים והידיעון של הרשת.</div></div>`;
 }
 
 /* ── מבצעים: רשימה משותפת לכל הסניפים (Firestore ma_promos), הזנה מצילום ממצא ── */
 let promoDraft=null,promoBusy='';
-async function loadPromos(){try{LISTS.promos=await fsList('ma_promos',['name','brand','deal','price','dealQty','regUnit','until','codes']);}catch{LISTS.promos_err=1}
+async function loadPromos(){try{LISTS.promos=await fsList('ma_promos',['name','brand','deal','price','dealQty','regUnit','until','codes','minBuy','maxQty','note']);}catch{LISTS.promos_err=1}
   if(stack.at(-1)==='app:promos')renderApp('promos')}
 const money=v=>v===''||v==null||isNaN(+v)?'':(+v).toFixed(2);
+let promoOpen=null,promoMenu=null,promoAdd=false;
 function renderPromos(){
   if(!LISTS.promos){if(!LISTS.promos_busy){LISTS.promos_busy=1;loadPromos().finally(()=>LISTS.promos_busy=0)}
     return `<div class="card"><div class="empty">${LISTS.promos_err?'⚠️ אין חיבור — נסו שוב':'⏳ טוען מבצעים…'}</div></div>`}
@@ -1076,28 +1103,41 @@ function renderPromos(){
   const all=LISTS.promos.slice().sort((a,b)=>(a.until||'9').localeCompare(b.until||'9'));
   const act=all.filter(p=>!p.until||p.until>=today),old=all.filter(p=>p.until&&p.until<today);
   const row=p=>{const q=+p.dealQty||1,before=p.regUnit?(+p.regUnit)*q:null,left=p.until?daysFrom(p.until,startOfDay(new Date())):null;
-    const codes=String(p.codes||'').split(/[,\s]+/).filter(c=>c.length>=4);
-    return `<div class="gl pr" data-s="${esc(sKey(p.name+' '+(p.brand||'')))}">
-      <div class="prm"><div class="gn">${esc(p.name)}${p.brand?` <small>· ${esc(p.brand)}</small>`:''}</div>
-        <div class="prp">${before?`<s>₪${money(before)}</s>`:''}<b>₪${money(p.price)}</b>${q>1?`<span class="dq">${q} יח' ב-${money(p.price)}</span>`:''}</div>
-        <div class="prc">${codes.length?codes.map(c=>`<button class="bcn" data-bc="${esc(c)}" data-nm="${esc(p.name)}">${esc(c)}</button>`).join(''):'<span class="bcn none">אין קוד</span>'}
-          <span class="pru ${left!=null&&left<0?'old':left!=null&&left<=3?'soon':''}">עד ${p.until?dd(p.until)+'/'+p.until.slice(2,4):'—'}</span></div></div>
-      <button class="mini-x" data-act="pr-del" data-id="${p.id}">✕</button></div>`};
-  const form=promoDraft?`<div class="card prf"><h2>${promoBusy?'⏳ '+esc(promoBusy):'✏️ בדקו ותקנו לפני שמירה'}</h2>
-    ${promoDraft.img?`<img src="${promoDraft.img}" class="primg" alt="">`:''}
+    const codes=String(p.codes||'').split(/[,\s]+/).filter(c=>c.length>=4),open=promoOpen===p.id;
+    const cond=[p.minBuy?`בקנייה מעל ₪${esc(p.minBuy)}`:'',p.maxQty?`עד ${esc(p.maxQty)} יח' ללקוח`:'',p.note?esc(p.note):''].filter(Boolean);
+    return `<div class="pr2${open?' open':''}" data-s="${esc(sKey(p.name+' '+(p.brand||'')))}">
+      <div class="pr2h"><button class="pr2n" data-act="pr-open" data-id="${p.id}">${esc(p.name)}</button>
+        <b class="pr2p">₪${money(p.price)}${q>1?`<small> / ${q} יח'</small>`:''}</b>
+        <button class="pr2m" data-act="pr-menu" data-id="${p.id}" aria-label="אפשרויות">⋮</button>
+        ${promoMenu===p.id?`<div class="pmenu"><button data-act="pr-edit" data-id="${p.id}">✏️ עריכה</button><button data-act="pr-share" data-id="${p.id}">📤 שיתוף</button><button data-act="pr-del" data-id="${p.id}" class="del">🗑️ מחיקה</button></div>`:''}</div>
+      ${open?`<div class="pr2d">
+        ${p.brand?`<div><span>יצרן:</span> ${esc(p.brand)}</div>`:''}
+        <div><span>מחיר:</span> ${before?`<s>₪${money(before)}</s> ← `:''}<b>₪${money(p.price)}</b>${q>1?` (${q} יח' ב-₪${money(p.price)})`:''}${p.regUnit?` · רגיל ₪${money(p.regUnit)} ליח'`:''}</div>
+        <div><span>תנאים:</span> ${cond.length?cond.join(' · '):'ללא תנאים מיוחדים'}</div>
+        <div><span>בתוקף עד:</span> <b class="pru ${left!=null&&left<0?'old':left!=null&&left<=3?'soon':''}">${p.until?dd(p.until)+'/'+p.until.slice(0,4):'—'}</b>${left!=null&&left>=0?` (עוד ${left} ימים)`:''}</div>
+        <div class="prc"><span>ברקוד:</span> ${codes.length?codes.map(c=>`<button class="bcn" data-bc="${esc(c)}" data-nm="${esc(p.name)}">${esc(c)}</button>`).join(''):'אין'}</div></div>`:''}</div>`};
+  const d=promoDraft;
+  const form=d?`<div class="card prf"><h2>${promoBusy?'⏳ '+esc(promoBusy):d.id?'✏️ עריכת מבצע':'✏️ בדקו ותקנו לפני שמירה'}</h2>
+    ${d.img?`<img src="${d.img}" class="primg" alt="">`:''}
     <div class="frm">
-      <input id="prN" placeholder="שם המוצר" value="${esc(promoDraft.name||'')}" autocomplete="off">
-      <input id="prB" placeholder="מותג / יצרן" value="${esc(promoDraft.brand||'')}" autocomplete="off">
-      <label>מחיר מבצע ₪<input id="prP" inputmode="decimal" dir="ltr" value="${esc(promoDraft.price||'')}"></label>
-      <label>כמות במבצע (יח')<input id="prQ" inputmode="numeric" dir="ltr" value="${esc(promoDraft.dealQty||1)}"></label>
-      <label>מחיר רגיל ליח' ₪<input id="prR" inputmode="decimal" dir="ltr" value="${esc(promoDraft.regUnit||'')}"></label>
-      <label>בתוקף עד<input id="prU" type="date" value="${esc(promoDraft.until||'')}"></label>
-      <input id="prC" placeholder="קוד / ברקוד (כמה — בפסיקים)" dir="ltr" value="${esc(promoDraft.codes||'')}" autocomplete="off">
+      <input id="prN" placeholder="שם המוצר" value="${esc(d.name||'')}" autocomplete="off">
+      <input id="prB" placeholder="מותג / יצרן" value="${esc(d.brand||'')}" autocomplete="off">
+      <label>מחיר מבצע ₪<input id="prP" inputmode="decimal" dir="ltr" value="${esc(d.price||'')}"></label>
+      <label>כמות במבצע (יח')<input id="prQ" inputmode="numeric" dir="ltr" value="${esc(d.dealQty||1)}"></label>
+      <label>מחיר רגיל ליח' ₪<input id="prR" inputmode="decimal" dir="ltr" value="${esc(d.regUnit||'')}"></label>
+      <label>בתוקף עד<input id="prU" type="date" value="${esc(d.until||'')}"></label>
+      <label>קנייה מינימלית ₪ (אם יש)<input id="prMin" inputmode="decimal" dir="ltr" value="${esc(d.minBuy||'')}" placeholder="—"></label>
+      <label>מקסימום יח' ללקוח (אם יש)<input id="prMax" inputmode="numeric" dir="ltr" value="${esc(d.maxQty||'')}" placeholder="—"></label>
+      <input id="prC" placeholder="קוד / ברקוד (כמה — בפסיקים)" dir="ltr" value="${esc(d.codes||'')}" autocomplete="off">
+      <input id="prNote" placeholder="תנאי נוסף / הערה (לא חובה)" value="${esc(d.note||'')}" autocomplete="off">
       <button class="sv" data-act="pr-save" ${promoBusy?'disabled':''}>שמירה</button><button class="sv ghost" data-act="pr-cancel">ביטול</button></div></div>`:'';
-  return `<div class="pr-add"><label class="sv cam">📷 צילום ממצא<input type="file" accept="image/*" capture="environment" id="prFile" hidden></label>
-    <button class="sv ghost" data-act="pr-manual">✍️ הזנה ידנית</button></div>`+form+searchBox('חיפוש מבצע…')+
-    `<div class="card"><h2>🏷️ מבצעים פעילים<span class="cnt">${act.length}</span></h2>${act.length?act.map(row).join(''):'<div class="empty">אין מבצעים פעילים</div>'}</div>`+
-    (old.length?`<div class="card old-pr"><h2>⌛ הסתיימו<span class="cnt">${old.length}</span></h2>${old.map(row).join('')}</div>`:'');
+  const addBox=promoAdd&&!d?`<div class="card pr-choose"><h2>＋ מבצע חדש</h2><div class="pr-add">
+      <label class="sv cam">📷 צילום ממצא<input type="file" accept="image/*" capture="environment" id="prFile" hidden></label>
+      <button class="sv ghost" data-act="pr-manual">✍️ הזנה ידנית</button></div></div>`:'';
+  return `<div class="pr-top">${searchBox('חיפוש מבצע…')}<button class="pr-addbtn" data-act="pr-add">＋ הוספה</button></div>`+addBox+form+
+    `<div class="card prl"><h2>🏷️ מבצעים פעילים<span class="cnt">${act.length}</span></h2>${act.length?act.map(row).join(''):'<div class="empty">אין מבצעים פעילים</div>'}</div>`+
+    (old.length?`<div class="card prl old-pr"><h2>⌛ הסתיימו<span class="cnt">${old.length}</span></h2>${old.map(row).join('')}</div>`:'')+
+    '<div class="note" style="text-align:center">הקישו על שם המוצר לפרטים · ⋮ לאפשרויות</div>';
 }
 /* זיהוי טקסט מתמונת הממצא (Tesseract.js, עברית+אנגלית) */
 let tessLoading=null;
@@ -1124,7 +1164,7 @@ function parseTag(lines){
 }
 document.addEventListener('change',async e=>{
   if(e.target.id!=='prFile'||!e.target.files[0])return;
-  const f=e.target.files[0],img=await shrinkImg(f,1400);promoDraft={img,dealQty:1};promoBusy='מזהה טקסט מהצילום… (עד חצי דקה)';renderApp('promos');
+  const f=e.target.files[0],img=await shrinkImg(f,1400);promoAdd=false;promoDraft={img,dealQty:1};promoBusy='מזהה טקסט מהצילום… (עד חצי דקה)';renderApp('promos');
   try{await loadTess();const src=await shrinkImg(f,2000,'grayscale(1) contrast(1.4)');
     const w=await Tesseract.createWorker('heb+eng');await w.setParameters({tessedit_pageseg_mode:'11'});
     const {data}=await w.recognize(src,{},{blocks:true,text:true});await w.terminate();
@@ -1141,9 +1181,9 @@ const sKey=t=>String(t||'').toLowerCase().replace(/["'׳״()\-.,]/g,' ').replace
 function searchBox(ph){return `<div class="sbox"><span>🔍</span><input id="listQ" type="search" placeholder="${ph}" value="${esc(listQ)}" autocomplete="off"><button data-act="q-clear" aria-label="ניקוי">✕</button></div>`}
 function applySearch(){
   const q=sKey(listQ),body=document.getElementById('appBody');
-  body.querySelectorAll('.gl[data-s]').forEach(r=>{const s=r.dataset.s;
+  body.querySelectorAll('.gl[data-s],.pr2[data-s]').forEach(r=>{const s=r.dataset.s;
     r.style.display=!q||s.startsWith(q)||s.split(' ').some(w=>w.startsWith(q))||(' '+s).includes(' '+q)?'':'none'});
-  body.querySelectorAll('.card').forEach(c=>{const rows=c.querySelectorAll('.gl[data-s]');if(!rows.length)return;
+  body.querySelectorAll('.card').forEach(c=>{const rows=c.querySelectorAll('.gl[data-s],.pr2[data-s]');if(!rows.length)return;
     c.style.display=[...rows].some(r=>r.style.display!=='none')?'':'none'});
 }
 document.addEventListener('input',e=>{if(e.target.id==='listQ'){listQ=e.target.value;applySearch()}});
@@ -1220,14 +1260,25 @@ document.addEventListener('click',async e=>{
       toast('נשמר ✓');await loadTickets()}
     if(act==='tk-close'){if(!confirm('לסמן כטופל?'))return;await fsPatch('tickets_'+b+'/'+id,{status:'closed',closedAt:new Date()});toast('סומן כטופל ✓');await loadTickets()}
     if(act==='push'){await enablePush()}
+    if(act==='share-inst'){const u=new URL('install.html',location.href).href,t='ניהול+ — מדריך התקנה · Install guide · Инструкция по установке: '+u;
+      if(navigator.share)navigator.share({title:'ניהול+',text:t}).catch(()=>{});else{navigator.clipboard?.writeText(u);toast('הקישור הועתק')}}
     if(act==='lib'){toast((id==='nehalim'?'נוהלים':'ידיעון')+' — התוכן יתווסף בקרוב')}
-    if(act==='pr-manual'){promoDraft={dealQty:1};promoBusy='';renderApp('promos')}
-    if(act==='pr-cancel'){promoDraft=null;promoBusy='';renderApp('promos')}
+    if(act==='pr-add'){promoAdd=!promoAdd;promoDraft=null;renderApp('promos')}
+    if(act==='pr-manual'){promoAdd=false;promoDraft={dealQty:1};promoBusy='';renderApp('promos')}
+    if(act==='pr-open'){promoOpen=promoOpen===id?null:id;promoMenu=null;renderApp('promos')}
+    if(act==='pr-menu'){promoMenu=promoMenu===id?null:id;renderApp('promos')}
+    if(act==='pr-edit'){const x=LISTS.promos.find(q=>q.id===id);promoMenu=null;promoAdd=false;promoDraft={...x};renderApp('promos');document.getElementById('appBody').scrollTop=0}
+    if(act==='pr-share'){const x=LISTS.promos.find(q=>q.id===id);promoMenu=null;renderApp('promos');const q=+x.dealQty||1;
+      const t=`🏷️ מבצע: ${x.name}${x.brand?' ('+x.brand+')':''}\n₪${money(x.price)}${q>1?` ל-${q} יח'`:''}${x.regUnit?` במקום ₪${money(x.regUnit*q)}`:''}\nבתוקף עד ${x.until?dd(x.until)+'/'+x.until.slice(0,4):'—'}${x.minBuy?`\nבקנייה מעל ₪${x.minBuy}`:''}${x.maxQty?`\nעד ${x.maxQty} יח' ללקוח`:''}`;
+      if(navigator.share)navigator.share({text:t}).catch(()=>{});else{navigator.clipboard?.writeText(t);toast('הועתק')}}
+    if(act==='pr-cancel'){promoDraft=null;promoBusy='';promoAdd=false;renderApp('promos')}
     if(act==='pr-save'){const n=v('prN'),pr=v('prP').replace(',','.');if(!n||!pr){toast('חסר שם או מחיר');return}a.disabled=true;
-      await fsAdd('ma_promos',{name:n,brand:v('prB'),price:pr,dealQty:Math.max(1,parseInt(v('prQ'))||1),regUnit:v('prR').replace(',','.'),until:v('prU'),codes:v('prC'),
-        deal:'',addedBy:'ניהול + · '+BRANCHES[branch],addedAt:new Date()});
+      const rec={name:n,brand:v('prB'),price:pr,dealQty:Math.max(1,parseInt(v('prQ'))||1),regUnit:v('prR').replace(',','.'),until:v('prU'),codes:v('prC'),
+        minBuy:v('prMin').replace(',','.'),maxQty:v('prMax'),note:v('prNote')};
+      if(promoDraft&&promoDraft.id)await fsPatch('ma_promos/'+promoDraft.id,{...rec,updatedAt:new Date()});
+      else await fsAdd('ma_promos',{...rec,deal:'',addedBy:'ניהול + · '+BRANCHES[branch],addedAt:new Date()});
       promoDraft=null;toast('המבצע נשמר ✓');LISTS.promos=null;await loadPromos()}
-    if(act==='pr-del'){const x=(LISTS.promos||[]).find(q=>q.id===id);if(!x||!confirm('למחוק את המבצע „'+x.name+'”?'))return;
+    if(act==='pr-del'){promoMenu=null;const x=(LISTS.promos||[]).find(q=>q.id===id);if(!x||!confirm('למחוק את המבצע „'+x.name+'”?'))return;
       await fsDel('ma_promos/'+id);toast('נמחק');LISTS.promos=null;await loadPromos()}
   }catch(err){console.log(err);toast('שגיאה — בדקו חיבור לאינטרנט');a.disabled=false}
 });
@@ -1424,10 +1475,25 @@ const qs=new URLSearchParams(location.search).get('screen');
   box.hidden=false;let done=false;
   const end=()=>{if(done)return;done=true;box.classList.add('out');setTimeout(()=>{box.remove()},520)};
   v.addEventListener('ended',end);v.addEventListener('error',end);document.getElementById('introSkip').onclick=end;
-  snd.onclick=()=>{v.muted=!v.muted;snd.textContent=v.muted?'🔇':'🔊';if(v.paused)v.play().catch(()=>{})};
-  v.play().catch(()=>{});setTimeout(end,13000); // ביטחון: לא נתקעים על הסרטון
+  snd.onclick=()=>{v.muted=!v.muted;snd.textContent=v.muted?'🔇':'🔊';snd.classList.remove('ask');if(v.paused)v.play().catch(()=>{})};
+  // קודם עם קול; אם המכשיר חוסם קול בהפעלה אוטומטית — מנגנים בלי קול ומבקשים הקשה להפעלת הקול
+  v.muted=false;v.play().then(()=>{snd.textContent='🔊'}).catch(()=>{v.muted=true;snd.textContent='🔇 הקישו לקול';snd.classList.add('ask');v.play().catch(()=>{})});
+  box.addEventListener('click',ev=>{if(ev.target===v&&v.muted){v.muted=false;snd.textContent='🔊';snd.classList.remove('ask')}});
+  setTimeout(end,13000); // ביטחון: לא נתקעים על הסרטון
 })();
 renderHome();document.body.classList.add('fab');pushLabel();
+/* עגלה צפה: אפשר לגרור אותה (בחלק התחתון של המסך); המיקום נשמר */
+(()=>{const f=document.querySelector('.cart-fab');let sx,sy,ox,oy,drag=false,down=false;
+  const place=(x,y)=>{const W=innerWidth,H=innerHeight,s=f.offsetWidth||50;x=Math.max(6,Math.min(W-s-6,x));y=Math.max(H*.6,Math.min(H-s-6,y));
+    f.style.left=x+'px';f.style.top=y+'px';f.style.right='auto';f.style.bottom='auto';return [x/W,y/H]};
+  const saved=ls.get('ma_fab',null);if(saved)place(saved[0]*innerWidth,saved[1]*innerHeight);
+  f.style.touchAction='none';
+  f.addEventListener('pointerdown',e=>{down=true;drag=false;const r=f.getBoundingClientRect();sx=e.clientX;sy=e.clientY;ox=r.left;oy=r.top;f.setPointerCapture(e.pointerId)});
+  f.addEventListener('pointermove',e=>{if(!down)return;if(!drag&&Math.hypot(e.clientX-sx,e.clientY-sy)>6)drag=true;if(drag)place(ox+e.clientX-sx,oy+e.clientY-sy)});
+  f.addEventListener('pointerup',e=>{down=false;if(drag){const r=f.getBoundingClientRect();ls.set('ma_fab',[r.left/innerWidth,r.top/innerHeight]);f.dataset.dragged=1;setTimeout(()=>delete f.dataset.dragged,50)}});
+  f.addEventListener('click',e=>{if(f.dataset.dragged){e.stopImmediatePropagation();e.preventDefault()}},true);
+  addEventListener('resize',()=>{const v=ls.get('ma_fab',null);if(v)place(v[0]*innerWidth,v[1]*innerHeight)});
+})();
 if(qs)go(qs);
 loadLive();
 initFirebase();

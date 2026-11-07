@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#203550">
+<title>ניהול+ · התקנה · Install · Установка</title>
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#203550;--navy3:#3a5d88;--deep:#142338;--gold:#CFAB6F;--gold2:#E8D3A6;--gold3:#A8864A;--cream:#F4F1EA;--card:#FFFDF8;--ink:#1B2A3E;--muted:#6E7787;--ios:#0A84FF;--and:#1A73E8}
+body{font-family:'Heebo',-apple-system,'Segoe UI',Arial,sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+header{background:linear-gradient(160deg,var(--navy3),var(--navy) 55%,var(--deep));color:#fff;padding:calc(env(safe-area-inset-top,0px) + 16px) 16px 18px;border-bottom:3px solid var(--gold);text-align:center}
+header img{width:84px;height:84px;border-radius:20px;box-shadow:0 6px 16px rgba(0,0,0,.4)}
+header h1{font-size:28px;font-weight:900;margin-top:8px}
+header p{color:var(--gold2);font-size:15px;margin-top:2px}
+.langs{display:flex;gap:6px;justify-content:center;margin-top:12px}
+.langs button{border:1.5px solid rgba(207,171,111,.6);background:transparent;color:#fff;border-radius:999px;padding:6px 14px;font:inherit;font-size:15px;font-weight:800;cursor:pointer}
+.langs button.on{background:linear-gradient(180deg,var(--gold2),var(--gold));color:var(--deep)}
+main{max-width:620px;margin:0 auto;padding:16px}
+.os{display:flex;gap:8px;margin-bottom:14px;position:sticky;top:0;z-index:5;background:var(--cream);padding:8px 0}
+.os button{flex:1;border:2px solid var(--navy);background:#fff;color:var(--navy);border-radius:14px;padding:12px;font:inherit;font-size:17px;font-weight:900;cursor:pointer}
+.os button.on{background:var(--navy);color:#fff}
+.intro{background:var(--card);border:1px solid #EAE4D6;border-radius:16px;padding:14px;font-size:16px;line-height:1.6;margin-bottom:14px}
+.intro b{color:var(--navy)}
+.step{background:var(--card);border:1px solid #EAE4D6;border-radius:18px;padding:14px;margin-bottom:14px;box-shadow:0 2px 0 rgba(207,171,111,.35),0 6px 16px rgba(32,53,80,.07)}
+.step h2{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:900;color:var(--navy);margin-bottom:6px}
+.step h2 .n{flex-shrink:0;width:34px;height:34px;border-radius:50%;background:var(--navy);color:var(--gold2);display:flex;align-items:center;justify-content:center;font-size:18px}
+.step p{font-size:16px;line-height:1.6;margin-bottom:10px}
+.step p .k{display:inline-block;background:#EEF2F8;border:1px solid #DCE3EE;border-radius:8px;padding:0 6px;font-weight:800;white-space:nowrap}
+.shot{display:flex;justify-content:center}
+.shot svg{width:100%;max-width:300px;height:auto;filter:drop-shadow(0 8px 16px rgba(20,35,56,.25))}
+.tip{font-size:14px;color:var(--muted);background:#FBF4E6;border:1px solid #EBDDBF;border-radius:12px;padding:8px 10px;margin-top:10px}
+.qr{text-align:center;background:var(--card);border:1px solid #EAE4D6;border-radius:18px;padding:16px;margin:4px 0 14px}
+.qr #qrc{display:inline-block;padding:10px;background:#fff;border-radius:12px;margin-top:8px}
+.qr a{display:block;margin-top:8px;color:var(--navy);font-weight:800;word-break:break-all;direction:ltr}
+.cta{display:block;text-align:center;text-decoration:none;margin:4px 0 18px;padding:14px;border-radius:16px;font-size:18px;font-weight:900;color:var(--deep);
+  background:linear-gradient(170deg,#F3E3BE,var(--gold) 55%,#B8955A);box-shadow:0 5px 0 #8A6C3A}
+footer{text-align:center;font-size:12px;color:var(--muted);padding:10px 16px 30px}
+[dir=ltr] .step h2,[dir=ltr] .step p,[dir=ltr] .intro{text-align:left}
+</style>
+</head>
+<body>
+<header>
+  <img src="icon-512.png" alt="ניהול+">
+  <h1>ניהול+</h1>
+  <p id="sub"></p>
+  <div class="langs"><button data-l="he">עברית</button><button data-l="en">English</button><button data-l="ru">Русский</button></div>
+</header>
+<main>
+  <div class="os"><button data-os="ios">🍎 iPhone</button><button data-os="and">🤖 Android</button></div>
+  <div class="intro" id="intro"></div>
+  <div id="steps"></div>
+  <div class="qr"><b id="qrT"></b><br><div id="qrc"></div><a id="qrL" href="./">evgenchuk1.github.io/management-assistant</a></div>
+  <a class="cta" id="cta" href="./"></a>
+</main>
+<footer>© 2026 ET studio · Evgeniy Tsipis — All rights reserved · כל הזכויות שמורות</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+const APP='https://evgenchuk1.github.io/management-assistant/';
+/* ───── texts ───── */
+const T={
+he:{dir:'rtl',sub:'מדריך התקנה למסך הבית',
+ intro:'האפליקציה <b>לא</b> מותקנת מחנות האפליקציות — מוסיפים אותה למסך הבית מהדפדפן, פעם אחת, תוך דקה. אחרי זה היא נפתחת כמו כל אפליקציה, במסך מלא, עם אייקון ושם <b>ניהול+</b>.',
+ qr:'סרקו במצלמה כדי לפתוח את הקישור',cta:'פתיחת ניהול+ ←',
+ ios:[
+  ['פתחו את הקישור ב-Safari','חשוב: דווקא בדפדפן <span class="k">Safari</span> (המצפן הכחול). אם הקישור נפתח בתוך וואטסאפ — לחצו <span class="k">⋯</span> ← <span class="k">פתיחה ב-Safari</span>.','safari'],
+  ['לחצו על כפתור השיתוף','ב-iOS 26: לחצו על <span class="k">⋯</span> שליד שורת הכתובת ואז <span class="k">שיתוף</span>. בגרסאות קודמות: הריבוע עם החץ למעלה <span class="k">⬆</span> בתחתית המסך.','share'],
+  ['בחרו „הוספה למסך הבית”','גללו מעט למטה ברשימה ולחצו <span class="k">הוספה למסך הבית</span>. אם לא רואים — לחצו <span class="k">הצג עוד</span>.','sheet'],
+  ['לחצו „הוסף”','השאירו את השם <b>ניהול+</b> ואת האפשרות <span class="k">פתיחה כאפליקציית רשת</span> דולקת, ולחצו <span class="k">הוסף</span> בפינה העליונה.','add'],
+  ['פתחו מהמסך הראשי ואשרו התראות','האייקון <b>ניהול+</b> מופיע במסך הבית. פתחו אותו, לחצו <span class="k">🔔 התראות בוקר</span> ואשרו — כל בוקר ב-07:00 תגיע תזכורת לסקירה היומית.','home']],
+ and:[
+  ['פתחו את הקישור ב-Chrome','פתחו את הקישור בדפדפן <span class="k">Chrome</span>. אם הוא נפתח בתוך וואטסאפ — לחצו <span class="k">⋮</span> ← <span class="k">פתיחה ב-Chrome</span>.','chrome'],
+  ['לחצו על התפריט ⋮','שלוש הנקודות <span class="k">⋮</span> בפינה העליונה של המסך.','menu'],
+  ['„התקנת האפליקציה” או „הוספה למסך הבית”','בתפריט לחצו <span class="k">התקנת האפליקציה</span> (בחלק מהטלפונים: <span class="k">הוספה למסך הבית</span>).','amenu'],
+  ['לחצו „התקנה”','בחלון שנפתח לחצו <span class="k">התקנה</span>. לפעמים צריך לאשר שוב <span class="k">הוספה</span>.','ainstall'],
+  ['פתחו מהמסך הראשי ואשרו התראות','האייקון <b>ניהול+</b> מופיע במסך הבית או ברשימת האפליקציות. פתחו, לחצו <span class="k">🔔 התראות בוקר</span> ואשרו.','ahome']],
+ tip:'אם משהו לא מצליח — מחקו את האייקון ונסו שוב מהשלב הראשון.',
+ L:{url:'evgenchuk1.github.io',share:'שיתוף',copy:'העתקה',addH:'הוספה למסך הבית',fav:'הוספה למועדפים',more:'הצג עוד',cancel:'ביטול',add:'הוסף',webapp:'פתיחה כאפליקציית רשת',
+    install:'התקנת האפליקציה',addHome:'הוספה למסך הבית',newTab:'כרטיסייה חדשה',history:'היסטוריה',installQ:'להתקין את האפליקציה?',inst:'התקנה',bell:'🔔 התראות בוקר'}},
+en:{dir:'ltr',sub:'How to install on your home screen',
+ intro:'The app is <b>not</b> installed from the App Store — you add it to your home screen from the browser, once, in about a minute. After that it opens like any app, full screen, with the <b>ניהול+</b> icon.',
+ qr:'Scan with your camera to open the link',cta:'Open ניהול+ →',
+ ios:[
+  ['Open the link in Safari','Important: use <span class="k">Safari</span> (the blue compass). If the link opened inside WhatsApp, tap <span class="k">⋯</span> → <span class="k">Open in Safari</span>.','safari'],
+  ['Tap the Share button','On iOS 26: tap <span class="k">⋯</span> next to the address bar, then <span class="k">Share</span>. On older iOS: the square with an up arrow <span class="k">⬆</span> at the bottom.','share'],
+  ['Choose “Add to Home Screen”','Scroll down the list a little and tap <span class="k">Add to Home Screen</span>. If you don’t see it, tap <span class="k">View More</span>.','sheet'],
+  ['Tap “Add”','Keep the name <b>ניהול+</b> and leave <span class="k">Open as Web App</span> switched on, then tap <span class="k">Add</span> in the top corner.','add'],
+  ['Open it and allow notifications','The <b>ניהול+</b> icon is now on your home screen. Open it, tap <span class="k">🔔 התראות בוקר</span> and allow — you’ll get a reminder for the daily overview every morning at 07:00.','home']],
+ and:[
+  ['Open the link in Chrome','Open the link in <span class="k">Chrome</span>. If it opened inside WhatsApp, tap <span class="k">⋮</span> → <span class="k">Open in Chrome</span>.','chrome'],
+  ['Tap the ⋮ menu','The three dots <span class="k">⋮</span> in the top corner of the screen.','menu'],
+  ['“Install app” or “Add to Home screen”','In the menu tap <span class="k">Install app</span> (on some phones: <span class="k">Add to Home screen</span>).','amenu'],
+  ['Tap “Install”','In the window that opens tap <span class="k">Install</span>. Sometimes you need to confirm <span class="k">Add</span> once more.','ainstall'],
+  ['Open it and allow notifications','The <b>ניהול+</b> icon appears on your home screen or in the app list. Open it, tap <span class="k">🔔 התראות בוקר</span> and allow.','ahome']],
+ tip:'If something doesn’t work — delete the icon and start again from step 1.',
+ L:{url:'evgenchuk1.github.io',share:'Share',copy:'Copy',addH:'Add to Home Screen',fav:'Add to Favorites',more:'View More',cancel:'Cancel',add:'Add',webapp:'Open as Web App',
+    install:'Install app',addHome:'Add to Home screen',newTab:'New tab',history:'History',installQ:'Install app?',inst:'Install',bell:'🔔 התראות בוקר'}},
+ru:{dir:'ltr',sub:'Как установить на экран «Домой»',
+ intro:'Приложение <b>не</b> скачивается из App Store — его один раз добавляют на экран телефона из браузера, это занимает минуту. После этого оно открывается как обычное приложение, на весь экран, с иконкой и подписью <b>ניהול+</b>.',
+ qr:'Наведите камеру, чтобы открыть ссылку',cta:'Открыть ניהול+ →',
+ ios:[
+  ['Откройте ссылку в Safari','Важно: именно в <span class="k">Safari</span> (синий компас). Если ссылка открылась внутри WhatsApp — нажмите <span class="k">⋯</span> → <span class="k">Открыть в Safari</span>.','safari'],
+  ['Нажмите «Поделиться»','В iOS 26: нажмите <span class="k">⋯</span> рядом с адресной строкой, затем <span class="k">Поделиться</span>. В старых версиях: квадрат со стрелкой вверх <span class="k">⬆</span> внизу экрана.','share'],
+  ['Выберите «На экран Домой»','Прокрутите список немного вниз и нажмите <span class="k">На экран «Домой»</span>. Если пункта не видно — нажмите <span class="k">Еще</span>.','sheet'],
+  ['Нажмите «Добавить»','Оставьте название <b>ניהול+</b> и включённый переключатель <span class="k">Открыть как веб-приложение</span>, нажмите <span class="k">Добавить</span> вверху.','add'],
+  ['Откройте и разрешите уведомления','Иконка <b>ניהול+</b> появилась на экране «Домой». Откройте её, нажмите <span class="k">🔔 התראות בוקר</span> и разрешите — каждое утро в 07:00 придёт напоминание о ежедневной сводке.','home']],
+ and:[
+  ['Откройте ссылку в Chrome','Откройте ссылку в браузере <span class="k">Chrome</span>. Если она открылась внутри WhatsApp — нажмите <span class="k">⋮</span> → <span class="k">Открыть в Chrome</span>.','chrome'],
+  ['Нажмите меню ⋮','Три точки <span class="k">⋮</span> в верхнем углу экрана.','menu'],
+  ['«Установить приложение» или «Добавить на гл. экран»','В меню нажмите <span class="k">Установить приложение</span> (на некоторых телефонах: <span class="k">Добавить на главный экран</span>).','amenu'],
+  ['Нажмите «Установить»','В открывшемся окне нажмите <span class="k">Установить</span>. Иногда нужно ещё раз подтвердить <span class="k">Добавить</span>.','ainstall'],
+  ['Откройте и разрешите уведомления','Иконка <b>ניהול+</b> появится на главном экране или в списке приложений. Откройте, нажмите <span class="k">🔔 התראות בוקר</span> и разрешите.','ahome']],
+ tip:'Если что-то не получилось — удалите иконку и начните заново с шага 1.',
+ L:{url:'evgenchuk1.github.io',share:'Поделиться',copy:'Скопировать',addH:'На экран «Домой»',fav:'В Избранное',more:'Еще',cancel:'Отменить',add:'Добавить',webapp:'Открыть как веб-приложение',
+    install:'Установить приложение',addHome:'Добавить на гл. экран',newTab:'Новая вкладка',history:'История',installQ:'Установить приложение?',inst:'Установить',bell:'🔔 התראות בוקר'}}
+};
+
+/* ───── phone mockups (SVG) ───── */
+const X=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const ICON='<image href="icon-192.png" x="0" y="0" width="56" height="56" clip-path="url(#ic)"/>';
+function phone(inner,android){return `<svg viewBox="0 0 300 560" xmlns="http://www.w3.org/2000/svg" font-family="Heebo,Arial,sans-serif" direction="ltr" style="direction:ltr">
+ <defs><clipPath id="scr"><rect x="12" y="12" width="276" height="536" rx="${android?22:38}"/></clipPath><clipPath id="ic"><rect width="56" height="56" rx="13"/></clipPath>
+ <radialGradient id="tap"><stop offset="0" stop-color="#CFAB6F" stop-opacity=".0"/><stop offset=".6" stop-color="#CFAB6F" stop-opacity=".35"/><stop offset="1" stop-color="#CFAB6F" stop-opacity="0"/></radialGradient></defs>
+ <rect x="2" y="2" width="296" height="556" rx="${android?30:48}" fill="#111"/>
+ <g clip-path="url(#scr)"><rect x="12" y="12" width="276" height="536" fill="#F2F2F7"/>${inner}</g>
+ ${android?'<circle cx="150" cy="24" r="5" fill="#000"/>':'<rect x="110" y="20" width="80" height="22" rx="11" fill="#000"/>'}
+ </svg>`}
+const tap=(x,y,r=26)=>`<circle cx="${x}" cy="${y}" r="${r+12}" fill="url(#tap)"/><circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="#CFAB6F" stroke-width="4"/>
+  <path d="M${x+r-4} ${y+r-6}l12 26 4-9 10 10 5-5-10-10 9-4z" fill="#fff" stroke="#142338" stroke-width="2.5" stroke-linejoin="round"/>`;
+const ring=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12" fill="none" stroke="#CFAB6F" stroke-width="4"/>
+  <path d="M${x+w-18} ${y+h-10}l12 26 4-9 10 10 5-5-10-10 9-4z" fill="#fff" stroke="#142338" stroke-width="2.5" stroke-linejoin="round"/>`;
+function page(){ // the app page as seen in the browser
+  return `<rect x="12" y="96" width="276" height="390" fill="#F4F1EA"/><rect x="12" y="96" width="276" height="70" fill="#203550"/>
+  <text x="150" y="138" text-anchor="middle" fill="#fff" font-size="22" font-weight="900">ניהול +</text>
+  ${[0,1,2].map(r=>[0,1].map(c=>`<rect x="${30+c*124}" y="${182+r*92}" width="116" height="82" rx="14" fill="#2D4A70"/>`).join('')).join('')}`}
+const shots={
+ safari:L=>phone(`${page()}<rect x="12" y="486" width="276" height="62" fill="#F9F9F9"/>
+  <rect x="26" y="496" width="248" height="40" rx="20" fill="#fff" stroke="#ddd"/><text x="150" y="521" text-anchor="middle" font-size="14" fill="#333">🔒 ${X(L.url)}</text>
+  <circle cx="150" cy="64" r="26" fill="#fff"/><circle cx="150" cy="64" r="22" fill="#0A84FF"/><path d="M150 46l6 18-6 18-6-18z" fill="#fff"/><path d="M150 64l6 0-6 18z" fill="#E33"/>
+  <text x="150" y="104" text-anchor="middle" font-size="12" fill="#555">Safari</text>`),
+ share:L=>phone(`${page()}<rect x="12" y="486" width="276" height="62" fill="#F9F9F9"/>
+  <rect x="26" y="496" width="196" height="40" rx="20" fill="#fff" stroke="#ddd"/><text x="124" y="521" text-anchor="middle" font-size="13" fill="#333">${X(L.url)}</text>
+  <circle cx="250" cy="516" r="20" fill="#fff" stroke="#ddd"/><text x="250" y="522" text-anchor="middle" font-size="20" fill="#0A84FF" font-weight="900">⋯</text>
+  <rect x="96" y="352" width="190" height="122" rx="16" fill="#fff" stroke="#ddd"/>
+  <text x="270" y="384" text-anchor="end" font-size="15" fill="#0A84FF" font-weight="700">${X(L.share)}  ⬆</text><line x1="96" y1="400" x2="286" y2="400" stroke="#eee"/>
+  <text x="270" y="426" text-anchor="end" font-size="15" fill="#333">${X(L.copy)}</text><line x1="96" y1="440" x2="286" y2="440" stroke="#eee"/>
+  <text x="270" y="464" text-anchor="end" font-size="15" fill="#333">${X(L.fav)}</text>
+  ${ring(98,358,186,40)}`),
+ sheet:L=>phone(`${page()}<rect x="12" y="200" width="276" height="348" rx="22" fill="#fff"/>
+  <rect x="130" y="210" width="40" height="5" rx="3" fill="#ccc"/>
+  <g transform="translate(26 228)">${ICON}</g><text x="94" y="252" font-size="15" font-weight="800" fill="#111">ניהול +</text><text x="94" y="272" font-size="12" fill="#888">${X(L.url)}</text>
+  ${[[L.copy,'⧉'],[L.fav,'☆'],[L.addH,'⊞'],[L.more,'⋯']].map((r,i)=>`<rect x="24" y="${300+i*54}" width="252" height="46" rx="12" fill="${i===2?'#FFF6E2':'#F2F2F7'}"/>
+   <text x="44" y="${329+i*54}" font-size="18" fill="#111">${r[1]}</text><text x="70" y="${329+i*54}" font-size="15" fill="#111" font-weight="${i===2?800:500}">${X(r[0])}</text>`).join('')}
+  ${ring(22,406,256,50)}`),
+ add:L=>phone(`<rect x="12" y="12" width="276" height="536" fill="#F2F2F7"/>
+  <text x="30" y="84" font-size="15" fill="#0A84FF">${X(L.cancel)}</text><text x="270" y="84" text-anchor="end" font-size="16" fill="#0A84FF" font-weight="900">${X(L.add)}</text>
+  <rect x="24" y="108" width="252" height="100" rx="14" fill="#fff"/><g transform="translate(40 130)">${ICON}</g>
+  <text x="112" y="152" font-size="18" font-weight="800" fill="#111">ניהול+</text><line x1="112" y1="164" x2="262" y2="164" stroke="#ddd"/><text x="112" y="186" font-size="12" fill="#888">${X(L.url)}</text>
+  <rect x="24" y="222" width="252" height="52" rx="14" fill="#fff"/><text x="40" y="253" font-size="14" fill="#111">${X(L.webapp)}</text>
+  <rect x="222" y="235" width="44" height="26" rx="13" fill="#34C759"/><circle cx="253" cy="248" r="11" fill="#fff"/>
+  ${ring(216,62,62,28)}`),
+ home:L=>phone(`<rect x="12" y="12" width="276" height="536" fill="#2B4C7E"/><rect x="12" y="12" width="276" height="536" fill="url(#tap)" opacity=".15"/>
+  ${[0,1,2,3].map(r=>[0,1,2,3].map(c=>r===1&&c===1?'':`<rect x="${30+c*64}" y="${80+r*84}" width="50" height="50" rx="12" fill="rgba(255,255,255,.25)"/>`).join('')).join('')}
+  <g transform="translate(91 161) scale(.93)">${ICON}</g><text x="117" y="228" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">ניהול+</text>
+  ${tap(117,188,30)}
+  <rect x="40" y="440" width="220" height="56" rx="16" fill="#fff"/><text x="150" y="474" text-anchor="middle" font-size="16" font-weight="900" fill="#203550">${X(L.bell)}</text>`),
+ chrome:L=>phone(`<rect x="12" y="40" width="276" height="56" fill="#fff"/><rect x="24" y="50" width="214" height="36" rx="18" fill="#F1F3F4"/>
+  <text x="44" y="73" font-size="13" fill="#333">🔒 ${X(L.url)}</text><text x="266" y="76" text-anchor="middle" font-size="22" fill="#444" font-weight="900">⋮</text>${page()}
+  <g transform="translate(150 510)"><circle r="22" fill="#fff"/><circle r="9" fill="#1A73E8"/><path d="M0-20A20 20 0 0 1 17 10L8 4A10 10 0 0 0 0-10z" fill="#EA4335"/><path d="M17 10A20 20 0 0 1-17 10L-8 4A10 10 0 0 0 8 4z" fill="#FBBC05"/><path d="M-17 10A20 20 0 0 1 0-20V-10A10 10 0 0 0-8 4z" fill="#34A853"/><circle r="8" fill="#fff"/><circle r="6" fill="#1A73E8"/></g>`,true),
+ menu:L=>phone(`<rect x="12" y="40" width="276" height="56" fill="#fff"/><rect x="24" y="50" width="214" height="36" rx="18" fill="#F1F3F4"/>
+  <text x="44" y="73" font-size="13" fill="#333">🔒 ${X(L.url)}</text><text x="266" y="76" text-anchor="middle" font-size="22" fill="#444" font-weight="900">⋮</text>${page()}
+  ${tap(266,68,20)}`,true),
+ amenu:L=>phone(`<rect x="12" y="40" width="276" height="56" fill="#fff"/>${page()}
+  <rect x="40" y="48" width="242" height="250" rx="10" fill="#fff" stroke="#ddd"/>
+  ${[L.newTab,L.history,L.install,L.addHome].map((t,i)=>`<rect x="44" y="${58+i*58}" width="234" height="50" rx="8" fill="${i===2?'#E8F0FE':'#fff'}"/>
+   <text x="58" y="${89+i*58}" font-size="13.5" fill="#202124" font-weight="${i===2?800:500}" textLength="${Math.min(200,X(t).length*8.2)}" lengthAdjust="spacingAndGlyphs">${X(t)}</text>`).join('')}
+  ${ring(44,174,234,50)}`,true),
+ ainstall:L=>phone(`${page()}<rect x="12" y="12" width="276" height="536" fill="rgba(0,0,0,.4)"/>
+  <rect x="30" y="200" width="240" height="170" rx="24" fill="#fff"/><g transform="translate(122 214) scale(.8)">${ICON}</g>
+  <text x="150" y="290" text-anchor="middle" font-size="15" font-weight="800" fill="#202124">${X(L.installQ)}</text>
+  <text x="150" y="312" text-anchor="middle" font-size="12" fill="#5f6368">ניהול+ · ${X(L.url)}</text>
+  <text x="88" y="350" text-anchor="middle" font-size="14" fill="#1A73E8">${X(L.cancel)}</text>
+  <rect x="146" y="330" width="116" height="32" rx="16" fill="#1A73E8"/><text x="204" y="351" text-anchor="middle" font-size="13.5" fill="#fff" font-weight="800">${X(L.inst)}</text>
+  ${ring(142,326,124,40)}`,true),
+ ahome:L=>shots.home(L).replace('fill="#2B4C7E"','fill="#1F3B2E"')
+};
+
+/* ───── render ───── */
+let lang=(()=>{const q=new URLSearchParams(location.search).get('lang');if(q&&T[q])return q;const n=(navigator.language||'').slice(0,2);return T[n]?n:'he'})();
+let os=/android/i.test(navigator.userAgent)?'and':'ios';
+function render(){
+  const t=T[lang];document.documentElement.lang=lang;document.documentElement.dir=t.dir;
+  document.getElementById('sub').textContent=t.sub;document.getElementById('intro').innerHTML=t.intro;
+  document.getElementById('qrT').textContent=t.qr;document.getElementById('cta').textContent=t.cta;
+  document.querySelectorAll('[data-l]').forEach(b=>b.classList.toggle('on',b.dataset.l===lang));
+  document.querySelectorAll('[data-os]').forEach(b=>b.classList.toggle('on',b.dataset.os===os));
+  document.getElementById('steps').innerHTML=t[os].map((s,i)=>`<div class="step"><h2><span class="n">${i+1}</span>${s[0]}</h2><p>${s[1]}</p><div class="shot">${shots[s[2]](t.L)}</div></div>`).join('')+
+    `<div class="tip">💡 ${t.tip}</div>`;
+}
+document.addEventListener('click',e=>{const l=e.target.closest('[data-l]');if(l){lang=l.dataset.l;render()}const o=e.target.closest('[data-os]');if(o){os=o.dataset.os;render()}});
+render();
+try{new QRCode(document.getElementById('qrc'),{text:APP,width:170,height:170,colorDark:'#142338',colorLight:'#ffffff'})}catch(e){}
+</script>
+</body>
+</html>
