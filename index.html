@@ -179,17 +179,56 @@ button{font-family:inherit}
 .daynav .d small{display:block;font-size:12px;color:var(--gold3);font-weight:700}
 
 /* ── ריכוז יומי ── */
-.rk{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;
-  grid-template-areas:"orders spira" "expiry sidur" "quality sidur" "tech tech"}
-.pn{background:var(--card);border-radius:18px;padding:12px;border:1px solid var(--cream2);cursor:pointer;
-  box-shadow:0 2px 0 rgba(207,171,111,.4),0 5px 14px rgba(32,53,80,.08);overflow:hidden;min-height:120px}
-.pn:active{transform:scale(.98)}
-.pn h3{font-size:16px;font-weight:900;color:#fff;margin:-12px -12px 9px;padding:8px 12px;
-  background:linear-gradient(170deg,var(--navy3),var(--navy));border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:6px}
-.pn h3 .en{display:inline;font-size:10px;color:var(--gold2);margin-inline-start:auto}
-.pn .it{font-size:14px;line-height:1.45;margin-bottom:4px}
-.pn .k{font-weight:900;color:var(--navy)}
-.pn .mut{font-size:13px;color:var(--muted)}
+#screen-rikuz .hdr.compact{padding:calc(var(--safe-top) + 6px) 10px 0;border-bottom:3px solid var(--gold);z-index:5}
+.mini-bar{display:flex;align-items:center;gap:8px;padding-bottom:6px}
+.mini-bar img{width:34px;height:34px;border-radius:50%;border:2px solid var(--gold);background:#fff;flex-shrink:0}
+.mini-bar .t{flex:1;min-width:0;font-size:16px;font-weight:900;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-bar .t small{display:block;font-size:10px;color:var(--gold2);font-weight:600}
+.mini-bar .dt{font-size:19px;font-weight:900;color:var(--gold2);white-space:nowrap}
+.hdr-more{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.2,.8,.2,1)}
+.hdr.open .hdr-more{max-height:260px}
+.hdr-more-in{padding:0 2px 8px}
+.tongue{position:absolute;left:50%;bottom:-21px;transform:translateX(-50%);width:64px;height:19px;border:none;cursor:pointer;z-index:6;touch-action:none;padding:0;
+  border-radius:0 0 14px 14px;background:linear-gradient(180deg,var(--navy),var(--deep));border:2px solid var(--gold);border-top:none;
+  box-shadow:0 4px 8px rgba(0,0,0,.3);color:var(--gold2);font-size:13px;line-height:15px;font-weight:900}
+.tongue span{display:inline-block;transition:transform .3s}
+.hdr.open .tongue span{transform:rotate(180deg)}
+.rkbody{flex:1;min-height:0;display:flex;flex-direction:column;padding:26px 8px calc(4px + var(--safe-bot)*.6);overflow:hidden}
+.rk{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7px;
+  grid-template-areas:"orders spira" "expiry sidur" "expiry sidur" "quality quality";grid-template-rows:1.1fr 1fr 1fr .45fr}
+.pn{background:var(--card);border-radius:12px;border:1.5px solid var(--navy);cursor:pointer;display:flex;flex-direction:column;
+  box-shadow:0 2px 0 rgba(207,171,111,.4),0 4px 10px rgba(32,53,80,.08);overflow:hidden;min-height:0;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.pn h3,.ps h4,.zoom h3{flex-shrink:0;font-size:13px;font-weight:900;color:var(--navy);margin:0 7px;padding:4px 0 2px;border-bottom:1.5px solid var(--gold);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc{flex:1;min-height:0;overflow:hidden;padding:3px 7px 4px;font-size:var(--pf,12px);line-height:1.32}
+.pc .it{margin-bottom:.15em}
+.pc .k{font-weight:900;color:var(--navy)}
+.pc .mut{color:var(--muted)}
+.pc .sd2{font-size:1em;line-height:1.18;column-gap:6px}
+.pc .sdh{margin:.25em 0 .1em;padding:.05em .4em;border-radius:.35em}
+.pc .sdr{padding:0 .2em}
+.rk-foot{display:flex;align-items:center;gap:10px;margin-top:8px;flex-shrink:0}
+.photo-btn{display:flex;align-items:center;justify-content:center;gap:8px;flex:1;padding:7px 10px;border:none;cursor:pointer;
+  border-radius:14px;font-size:16px;font-weight:900;color:var(--deep);
+  background:linear-gradient(170deg,#F3E3BE,var(--gold) 55%,#B8955A);
+  box-shadow:0 4px 0 #8A6C3A,0 7px 12px rgba(120,90,40,.3),inset 0 2px 0 rgba(255,255,255,.6)}
+.photo-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #8A6C3A}
+.cart-btn{position:relative;flex-shrink:0;width:50px;height:50px;border-radius:50%;border:2px solid var(--gold);cursor:pointer;padding:0;
+  background:radial-gradient(circle at 35% 30%,#4A6E9C,var(--navy) 60%,var(--deep));
+  box-shadow:0 4px 0 #0E1A2A,0 7px 12px rgba(16,28,46,.35),inset 0 2px 0 rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center}
+.cart-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #0E1A2A}
+.cart-btn svg{width:32px;height:32px}
+.cart-btn .plus{position:absolute;top:-6px;left:-6px;width:22px;height:22px;border-radius:50%;color:#fff;font-size:18px;font-weight:900;line-height:20px;text-align:center;
+  background:radial-gradient(circle at 35% 30%,#FF8A7A,#D7261A 55%,#8E1409);border:1.5px solid #fff;
+  box-shadow:0 2px 4px rgba(0,0,0,.4),inset 0 -2px 3px rgba(0,0,0,.25);text-shadow:0 1px 1px rgba(0,0,0,.35)}
+.rk-copy{text-align:center;font-size:10px;margin-top:5px;flex-shrink:0}
+/* הגדלת חלון בלחיצה ארוכה */
+.zoom-ov{position:fixed;inset:0;z-index:70;background:rgba(20,35,56,0);transition:background .3s;pointer-events:none}
+.zoom-ov.on{background:rgba(20,35,56,.55)}
+.zoom{position:fixed;z-index:71;background:var(--card);border:2px solid var(--gold);border-radius:18px;display:flex;flex-direction:column;overflow:hidden;
+  box-shadow:0 20px 50px rgba(0,0,0,.5);transform-origin:0 0;transition:transform .33s cubic-bezier(.2,.9,.25,1.05),opacity .33s;pointer-events:none}
+.zoom h3{font-size:22px;padding:10px 0 6px;margin:0 14px}
+.zoom .pc{padding:8px 14px 12px}
 .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-inline-end:5px;vertical-align:middle}
 .photo-btn{display:flex;align-items:center;justify-content:center;gap:10px;margin:18px auto 4px;width:80%;padding:13px;border:none;cursor:pointer;
   border-radius:20px;font-size:20px;font-weight:900;color:var(--deep);
@@ -207,11 +246,8 @@ button{font-family:inherit}
 .ps-top .t small{display:block;font-size:10px;color:var(--gold2);font-weight:600}
 .ps-top .dt{font-size:20px;font-weight:900;color:var(--gold2);white-space:nowrap}
 .ps-grid{flex:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px;margin-top:6px;min-height:0;
-  grid-template-areas:"orders spira" "expiry sidur" "quality sidur" "tech tech";grid-template-rows:1.25fr 1fr .8fr .75fr}
-.ps{background:var(--card);border:1.5px solid var(--navy);border-radius:10px;padding:5px 7px;overflow:hidden;min-height:0}
-.ps h4{font-size:13px;font-weight:900;color:var(--navy);border-bottom:1.5px solid var(--gold);padding-bottom:2px;margin-bottom:3px}
-.ps .it{font-size:11.5px;line-height:1.32}
-.ps .k{font-weight:900;color:var(--navy)}
+  grid-template-areas:"orders spira" "expiry sidur" "expiry sidur" "quality quality";grid-template-rows:1.1fr 1fr 1fr .45fr}
+.ps{background:var(--card);border:1.5px solid var(--navy);border-radius:10px;overflow:hidden;min-height:0;display:flex;flex-direction:column}
 .ps-bar{display:flex;gap:8px;padding:8px 10px calc(8px + var(--safe-bot));background:var(--deep);flex-shrink:0}
 .ps-bar button{flex:1;padding:12px 6px;border-radius:14px;border:none;font-size:16px;font-weight:900;cursor:pointer}
 .ps-bar .p{background:linear-gradient(170deg,#F3E3BE,var(--gold));color:var(--deep)}
@@ -334,6 +370,12 @@ table.al td.x{width:34px;text-align:center}
     <path d="M22 18l4-7h12l4 7z" fill="#203550"/>
     <circle cx="32" cy="36" r="12" fill="url(#gGold)"/><circle cx="32" cy="36" r="7" fill="#142338"/><circle cx="29" cy="33" r="2" fill="#fff" opacity=".8"/>
   </symbol>
+  <symbol id="i-cart" viewBox="0 0 64 64">
+    <path d="M19 20h36l-6 18H23z" fill="url(#gGold)"/>
+    <path d="M31 21v16M42 21v16M21 29h31" stroke="#203550" stroke-width="2" opacity=".45"/>
+    <path d="M4 10h9l8 30h29l6-20H17" fill="none" stroke="#F6E6C2" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="25" cy="50" r="5.5" fill="url(#gGold)" stroke="#fff" stroke-width="1.5"/><circle cx="46" cy="50" r="5.5" fill="url(#gGold)" stroke="#fff" stroke-width="1.5"/>
+  </symbol>
   <!-- כפתורי קטגוריה: דג / בשר / פירות וירקות / עובד -->
   <symbol id="c-fish" viewBox="0 0 64 64">
     <path d="M47 32l14-12v24z" fill="url(#gBlue)" stroke="#203550" stroke-width="2" stroke-linejoin="round"/>
@@ -408,20 +450,29 @@ table.al td.x{width:34px;text-align:center}
 
 <!-- ═══════════ ריכוז יומי ═══════════ -->
 <div id="screen-rikuz" class="screen">
-  <div class="hdr">
-    <div class="hdr-row">
-      <img src="et-mark.png" class="logo" alt="ET studio">
-      <div class="ttl"><h1>ריכוז יומי</h1></div></div>
-    <div class="hdate-row"><button class="dbtn" data-day="-1" aria-label="יום קודם">›</button><div class="hdate" id="rkHdrDate" data-today></div><button class="dbtn" data-day="1" aria-label="יום הבא">‹</button></div>
-    <div class="hdr-ctl"><button class="pill" data-b="118">סניף 118</button><button class="pill" data-b="208">סניף 208</button><button class="back" data-back>חזרה ›</button></div>
-    <div class="cats"></div>
+  <div class="hdr compact" id="rkHdr">
+    <div class="mini-bar">
+      <img src="et-mark.png" alt="ET studio">
+      <div class="t">ריכוז יומי · <span id="rkBranch"></span><small>העוזר הניהולי</small></div>
+      <div class="dt" id="rkMiniDate"></div>
+    </div>
+    <div class="hdr-more"><div class="hdr-more-in">
+      <div class="hdate-row"><button class="dbtn" data-day="-1" aria-label="יום קודם">›</button><div class="hdate" id="rkHdrDate" data-today></div><button class="dbtn" data-day="1" aria-label="יום הבא">‹</button></div>
+      <div class="hdr-ctl"><button class="pill" data-b="118">סניף 118</button><button class="pill" data-b="208">סניף 208</button><button class="back" data-back>חזרה ›</button></div>
+      <div class="cats"></div>
+    </div></div>
+    <button class="tongue" id="rkTongue" aria-label="פתח כותרת"><span>⌄</span></button>
   </div>
-  <div class="body">
+  <div class="rkbody">
     <div class="rk" id="rkGrid"></div>
-    <button class="photo-btn" data-go="photo"><svg width="34" height="34"><use href="#i-camera"/></svg>תמונה מרוכזת</button>
-    <div class="foot"><span class="cp-link" data-cp>© 2026 ET studio · Evgeniy Tsipis — All rights reserved · כל הזכויות שמורות</span></div>
+    <div class="rk-foot">
+      <button class="cart-btn" id="cartBtn" aria-label="עגלה"><svg><use href="#i-cart"/></svg><span class="plus">+</span></button>
+      <button class="photo-btn" data-go="photo"><svg width="26" height="26"><use href="#i-camera"/></svg>תמונה מרוכזת</button>
+    </div>
+    <div class="rk-copy"><span class="cp-link" data-cp>© 2026 ET studio · Evgeniy Tsipis — כל הזכויות שמורות</span></div>
   </div>
 </div>
+<div class="zoom-ov" id="zoomOv"></div>
 
 <!-- ═══════════ תמונה מרוכזת ═══════════ -->
 <div id="screen-photo" class="screen">
@@ -434,7 +485,7 @@ table.al td.x{width:34px;text-align:center}
     <div class="ps-grid" id="psGrid"></div>
   </div>
   <div class="ps-bar">
-    <button class="p" id="btnSave">💾 שמור כתמונה</button>
+    <button class="p" id="btnSave">🖼️ שמור בתמונות</button>
     <button class="s" id="btnShare">📤 שתף</button>
     <button class="s" data-back>✕</button>
   </div>
@@ -612,15 +663,15 @@ function ageColor(a){return a>=9?'#7A1F1F':a>=6?'#C0392B':a>=3?'#D9822B':'#2E8B5
 const SCREENS=['home','app','rikuz','photo','frame'];
 function show(id){SCREENS.forEach(s=>document.getElementById('screen-'+s).classList.toggle('active',s===id))}
 function go(key){
-  if(key==='rikuz'){stack.push('rikuz');renderRikuz();show('rikuz');return}
-  if(key==='photo'){stack.push('photo');renderPhoto();show('photo');return}
+  if(key==='rikuz'){stack.push('rikuz');show('rikuz');renderRikuz();return}
+  if(key==='photo'){stack.push('photo');show('photo');renderPhoto();return}
   stack.push('app:'+key);show('app');renderApp(key);
   document.getElementById('appBody').scrollTop=0;
 }
 function back(){
   stack.pop();const top=stack[stack.length-1]||'home';
   if(top==='home'){renderHome();show('home')}
-  else if(top==='rikuz'){renderRikuz();show('rikuz')}
+  else if(top==='rikuz'){show('rikuz');renderRikuz()}
   else if(top.startsWith('app:')){show('app');renderApp(top.slice(4))}
   else show(top);
   if(document.getElementById('frame').src&&top!=='frame')document.getElementById('frame').src='about:blank';
@@ -639,7 +690,7 @@ document.addEventListener('click',e=>{
   const p=e.target.closest('[data-b]');if(p){branch=+p.dataset.b;ls.set('ma_branch',branch);subscribeExpiry();renderAll();return}
   const dn=e.target.closest('[data-day]');if(dn){const x=new Date(day);x.setDate(x.getDate()+(+dn.dataset.day));day=startOfDay(x);renderAll();return}
   if(e.target.closest('[data-today]')&&!isToday(day)){day=startOfDay(new Date());renderAll();return}
-  const ap=e.target.closest('[data-panel]');if(ap){go(ap.dataset.panel);return}
+  const ap=e.target.closest('[data-panel]');if(ap){if(!zoomSuppress)go(ap.dataset.panel);return}
   if(e.target.closest('[data-cp]')){document.getElementById('cpOv').classList.add('active');return}
   if(e.target.id==='cpClose'||e.target.id==='cpOv'){document.getElementById('cpOv').classList.remove('active');return}
   const ct=e.target.closest('[data-cat]');if(ct){toast(CATS.find(c=>c[0]===ct.dataset.cat)[1]+' — בקרוב');return}
@@ -711,7 +762,7 @@ function initLens(){
   ['pointerup','pointercancel','pointerleave'].forEach(t=>box.addEventListener(t,stop));
   box.addEventListener('contextmenu',e=>e.preventDefault());
 }
-function refit(){const t=stack[stack.length-1]||'';if(t.startsWith('app:')&&FIT[t.slice(4)]){document.getElementById('appBody').classList.add('fit');fitScreen(t.slice(4))}}
+function refit(){const t=stack[stack.length-1]||'';if(t==='rikuz')fitPanels(document.getElementById('rkGrid'));if(t==='photo')fitPanels(document.getElementById('psGrid'));if(t.startsWith('app:')&&FIT[t.slice(4)]){document.getElementById('appBody').classList.add('fit');fitScreen(t.slice(4))}}
 addEventListener('resize',refit);
 if(document.fonts)document.fonts.ready.then(refit); // אחרי טעינת הגופן Heebo — מתאימים מחדש
 
@@ -810,7 +861,7 @@ function panelData(d){
     s.pachat?`<div class="it"><span class="k">📉 פחת:</span> ${s.pachat.cancelled?'🚫 בוטל':esc(s.pachat.items.join(', '))+' ['+s.pachat.codes.join(',')+']'}</div>`:'',
   ].join('')||'<div class="mut">אין ספירות היום</div>';
   const orders=o.length?o.map(x=>`<div class="it" style="${x.past?'opacity:.45':''}">${x.ic||'📦'} ${esc(x.nm)} <span class="k">${x.dl}</span></div>`).join(''):'<div class="mut">אין הזמנות</div>';
-  const sidur=sd.ok?sd.depts.map(dp=>`<div class="it"><span class="k">${esc(dp.name)} (${dp.work.length}):</span> ${dp.work.map(w=>esc(w.name)).join(', ')||'—'}</div>`).join(''):`<div class="mut">${d.getDay()===6?'שבת':'אין סידור לתאריך זה'}</div>`;
+  const sidur=sd.ok?'<div class="sd2">'+sd.depts.filter(dp=>dp.work.length).map(dp=>`<div class="sdh">${esc(dp.name)} (${dp.work.length})</div>`+dp.work.map(w=>`<div class="sdr"><span>${esc(w.name)}</span><b>${esc(shortH(w.v))}</b></div>`).join('')).join('')+'</div>':`<div class="mut">${d.getDay()===6?'שבת':'אין סידור לתאריך זה'}</div>`;
   const ex=(arr)=>arr.map(p=>esc(p.name)).join(', ');
   const expiryH=!expiryLive?'<div class="mut">טוען…</div>':
     (e.expired.length?`<div class="it" style="color:var(--maroon)"><span class="k" style="color:var(--maroon)">⛔ פג (${e.expired.length}):</span> ${ex(e.expired.slice(0,4))}${e.expired.length>4?'…':''}</div>`:'')+
@@ -821,27 +872,85 @@ function panelData(d){
   return {spira,orders,sidur,expiry:expiryH,tech:techH,quality,counts:{orders:o.length,sidur:sd.ok?sd.total:0,tech:t.length}};
 }
 const PANELS=[
-  ['orders','🚚 הזמנות','Orders'],['spira','📋 ספירות','Counts'],['expiry','⏰ פגי תוקף היום ומחר','Expiry'],
-  ['sidur','👥 סידור עבודה להיום','Staff'],['quality','🛡️ איכות ותברואה','Quality'],['tech','🔧 תקלות','Tickets']];
+  ['orders','🚚 הזמנות'],['spira','📋 ספירות'],['expiry','⏰ פגי תוקף היום ומחר'],
+  ['sidur','👥 סידור עבודה להיום'],['quality','🛡️ איכות ותברואה']];
+const shortDay=d=>d.getDate()+'.'+(d.getMonth()+1)+" · יום "+'אבגדהוש'[d.getDay()]+"'";
+const panelTitle=(k,he,p)=>he+(p.counts[k]!=null?' ('+p.counts[k]+')':'');
+
+/* גודל גופן מקסימלי בכל חלון — שהתוכן ייכנס בלי חיתוך */
+function fitBox(pc,lo=5,hi=22){
+  if(!pc||!pc.clientHeight)return;
+  const ok=()=>{if(pc.scrollHeight>pc.clientHeight+1||pc.scrollWidth>pc.clientWidth+1)return false;
+    for(const el of pc.querySelectorAll('.sdr span'))if(el.scrollWidth>el.clientWidth+1)return false;
+    for(const el of pc.querySelectorAll('.sdh'))if(el.getBoundingClientRect().height>parseFloat(getComputedStyle(el).fontSize)*2)return false;
+    return true};
+  let best=lo;for(let i=0;i<14;i++){const m=(lo+hi)/2;pc.style.setProperty('--pf',m+'px');if(ok()){best=m;lo=m}else hi=m}
+  pc.style.setProperty('--pf',best+'px');
+  const sd=pc.querySelector('.sd2'); // סידור: מותחים את הרווח בין השורות עד תחתית החלון
+  if(sd){let a=1.18,b=3,bl=a;for(let i=0;i<12;i++){const m=(a+b)/2;sd.style.lineHeight=m;if(ok()){bl=m;a=m}else b=m}sd.style.lineHeight=bl}
+}
+function fitPanels(root){root.querySelectorAll('.pc').forEach(pc=>fitBox(pc))}
+
 function renderRikuz(){
   paintDates();
+  document.getElementById('rkBranch').textContent='סניף '+branch;
+  document.getElementById('rkMiniDate').textContent=shortDay(day);
   const p=panelData(day);
   document.getElementById('rkGrid').innerHTML=PANELS.map(([k,he])=>
-    `<div class="pn" style="grid-area:${k}" data-panel="${k}"><h3>${he}${p.counts[k]!=null?' ('+p.counts[k]+')':''}</h3>${p[k]}</div>`).join('');
+    `<div class="pn" style="grid-area:${k}" data-panel="${k}"><h3>${panelTitle(k,he,p)}</h3><div class="pc">${p[k]}</div></div>`).join('');
+  fitPanels(document.getElementById('rkGrid'));
 }
 function renderPhoto(){
   document.getElementById('psBranch').textContent=BRANCHES[branch];
-  document.getElementById('psDate').textContent=day.getDate()+'.'+(day.getMonth()+1)+" · יום "+'אבגדהוש'[day.getDay()]+"'";
+  document.getElementById('psDate').textContent=shortDay(day);
   const p=panelData(day);
   document.getElementById('psGrid').innerHTML=PANELS.map(([k,he])=>
-    `<div class="ps" style="grid-area:${k}"><h4>${he}${p.counts[k]!=null?' ('+p.counts[k]+')':''}</h4>${p[k].replaceAll('class="it"','class="it"').replaceAll('class="mut"','class="it" style="color:#6E7787"')}</div>`).join('');
+    `<div class="ps" style="grid-area:${k}"><h4>${panelTitle(k,he,p)}</h4><div class="pc">${p[k]}</div></div>`).join('');
+  fitPanels(document.getElementById('psGrid'));
 }
+
+/* כותרת מקופלת: לשונית — משיכה למטה פותחת, למעלה סוגרת, הקשה מחליפה */
+(()=>{const hdr=document.getElementById('rkHdr'),t=document.getElementById('rkTongue');let y0=null,moved=false;
+  const set=o=>{hdr.classList.toggle('open',o);setTimeout(()=>fitPanels(document.getElementById('rkGrid')),380)};
+  t.addEventListener('pointerdown',e=>{y0=e.clientY;moved=false;try{t.setPointerCapture(e.pointerId)}catch{}});
+  t.addEventListener('pointermove',e=>{if(y0==null)return;const dy=e.clientY-y0;
+    if(dy>15&&!hdr.classList.contains('open')){set(true);moved=true;y0=null}else if(dy<-15&&hdr.classList.contains('open')){set(false);moved=true;y0=null}});
+  t.addEventListener('pointerup',()=>{if(!moved&&y0!=null)set(!hdr.classList.contains('open'));y0=null});
+})();
+document.getElementById('cartBtn').onclick=()=>toast('בקרוב');
+
+/* לחיצה ארוכה על חלון → נפתח לכל המסך; עזיבת האצבע → חוזר למקומו */
+let zoomSuppress=false;
+(()=>{const grid=document.getElementById('rkGrid'),ov=document.getElementById('zoomOv');let timer=null,z=null,src=null,sx=0,sy=0;
+  const open=pn=>{timer=null;src=pn;const r=pn.getBoundingClientRect(),M=10;
+    const st=parseFloat(getComputedStyle(document.querySelector('.hdr')).paddingTop)-6||0, top=Math.max(M,st+M);
+    const W=innerWidth-2*M,H=innerHeight-top-M;
+    z=document.createElement('div');z.className='zoom';z.innerHTML=pn.innerHTML;
+    Object.assign(z.style,{left:M+'px',top:top+'px',width:W+'px',height:H+'px',transition:'none'});
+    document.body.appendChild(z);const pc=z.querySelector('.pc');pc.style.removeProperty('--pf');fitBox(pc,8,44);
+    z.style.transform=`translate(${r.left-M}px,${r.top-top}px) scale(${r.width/W},${r.height/H})`;z.style.opacity='.5';
+    z.getBoundingClientRect();z.style.transition='';z.style.transform='none';z.style.opacity='1';
+    ov.classList.add('on');pn.style.visibility='hidden';zoomSuppress=true;if(navigator.vibrate)navigator.vibrate(12)};
+  const close=()=>{clearTimeout(timer);timer=null;if(!z)return;const zz=z,s=src;z=null;
+    const r=s.getBoundingClientRect(),W=zz.offsetWidth,H=zz.offsetHeight,L=zz.offsetLeft,T=zz.offsetTop;
+    zz.style.transform=`translate(${r.left-L}px,${r.top-T}px) scale(${r.width/W},${r.height/H})`;zz.style.opacity='.5';
+    ov.classList.remove('on');setTimeout(()=>{zz.remove();s.style.visibility=''},340);setTimeout(()=>zoomSuppress=false,450)};
+  grid.addEventListener('pointerdown',e=>{const pn=e.target.closest('.pn');if(!pn)return;sx=e.clientX;sy=e.clientY;clearTimeout(timer);timer=setTimeout(()=>open(pn),300)});
+  grid.addEventListener('pointermove',e=>{if(timer&&!z&&Math.hypot(e.clientX-sx,e.clientY-sy)>10){clearTimeout(timer);timer=null}});
+  ['pointerup','pointercancel'].forEach(t=>addEventListener(t,close));
+  grid.addEventListener('contextmenu',e=>e.preventDefault());
+})();
 async function posterCanvas(){
   return html2canvas(document.getElementById('poster'),{scale:2,backgroundColor:'#F4F1EA',useCORS:true});
 }
+/* שמירה לאפליקציית התמונות: ב-iPhone רק דרך חלון השיתוף ← „שמירת תמונה” */
 document.getElementById('btnSave').onclick=async()=>{
-  try{const c=await posterCanvas();const a=document.createElement('a');a.download='ריכוז-יומי-'+iso(day)+'.png';a.href=c.toDataURL('image/png');a.click();toast('התמונה נשמרה')}
-  catch{toast('לא הצלחתי ליצור תמונה — צלמו מסך')}
+  try{const c=await posterCanvas();
+    const b=await new Promise(r=>c.toBlob(r,'image/png'));
+    const f=new File([b],'ריכוז-יומי-'+iso(day)+'.png',{type:'image/png'});
+    if(navigator.canShare&&navigator.canShare({files:[f]})){toast('בחרו „שמירת תמונה”');await navigator.share({files:[f]});return}
+    const a=document.createElement('a');a.download=f.name;a.href=URL.createObjectURL(b);a.click();toast('התמונה הורדה')}
+  catch(e){if(e&&e.name==='AbortError')return;toast('לא הצלחתי ליצור תמונה — צלמו מסך')}
 };
 document.getElementById('btnShare').onclick=async()=>{
   try{const c=await posterCanvas();c.toBlob(async b=>{
