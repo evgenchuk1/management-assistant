@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="קודים">
+<meta name="theme-color" content="#203550">
+<meta name="robots" content="noindex,nofollow">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<title>כספת קודים</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--navy:#203550;--navy3:#3a5d88;--deep:#142338;--gold:#CFAB6F;--gold2:#E8D3A6;--gold3:#A8864A;--cream:#F4F1EA;--cream2:#EAE4D6;--card:#FFFDF8;--ink:#1B2A3E;--muted:#6E7787;--red:#C0392B;--green:#2E8B57;
+  --st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px)}
+html,body{height:100%;background:var(--cream)}
+body{font-family:'Heebo',-apple-system,'Segoe UI',Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;overflow:hidden}
+button,input,textarea{font:inherit}
+.scr{position:fixed;inset:0;display:none;flex-direction:column}
+.scr.on{display:flex}
+.hdr{flex-shrink:0;color:#fff;padding:calc(var(--st) + 10px) 14px 12px;background:linear-gradient(160deg,var(--navy3),var(--navy) 55%,var(--deep));border-bottom:3px solid var(--gold);box-shadow:0 4px 12px rgba(20,35,56,.35)}
+.hrow{display:flex;align-items:center;gap:10px}
+.hrow img{width:40px;height:40px;border-radius:50%;border:2px solid var(--gold);background:#fff}
+.hrow h1{flex:1;font-size:26px;font-weight:900;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hrow h1 small{display:block;font-size:13px;color:var(--gold2);font-weight:700}
+.hb{flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);background:linear-gradient(180deg,#7E97B8,#4F6E96);color:#fff;border-radius:999px;padding:7px 14px;font-size:16px;font-weight:800;cursor:pointer}
+.body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 14px calc(30px + var(--sb))}
+/* lock */
+#lock{background:linear-gradient(170deg,var(--navy3),var(--navy) 50%,var(--deep));color:#fff;align-items:center;justify-content:center;padding:24px}
+.lk{width:100%;max-width:360px;text-align:center}
+.lk .ic{width:110px;height:110px;margin:0 auto 14px;border-radius:26px;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.lk h1{font-size:30px;font-weight:900}
+.lk p{color:var(--gold2);font-size:15px;margin:6px 0 18px;line-height:1.5}
+.lk input{width:100%;border:2px solid var(--gold);border-radius:14px;padding:13px 14px;font-size:20px;text-align:center;background:#fff;color:var(--ink);margin-bottom:10px;direction:ltr}
+.lk label{display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;margin:4px 0 14px;color:#fff}
+.lk label input{width:auto;margin:0;transform:scale(1.4)}
+.gbtn{width:100%;border:none;border-radius:16px;padding:14px;font-size:19px;font-weight:900;color:var(--deep);cursor:pointer;
+  background:linear-gradient(170deg,#F3E3BE,var(--gold) 55%,#B8955A);box-shadow:0 5px 0 #8A6C3A}
+.gbtn:active{transform:translateY(3px);box-shadow:0 2px 0 #8A6C3A}
+.lk .err{color:#FF9C8F;font-weight:800;min-height:22px;margin-top:8px}
+.lk .small{background:none;border:none;color:var(--gold2);text-decoration:underline;margin-top:14px;cursor:pointer;font-size:14px}
+/* home */
+.brs{display:grid;grid-template-columns:1fr;gap:14px}
+.br{position:relative;border:none;cursor:pointer;border-radius:24px;padding:20px 18px;display:flex;align-items:center;gap:16px;color:#fff;text-align:right;
+  background:linear-gradient(165deg,#3B5E8A,#24405F 48%,#182C45);box-shadow:0 7px 0 #0E1A2A,0 14px 22px rgba(16,28,46,.4),inset 0 2px 0 rgba(255,255,255,.2);border-top:2px solid rgba(232,211,166,.55)}
+.br:active{transform:translateY(6px);box-shadow:0 1px 0 #0E1A2A}
+.br .n{font-size:54px;font-weight:900;line-height:1;color:var(--gold2);min-width:118px;text-align:center;text-shadow:0 3px 6px rgba(0,0,0,.4)}
+.br .t{flex:1;font-size:20px;font-weight:800}
+.br .t small{display:block;font-size:14px;color:var(--gold2);font-weight:600;margin-top:2px}
+.br.gen{background:linear-gradient(170deg,#F3E3BE,var(--gold) 55%,#B8955A);color:var(--deep);box-shadow:0 7px 0 #8A6C3A,0 14px 22px rgba(120,90,40,.35);border-top-color:#fff}
+.br.gen .n{font-size:40px;color:var(--deep)}
+.br.gen .t small{color:#6B5226}
+/* search */
+.sbox{display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--gold);border-radius:14px;padding:4px 10px;margin-bottom:14px}
+.sbox input{flex:1;min-width:0;border:none;outline:none;font-size:17px;padding:8px 0;background:transparent}
+/* systems */
+.sys{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.sy{border:none;cursor:pointer;border-radius:20px;min-height:110px;padding:14px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#fff;
+  background:linear-gradient(165deg,#3B5E8A,#24405F 48%,#182C45);box-shadow:0 6px 0 #0E1A2A,0 10px 16px rgba(16,28,46,.35);border-top:2px solid rgba(232,211,166,.5)}
+.sy:active{transform:translateY(5px);box-shadow:0 1px 0 #0E1A2A}
+.sy .e{font-size:36px;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35))}
+.sy .l{font-size:18px;font-weight:900;line-height:1.15}
+.sy .c{font-size:12px;color:var(--gold2);font-weight:700}
+.sy.empty{opacity:.55}
+.sy.add{background:#fff;color:var(--navy);border:2px dashed var(--gold);box-shadow:none}
+/* entries */
+.ent{background:var(--card);border:1px solid var(--cream2);border-radius:18px;padding:12px 14px;margin-bottom:12px;box-shadow:0 2px 0 rgba(207,171,111,.35),0 6px 14px rgba(32,53,80,.07)}
+.eh{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.eh h3{flex:1;font-size:19px;font-weight:900;color:var(--navy)}
+.eh .where{font-size:12px;color:var(--gold3);font-weight:700}
+.dw{position:relative;flex-shrink:0}
+.dots{width:34px;height:34px;border-radius:50%;border:1px solid var(--cream2);background:#fff;font-size:20px;font-weight:900;color:var(--navy);cursor:pointer}
+.menu{position:absolute;left:0;top:38px;z-index:20;background:#fff;border:1.5px solid var(--gold);border-radius:12px;box-shadow:0 10px 24px rgba(20,35,56,.25);overflow:hidden;min-width:130px;text-align:right}
+.menu button{display:block;width:100%;border:none;background:#fff;padding:10px 12px;font-size:16px;font-weight:700;cursor:pointer;text-align:right}
+.menu button+button{border-top:1px solid #EFEADF}
+.menu .del{color:var(--red)}
+.fl{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px solid #F0EBE0}
+.fl:first-of-type{border-top:none}
+.fk{flex-shrink:0;min-width:70px;font-size:14px;color:var(--muted);font-weight:700}
+.fv{flex:1;min-width:0;font-size:20px;font-weight:800;direction:ltr;text-align:right;letter-spacing:.5px;word-break:break-all;font-family:'Heebo',monospace}
+.fv.hid{letter-spacing:3px;color:var(--muted)}
+.ib{flex-shrink:0;width:40px;height:40px;border-radius:12px;border:1px solid var(--cream2);background:#fff;font-size:18px;cursor:pointer}
+.ib.cp{background:linear-gradient(180deg,#45B07A,var(--green));color:#fff;border:none}
+.note{font-size:14px;color:#6B5226;background:#FBF4E6;border:1px solid #EBDDBF;border-radius:10px;padding:6px 10px;margin-top:6px;line-height:1.5}
+.emptyb{text-align:center;color:var(--muted);padding:30px 10px;font-size:16px}
+.addb{display:block;width:100%;margin:6px 0 14px;border:2px dashed var(--gold);background:#fff;color:var(--navy);border-radius:16px;padding:12px;font-size:17px;font-weight:900;cursor:pointer}
+/* edit form */
+.frm{background:var(--card);border:2px solid var(--gold);border-radius:18px;padding:14px;margin-bottom:14px}
+.frm h3{font-size:18px;font-weight:900;color:var(--navy);margin-bottom:10px}
+.frm input,.frm textarea{width:100%;border:1.5px solid var(--cream2);border-radius:12px;padding:10px;font-size:16px;background:#fff;margin-bottom:8px}
+.frm .pair{display:flex;gap:6px}
+.frm .pair input:first-child{flex:0 0 36%}
+.frm .pair input:last-child{direction:ltr}
+.frm .row{display:flex;gap:8px}
+.frm .row button{flex:1;border:none;border-radius:12px;padding:11px;font-size:16px;font-weight:900;cursor:pointer}
+.sv{background:linear-gradient(170deg,var(--navy3),var(--navy));color:#fff}
+.cn{background:#EEF2F8;color:var(--navy)}
+.toast{position:fixed;left:50%;bottom:calc(30px + var(--sb));transform:translateX(-50%);background:var(--deep);color:#fff;padding:10px 18px;border-radius:14px;font-size:15px;font-weight:700;z-index:99;border:1.5px solid var(--gold);display:none}
+.foot{text-align:center;font-size:12px;color:var(--muted);margin-top:22px;line-height:1.6}
+.foot button{background:none;border:none;color:var(--navy);text-decoration:underline;font-size:13px;cursor:pointer;margin:0 6px}
+</style>
+</head>
+<body>
+
+<!-- 🔒 LOCK / SETUP -->
+<div id="lock" class="scr on"><div class="lk">
+  <img class="ic" src="icon-180.png" alt="">
+  <h1>כספת קודים</h1>
+  <p id="lkMsg">טוען…</p>
+  <input id="pw" type="password" autocomplete="current-password" placeholder="סיסמת כניסה" hidden>
+  <input id="pw2" type="password" autocomplete="new-password" placeholder="שוב — לאימות" hidden>
+  <label id="remL" hidden><input type="checkbox" id="rem" checked> לזכור במכשיר הזה</label>
+  <button class="gbtn" id="lkGo" hidden>פתיחה 🔓</button>
+  <div class="err" id="lkErr"></div>
+  <input type="file" id="impFile" accept="application/json,.json" hidden>
+</div></div>
+
+<!-- HOME -->
+<div id="home" class="scr">
+  <div class="hdr"><div class="hrow"><img src="icon-180.png" alt=""><h1>כספת קודים<small>סיסמאות וקודים לפי סניף</small></h1><button class="hb" data-act="lock">🔒 נעילה</button></div></div>
+  <div class="body">
+    <div class="sbox"><span>🔍</span><input id="q" type="search" placeholder="חיפוש בכל הסניפים…" autocomplete="off"></div>
+    <div id="qres"></div>
+    <div class="brs" id="brs"></div>
+    <div class="foot">🔐 הנתונים מוצפנים (AES-256) ונפתחים רק בסיסמה שלך<br>
+      <button data-act="import">ייבוא מקובץ</button><button data-act="export">גיבוי (קובץ מוצפן)</button><button data-act="chpw">שינוי סיסמה</button><button data-act="forget">שכח מכשיר זה</button><br>
+      © 2026 ET studio · Evgeniy Tsipis</div>
+  </div>
+</div>
+
+<!-- BRANCH (systems) -->
+<div id="branch" class="scr">
+  <div class="hdr"><div class="hrow"><img src="icon-180.png" alt=""><h1 id="brT"></h1><button class="hb" data-act="back">חזרה ›</button></div></div>
+  <div class="body"><div class="sys" id="sys"></div></div>
+</div>
+
+<!-- SYSTEM (entries) -->
+<div id="system" class="scr">
+  <div class="hdr"><div class="hrow"><img src="icon-180.png" alt=""><h1 id="syT"></h1><button class="hb" data-act="back">חזרה ›</button></div></div>
+  <div class="body" id="ents"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═════ storage (Firestore REST, ciphertext only) ═════ */
+const FS='https://firestore.googleapis.com/v1/projects/expiry-tracker-ebf92/databases/(default)/documents/ma_vault/main?key=AIzaSyCRBmBDYpcERv_tbwd0E7GEskm-_xHYBhk';
+const ITER=600000;
+const BR=[['118','סניף 118','הסניף הקבוע'],['208','סניף 208',''],['266','סניף 266',''],['gen','🔑','']];
+const DEF_SYS=[['pc','מחשב מנהל','💻'],['sap','SAP','📊'],['rema','Rema','🧾'],['bosa','BosaNova','💳'],['alarm','דריכת אזעקה','🚨'],['doors','דלתות וכספות','🔐'],['other','מערכות נוספות','🧩']];
+const b64=u=>btoa(String.fromCharCode(...new Uint8Array(u))),ub64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+let KEY=null,SALT=null,DATA=null,cur={br:null,sys:null},edit=null,menu=null,shown=new Set();
+
+async function fsGet(){const r=await fetch(FS,{cache:'no-store'});if(r.status===404)return null;if(!r.ok)throw new Error(r.status);
+  const j=await r.json(),o={};for(const [k,v] of Object.entries(j.fields||{}))o[k]=v.stringValue??v.integerValue;return o}
+async function fsPut(o){const r=await fetch(FS,{method:'PATCH',headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({fields:Object.fromEntries(Object.entries(o).map(([k,v])=>[k,{stringValue:String(v)}]))})});if(!r.ok)throw new Error(r.status)}
+async function derive(pw,salt){const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:ITER,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
+async function enc(obj){const iv=crypto.getRandomValues(new Uint8Array(12));
+  return {iv:b64(iv),ct:b64(await crypto.subtle.encrypt({name:'AES-GCM',iv},KEY,new TextEncoder().encode(JSON.stringify(obj))))}}
+async function dec(doc,key){return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:ub64(doc.iv)},key,ub64(doc.ct))))}
+async function save(){DATA.updated=new Date().toISOString();const e=await enc(DATA);await fsPut({v:'1',salt:SALT,iv:e.iv,ct:e.ct,updatedAt:DATA.updated})}
+
+/* מפתח זכור במכשיר: CryptoKey שאי אפשר לייצא, ב-IndexedDB */
+const idb=()=>new Promise((ok,no)=>{const r=indexedDB.open('vault',1);r.onupgradeneeded=()=>r.result.createObjectStore('k');r.onsuccess=()=>ok(r.result);r.onerror=no});
+async function kGet(){try{const d=await idb();return await new Promise(ok=>{const t=d.transaction('k').objectStore('k').get('key');t.onsuccess=()=>ok(t.result);t.onerror=()=>ok(null)})}catch{return null}}
+async function kSet(v){try{const d=await idb();d.transaction('k','readwrite').objectStore('k').put(v,'key')}catch{}}
+async function kDel(){try{const d=await idb();d.transaction('k','readwrite').objectStore('k').delete('key')}catch{}}
+
+/* ═════ UI helpers ═════ */
+const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function toast(t){const e=$('toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',1800)}
+const stack=[];function show(id){document.querySelectorAll('.scr').forEach(s=>s.classList.toggle('on',s.id===id))}
+function go(id){stack.push(id);render();show(id)}
+function back(){stack.pop();render();show(stack.at(-1)||'home')}
+const brName=b=>(BR.find(x=>x[0]===b)||[])[1]==='🔑'?'כללי ואישי':(BR.find(x=>x[0]===b)||[])[1];
+function sysList(b){const d=DATA.br[b]||(DATA.br[b]={sys:[]});
+  DEF_SYS.forEach(([id,n,e])=>{if(b!=='gen'&&!d.sys.find(s=>s.id===id))d.sys.push({id,name:n,icon:e,items:[]})});
+  if(b==='gen'&&!d.sys.length)d.sys.push({id:'gen',name:'כללי',icon:'🔑',items:[]});return d.sys}
+
+/* ═════ LOCK FLOW ═════ */
+let VAULT=null;
+async function start(){
+  try{VAULT=await fsGet()}catch{$('lkMsg').textContent='אין חיבור לאינטרנט — נסו שוב';return}
+  if(!VAULT){ // כספת חדשה
+    $('lkMsg').innerHTML='כספת חדשה: בחרו סיסמת כניסה (לפחות 8 תווים).<br>בלי הסיסמה אי אפשר לפתוח את הנתונים — שמרו אותה!';
+    $('pw').placeholder='סיסמה חדשה';['pw','pw2','remL','lkGo'].forEach(i=>$(i).hidden=false);$('lkGo').textContent='יצירת כספת 🔐';$('lkGo').dataset.mode='new';return}
+  const k=await kGet();
+  if(k&&k.salt===VAULT.salt){try{DATA=await dec(VAULT,k.key);KEY=k.key;SALT=VAULT.salt;opened();return}catch{await kDel()}}
+  $('lkMsg').textContent='הקלידו את סיסמת הכניסה';['pw','remL','lkGo'].forEach(i=>$(i).hidden=false);$('lkGo').dataset.mode='open';setTimeout(()=>$('pw').focus(),100);
+}
+async function lkGo(){
+  const pw=$('pw').value,mode=$('lkGo').dataset.mode;$('lkErr').textContent='';
+  if(mode==='new'){if(pw.length<8){$('lkErr').textContent='לפחות 8 תווים';return}if(pw!==$('pw2').value){$('lkErr').textContent='הסיסמאות לא זהות';return}
+    $('lkGo').disabled=true;$('lkGo').textContent='מצפין…';const s=crypto.getRandomValues(new Uint8Array(16));SALT=b64(s);KEY=await derive(pw,s);
+    DATA={br:{}};await save();if($('rem').checked)await kSet({key:KEY,salt:SALT});opened();toast('הכספת נוצרה ✓');return}
+  if(!pw)return;$('lkGo').disabled=true;$('lkGo').textContent='פותח…';
+  try{const key=await derive(pw,ub64(VAULT.salt));DATA=await dec(VAULT,key);KEY=key;SALT=VAULT.salt;if($('rem').checked)await kSet({key,salt:SALT});opened()}
+  catch{$('lkErr').textContent='סיסמה שגויה';$('lkGo').disabled=false;$('lkGo').textContent='פתיחה 🔓'}
+}
+function opened(){$('pw').value=$('pw2').value='';stack.length=0;stack.push('home');render();show('home');
+}
+function lockNow(){KEY=null;DATA=null;shown.clear();location.reload()}
+
+/* ═════ RENDER ═════ */
+function render(){
+  if(!DATA)return;const top=stack.at(-1);
+  if(top==='home'){
+    $('brs').innerHTML=BR.map(([id,n,sub])=>{const c=(DATA.br[id]?.sys||[]).reduce((a,s)=>a+s.items.length,0);
+      return `<button class="br${id==='gen'?' gen':''}" data-br="${id}"><span class="n">${id==='gen'?'🔑':id}</span><span class="t">${id==='gen'?'כללי ואישי':n}<small>${sub?sub+' · ':''}${c} רשומות</small></span></button>`}).join('');
+    doSearch()}
+  if(top==='branch'){const b=cur.br;$('brT').innerHTML=esc(brName(b))+'<small>בחרו מערכת</small>';
+    $('sys').innerHTML=sysList(b).map(s=>`<button class="sy${s.items.length?'':' empty'}" data-sys="${s.id}"><span class="e">${s.icon||'🔑'}</span><span class="l">${esc(s.name)}</span><span class="c">${s.items.length?s.items.length+' רשומות':'ריק'}</span></button>`).join('')+
+      `<button class="sy add" data-act="addsys"><span class="e">＋</span><span class="l">מערכת חדשה</span></button>`}
+  if(top==='system'){const s=sysList(cur.br).find(x=>x.id===cur.sys);$('syT').innerHTML=esc(s.icon+' '+s.name)+'<small>'+esc(brName(cur.br))+'</small>';
+    let h=edit?formHtml(s):'<button class="addb" data-act="add">＋ הוספת רשומה</button>';
+    h+=s.items.length?s.items.map((it,i)=>entHtml(it,`${cur.br}|${s.id}|${i}`)).join(''):'<div class="emptyb">עדיין אין רשומות כאן</div>';
+    if(!s.items.length&&!DEF_SYS.find(d=>d[0]===s.id))h+='<button class="addb" data-act="delsys" style="color:var(--red)">🗑️ מחיקת המערכת</button>';
+    $('ents').innerHTML=h}
+}
+function entHtml(it,ref,where){
+  return `<div class="ent"><div class="eh"><h3>${esc(it.t)}${where?`<div class="where">${esc(where)}</div>`:''}</h3>
+    <div class="dw"><button class="dots" data-act="menu" data-ref="${ref}">⋮</button>${menu===ref?`<div class="menu"><button data-act="edit" data-ref="${ref}">✏️ עריכה</button><button data-act="del" data-ref="${ref}" class="del">🗑️ מחיקה</button></div>`:''}</div></div>
+    ${(it.f||[]).map((f,j)=>{const k=ref+'#'+j,vis=shown.has(k)||!f.s;
+      return `<div class="fl"><span class="fk">${esc(f.k||'')}</span><span class="fv${vis?'':' hid'}">${vis?esc(f.v):'••••••'}</span>
+      ${f.s?`<button class="ib" data-act="eye" data-k="${k}">${vis?'🙈':'👁️'}</button>`:''}<button class="ib cp" data-act="copy" data-ref="${ref}" data-j="${j}">⧉</button></div>`}).join('')}
+    ${it.n?`<div class="note">${esc(it.n)}</div>`:''}</div>`}
+function formHtml(s){const it=edit.i>=0?s.items[edit.i]:{t:'',f:[{k:'משתמש',v:''},{k:'סיסמה',v:'',s:1}],n:''};
+  const f=[...(it.f||[])];while(f.length<4)f.push({k:'',v:''});
+  return `<div class="frm"><h3>${edit.i>=0?'✏️ עריכה':'＋ רשומה חדשה'}</h3>
+    <input id="eT" placeholder="כותרת (למשל: SAP של סער)" value="${esc(it.t)}">
+    ${f.map((x,j)=>`<div class="pair"><input id="eK${j}" placeholder="שדה" value="${esc(x.k)}"><input id="eV${j}" placeholder="ערך" value="${esc(x.v)}" autocomplete="off" autocapitalize="off" spellcheck="false"></div>`).join('')}
+    <textarea id="eN" rows="2" placeholder="הערה / הוראות (לא חובה)">${esc(it.n||'')}</textarea>
+    <div class="row"><button class="sv" data-act="esave">שמירה</button><button class="cn" data-act="ecancel">ביטול</button></div></div>`}
+function refItem(ref){const [b,sid,i]=ref.split('|');const s=sysList(b).find(x=>x.id===sid);return {b,s,i:+i,it:s&&s.items[+i]}}
+function doSearch(){const q=($('q').value||'').trim().toLowerCase();if(!q){$('qres').innerHTML='';$('brs').style.display='';return}
+  const out=[];for(const [b] of BR)for(const s of (DATA.br[b]?.sys||[]))s.items.forEach((it,i)=>{
+    const hay=[it.t,it.n,...(it.f||[]).map(f=>f.k)].join(' ').toLowerCase();if(hay.includes(q))out.push(entHtml(it,`${b}|${s.id}|${i}`,brName(b)+' · '+s.name))});
+  $('brs').style.display='none';$('qres').innerHTML=out.join('')||'<div class="emptyb">לא נמצא</div>'}
+
+/* ═════ ACTIONS ═════ */
+document.addEventListener('click',async e=>{
+  if(e.target.id==='lkGo'){lkGo();return}
+  const br=e.target.closest('[data-br]');if(br){cur.br=br.dataset.br;go('branch');return}
+  const sy=e.target.closest('[data-sys]');if(sy){cur.sys=sy.dataset.sys;edit=null;menu=null;go('system');return}
+  const a=e.target.closest('[data-act]');if(!a)return;const act=a.dataset.act,ref=a.dataset.ref;
+  try{
+    if(act==='back'){edit=null;menu=null;back()}
+    if(act==='lock')lockNow();
+    if(act==='eye'){const k=a.dataset.k;shown.has(k)?shown.delete(k):shown.add(k);render()}
+    if(act==='copy'){const {it}=refItem(ref);await navigator.clipboard.writeText(it.f[+a.dataset.j].v);toast('הועתק ✓');
+      setTimeout(()=>navigator.clipboard.writeText('').catch(()=>{}),60000)} // ניקוי הלוח אחרי דקה
+    if(act==='menu'){e.stopPropagation();menu=menu===ref?null:ref;render();return}
+    if(act==='add'){edit={i:-1};menu=null;render()}
+    if(act==='edit'){const r=refItem(ref);cur.br=r.b;cur.sys=r.s.id;edit={i:r.i};menu=null;if(stack.at(-1)!=='system')stack.push('system');render();show('system');$('ents').scrollTop=0}
+    if(act==='ecancel'){edit=null;render()}
+    if(act==='esave'){const s=sysList(cur.br).find(x=>x.id===cur.sys),t=$('eT').value.trim();if(!t){toast('חסרה כותרת');return}
+      const old=edit.i>=0?s.items[edit.i]:null,f=[];
+      for(let j=0;j<4;j++){const k=$('eK'+j).value.trim(),v=$('eV'+j).value.trim();if(v)f.push({k,v,s:/סיסמ|קוד|pass|pin/i.test(k)||(old?.f?.[j]?.s&&old.f[j].v===v)?1:0})}
+      const it={t,f,n:$('eN').value.trim()};if(edit.i>=0)s.items[edit.i]=it;else s.items.push(it);
+      a.disabled=true;await save();edit=null;render();toast('נשמר ✓')}
+    if(act==='del'){const r=refItem(ref);menu=null;if(!confirm('למחוק את „'+r.it.t+'”?')){render();return}r.s.items.splice(r.i,1);await save();render();toast('נמחק')}
+    if(act==='addsys'){const n=prompt('שם המערכת החדשה (למשל: מצלמות)');if(!n)return;sysList(cur.br).push({id:'s'+Date.now().toString(36),name:n.trim(),icon:'🔑',items:[]});await save();render()}
+    if(act==='delsys'){const L=sysList(cur.br),i=L.findIndex(x=>x.id===cur.sys);if(!confirm('למחוק את המערכת?'))return;L.splice(i,1);await save();back()}
+    if(act==='import')$('impFile').click();
+    if(act==='forget'){await kDel();toast('המכשיר נשכח — בפעם הבאה תתבקש סיסמה')}
+    if(act==='export'){const blob=new Blob([JSON.stringify({vault:'kodim',salt:SALT,...(await enc(DATA))})],{type:'application/json'});
+      const u=URL.createObjectURL(blob),l=document.createElement('a');l.href=u;l.download='kodim-backup-encrypted.json';l.click()}
+    if(act==='chpw'){const p1=prompt('סיסמה חדשה (לפחות 8 תווים)');if(!p1||p1.length<8){p1&&toast('קצרה מדי');return}if(prompt('שוב — לאימות')!==p1){toast('לא זהות');return}
+      const s=crypto.getRandomValues(new Uint8Array(16));SALT=b64(s);KEY=await derive(p1,s);await save();await kDel();await kSet({key:KEY,salt:SALT});toast('הסיסמה הוחלפה ✓')}
+  }catch(err){console.log(err);toast('שגיאה — בדקו אינטרנט');a.disabled=false}
+});
+document.addEventListener('click',e=>{if(menu&&!e.target.closest('.dots')&&!e.target.closest('.menu')){menu=null;render()}},true);
+$('pw').addEventListener('keydown',e=>{if(e.key==='Enter')lkGo()});$('pw2').addEventListener('keydown',e=>{if(e.key==='Enter')lkGo()});
+document.addEventListener('input',e=>{if(e.target.id==='q')doSearch()});
+/* ייבוא נתונים ראשוני מקובץ JSON (רק אחרי פתיחה; הקובץ נשאר במכשיר, לשרת עולה רק הגרסה המוצפנת) */
+$('impFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f||!DATA)return;
+  try{const j=JSON.parse(await f.text());if(!j.br)throw 0;if(!confirm('לייבא '+Object.values(j.br).reduce((a,b)=>a+b.sys.reduce((x,s)=>x+s.items.length,0),0)+' רשומות לכספת?'))return;
+    for(const [b,v] of Object.entries(j.br)){const L=sysList(b);for(const s of v.sys){let t=L.find(x=>x.id===s.id);if(!t){t={id:s.id,name:s.name,icon:s.icon,items:[]};L.push(t)}t.items.push(...s.items)}}
+    await save();render();toast('יובא ✓ — מחקו עכשיו את הקובץ מהמחשב')}catch{toast('קובץ לא תקין')}});
+/* נעילה אוטומטית אחרי 5 דקות ברקע (אם לא „לזכור”) */
+let hid=0;document.addEventListener('visibilitychange',async()=>{if(document.hidden){hid=Date.now();return}
+  if(DATA&&hid&&Date.now()-hid>5*60000&&!(await kGet()))lockNow()});
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+start();
+</script>
+</body>
+</html>
