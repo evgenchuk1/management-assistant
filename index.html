@@ -221,6 +221,27 @@ button{font-family:inherit}
 .cart-btn .plus{position:absolute;top:-6px;left:-6px;width:22px;height:22px;border-radius:50%;color:#fff;font-size:18px;font-weight:900;line-height:20px;text-align:center;
   background:radial-gradient(circle at 35% 30%,#FF8A7A,#D7261A 55%,#8E1409);border:1.5px solid #fff;
   box-shadow:0 2px 4px rgba(0,0,0,.4),inset 0 -2px 3px rgba(0,0,0,.25);text-shadow:0 1px 1px rgba(0,0,0,.35)}
+.cart-fab{position:fixed;right:12px;bottom:calc(8px + var(--safe-bot)*.6);z-index:40;display:none}
+body.fab .cart-fab{display:flex}
+body.fab #appBody:not(.fit){padding-bottom:calc(76px + var(--safe-bot))}
+body.fab #appBody.fit{padding-bottom:calc(24px + var(--safe-bot)*.6)}
+body.fab .home .foot{padding-right:62px}
+.gl{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #EFEADF;font-size:16px}
+.gl:last-child{border-bottom:none}
+.gi{font-size:20px;width:26px;text-align:center;flex-shrink:0}
+.gn{flex:1;min-width:0;font-weight:700;color:var(--ink)}
+.gn small{color:var(--muted);font-weight:500}
+.bcn{flex-shrink:0;direction:ltr;font:inherit;font-size:14px;font-weight:800;color:var(--navy);background:#EEF2F8;border:1px solid #DCE3EE;
+  border-radius:9px;padding:4px 8px;cursor:pointer;letter-spacing:.3px}
+.bcn.none{background:none;border:none;color:var(--muted)}
+.ep{flex-shrink:0;direction:ltr;font-weight:800;color:var(--navy);text-decoration:none;font-size:15px}
+.ep.none{color:var(--muted)}
+.eb{flex-shrink:0;width:66px;text-align:left;font-size:14px;color:var(--gold3);font-weight:700;direction:ltr}
+.bc-ov{position:fixed;inset:0;z-index:95;background:rgba(20,35,56,.75);display:none;align-items:center;justify-content:center;padding:14px}
+.bc-ov.on{display:flex}
+.bc-card{background:#fff;border-radius:18px;padding:16px 10px;width:100%;max-width:520px;text-align:center;border-top:4px solid var(--gold)}
+.bc-name{font-size:22px;font-weight:900;color:var(--navy);margin-bottom:8px}
+.bc-hint{font-size:13px;color:var(--muted);margin-top:8px}
 .rk-copy{text-align:center;font-size:10px;margin-top:5px;flex-shrink:0}
 /* הגדלת חלון בלחיצה ארוכה */
 .zoom-ov{position:fixed;inset:0;z-index:70;background:rgba(20,35,56,0);transition:background .3s;pointer-events:none}
@@ -386,10 +407,11 @@ table.al td.x{width:34px;text-align:center}
     <circle cx="10" cy="29.5" r="2.6" fill="#fff"/><circle cx="10" cy="29.5" r="1.4" fill="#142338"/>
   </symbol>
   <symbol id="c-meat" viewBox="0 0 64 64">
-    <path d="M6 31C5 17 18 8 33 9c15 1 26 10 25 23-1 14-14 23-29 22C15 53 7 44 6 31z" fill="#FBEFE2" stroke="#8E2A20" stroke-width="2"/>
-    <path d="M12 31c-1-10 9-17 21-16 12 1 20 8 19 17-1 10-11 16-23 15-10-1-16-7-17-16z" fill="url(#gRed)"/>
-    <g stroke="#FBEFE2" stroke-width="2" fill="none" stroke-linecap="round" opacity=".9"><path d="M30 22c5 2 9 6 10 12"/><path d="M38 20c4 3 7 6 8 10"/><path d="M28 38c4 1 8 0 11-3"/></g>
-    <circle cx="21" cy="30" r="6" fill="#FFF8EC" stroke="#C9B79C" stroke-width="2"/><circle cx="21" cy="30" r="2.3" fill="#E4D5BC"/>
+    <defs><linearGradient id="gLeg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4B860"/><stop offset=".55" stop-color="#D9822B"/><stop offset="1" stop-color="#9C4E16"/></linearGradient></defs>
+    <path d="M38 6c11-2 21 7 20 18-1 9-8 14-15 16l-9 3-8 8c1 3 0 6-3 7-2 1-4 0-5-2-2 1-5 0-6-2s0-5 2-6c-1-2-1-4 1-5 3-2 6-1 7 1l8-8 2-9C33 19 29 8 38 6z" fill="url(#gLeg)" stroke="#7A3A0E" stroke-width="1.8" stroke-linejoin="round"/>
+    <path d="M41 12c5 0 10 4 11 9" stroke="#FFE2B0" stroke-width="3" fill="none" stroke-linecap="round" opacity=".75"/>
+    <circle cx="11.5" cy="53" r="3.6" fill="#FFF8EC" stroke="#C9B79C" stroke-width="1.5"/><circle cx="16" cy="58" r="3.6" fill="#FFF8EC" stroke="#C9B79C" stroke-width="1.5"/>
+    <path d="M14 51l5 5" stroke="#FFF8EC" stroke-width="4.5" stroke-linecap="round"/>
   </symbol>
   <symbol id="c-produce" viewBox="0 0 64 64">
     <path d="M36 61c-1-1 5-23 9-32 2-5 9-4 10 1-1 9-16 32-19 31z" fill="#EE8A2E" stroke="#B4561A" stroke-width="1.6"/>
@@ -527,6 +549,8 @@ table.al td.x{width:34px;text-align:center}
 </div>
 
 <div id="lens"></div>
+<div class="bc-ov" id="bcOv"><div class="bc-card"><div class="bc-name" id="bcName"></div><div id="bcBox"></div><div class="bc-hint">הקישו בכל מקום לסגירה</div></div></div>
+<button class="cart-btn cart-fab" aria-label="עגלה"><svg><use href="#i-cart"/></svg><span class="plus">+</span></button>
 <div class="toast" id="toast"></div>
 
 <script src="data-snapshot.js"></script>
@@ -542,7 +566,11 @@ const APPS = {
   orders: {url:'https://evgenchuk1.github.io/order-schedule/', he:'מה מזמינים היום', en:"Today's orders"},
   quality:{url:null, he:'מעקב איכות ותברואה', en:'Quality & sanitation'},
   tech:   {url:'https://evgenchuk1.github.io/-ticket-tracker-/', he:'מצב טכני', en:'Technical status'},
+  person: {url:null, he:'עובדי הסניף'},
+  produce:{url:null, he:'פירות וירקות'},
+  meat:   {url:null, he:'בשר ועוף'},
 };
+const VEG_URL='https://evgenchuk1.github.io/vegcount-app/', MEAT_URL='https://evgenchuk1.github.io/meatcount-app/';
 const BRANCHES = {118:'סניף 118 · אילת', 208:'סניף 208 · נחל אורה'};
 const TECH_CAT = {refrigeration:'❄️',lighting:'💡',equipment:'⚙️',bakery:'🥖',infrastructure:'🏗️',safety:'🦺',shelving:'🗄️',plumbing:'🚿',electrical:'⚡',general:'🔧'};
 const EXP_CAT = {cheese:'🧀 גבינות',milk:'🥛 חלב',sausages:'🌭 נקניקים',meat:'🥩 בשר ועוף',fish:'🐟 דגים',vegetables:'🥦 ירקות',
@@ -661,7 +689,8 @@ function ageColor(a){return a>=9?'#7A1F1F':a>=6?'#C0392B':a>=3?'#D9822B':'#2E8B5
 
 /* ═════════════ NAVIGATION ═════════════ */
 const SCREENS=['home','app','rikuz','photo','frame'];
-function show(id){SCREENS.forEach(s=>document.getElementById('screen-'+s).classList.toggle('active',s===id))}
+function show(id){SCREENS.forEach(s=>document.getElementById('screen-'+s).classList.toggle('active',s===id));
+  document.body.classList.toggle('fab',id==='home'||id==='app')} // עגלה צפה בכל המסכים (בריכוז יש משלה)
 function go(key){
   if(key==='rikuz'){stack.push('rikuz');show('rikuz');renderRikuz();return}
   if(key==='photo'){stack.push('photo');show('photo');renderPhoto();return}
@@ -693,7 +722,16 @@ document.addEventListener('click',e=>{
   const ap=e.target.closest('[data-panel]');if(ap){if(!zoomSuppress)go(ap.dataset.panel);return}
   if(e.target.closest('[data-cp]')){document.getElementById('cpOv').classList.add('active');return}
   if(e.target.id==='cpClose'||e.target.id==='cpOv'){document.getElementById('cpOv').classList.remove('active');return}
-  const ct=e.target.closest('[data-cat]');if(ct){toast(CATS.find(c=>c[0]===ct.dataset.cat)[1]+' — בקרוב');return}
+  const ct=e.target.closest('[data-cat]');if(ct){const c=ct.dataset.cat;
+    if(c==='fish'){toast('דגים — הרשימה בהכנה, בקרוב');return}
+    document.getElementById('rkHdr')?.classList.remove('open');
+    const top=stack[stack.length-1];if(top==='app:'+c)return;
+    if(['app:person','app:produce','app:meat'].includes(top))stack.pop(); // מעבר בין רשימות — בלי לערום מסכים
+    go(c);return}
+  const bc=e.target.closest('[data-bc]');if(bc){showBarcode(bc.dataset.bc,bc.dataset.nm,bc.dataset.gif);return}
+  if(e.target.closest('#bcOv')){document.getElementById('bcOv').classList.remove('on');return}
+  const ek=e.target.closest('#empGo');if(ek){unlockEmps();return}
+  if(e.target.closest('.cart-fab,#cartBtn')){toast('בקרוב');return}
 });
 /* 4 כפתורי קטגוריה בכותרת (הפעולה תוגדר בהמשך) */
 const CATS=[['fish','דגים'],['meat','בשר'],['produce','פירות וירקות'],['person','עובדים']];
@@ -809,6 +847,9 @@ function renderApp(key){
     h+=`<div class="card" style="text-align:center;padding:28px 16px"><svg width="96" height="96"><use href="#i-quality"/></svg>
       <h2 style="justify-content:center;margin-top:10px">בקרוב</h2><div class="empty">אפליקציית מעקב איכות ותברואה נמצאת בתכנון.<br>כאן יופיעו משימות הבדיקה של היום.</div></div>`;
   }
+  if(key==='person') h+=renderPeople();
+  if(key==='produce') h+=renderGoods('produce');
+  if(key==='meat') h+=renderGoods('meat');
   if(key==='access') return renderAccess();
   if(key==='install') return renderInstall();
   if(APPS[key]?.url)h+=fullBtn(key);
@@ -850,6 +891,73 @@ function renderInstall(){
     <div class="step"><b class="n">2</b><span>iPhone: כפתור השיתוף <b>⬆️</b> ← „הוסף למסך הבית”.<br>Android: תפריט <b>⋮</b> ← „התקן אפליקציה”.</span></div>
     <div class="step"><b class="n">3</b><span>פתחו את „העוזר הניהולי” מהמסך הראשי ואשרו קבלת התראות.</span></div>
   </div>`;
+}
+
+/* ═════════════ רשימות: עובדים / פירות וירקות / בשר ═════════════ */
+const LISTS={};            // נטען פעם אחת לכל הפעלה
+async function loadList(kind){
+  if(LISTS[kind]||LISTS[kind+'_busy'])return;LISTS[kind+'_busy']=1;
+  try{
+    const get=u=>fetch(u+'?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject(r.status));
+    if(kind==='produce'){const src=await get(VEG_URL);
+      LISTS.produce=[['🥦 ירקות',extract(src,'vegetables')||[]],['🍎 פירות',extract(src,'fruits')||[]]];}
+    if(kind==='meat'){const src=await get(MEAT_URL);
+      LISTS.meat=[['🍗 עוף',extract(src,'chicken')||[]],['🦃 הודו',extract(src,'turkey')||[]],['🥩 בקר',extract(src,'beef')||[]]];}
+    if(kind==='person'){const src=await get(APPS.sidur.url);LISTS.empEnc=extract(src,'EMP_ENC');
+      const k=ls.get('ma_emp_k','');if(k)try{LISTS.person=await decEmps(LISTS.empEnc,k)}catch{}}
+  }catch(e){LISTS[kind+'_err']=1}
+  LISTS[kind+'_busy']=0;
+  if(stack[stack.length-1]==='app:'+kind)renderApp(kind);
+}
+const heSort=(a,b)=>String(a).localeCompare(String(b),'he');
+function renderGoods(kind){
+  if(!LISTS[kind]){loadList(kind);return `<div class="card"><div class="empty">${LISTS[kind+'_err']?'⚠️ אין חיבור — נסו שוב':'⏳ טוען רשימה…'}</div></div>`}
+  const base=kind==='produce'?VEG_URL:MEAT_URL;
+  return LISTS[kind].map(([title,items])=>{
+    const rows=items.slice().sort((a,b)=>heSort(a.name,b.name)).map(it=>{
+      const code=it.barcodeNum||it.ean||'',gif=!code&&it.barcode?base+it.barcode:'';
+      const btn=code||gif?`<button class="bcn" data-bc="${esc(code)}" data-nm="${esc(it.name)}" data-gif="${esc(gif)}">${code?esc(code):'▮▯▮ ברקוד'}</button>`:'<span class="bcn none">—</span>';
+      return `<div class="gl"><span class="gi">${it.emoji||'•'}</span><span class="gn">${esc(it.name)}</span>${btn}</div>`}).join('');
+    return `<div class="card"><h2>${title}<span class="cnt">${items.length}</span></h2>${rows}</div>`}).join('')+
+    '<div class="note" style="text-align:center">הקישו על מספר הברקוד להגדלה לסריקה</div>';
+}
+async function decEmps(enc,code){
+  const raw=Uint8Array.from(atob(enc),c=>c.charCodeAt(0));
+  const salt=raw.slice(0,16),iv=raw.slice(16,28),ct=raw.slice(28);
+  const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(code),'PBKDF2',false,['deriveKey']);
+  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:150000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt']);
+  return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv},key,ct))).list;
+}
+async function unlockEmps(){
+  const inp=document.getElementById('empCode'),code=(inp?.value||'').trim();if(!code||!LISTS.empEnc)return;
+  try{LISTS.person=await decEmps(LISTS.empEnc,code);ls.set('ma_emp_k',code);renderApp('person')}
+  catch{toast('קוד שגוי')}
+}
+function renderPeople(){
+  if(!LISTS.empEnc){loadList('person');return `<div class="card"><div class="empty">${LISTS.person_err?'⚠️ אין חיבור — נסו שוב':'⏳ טוען…'}</div></div>`}
+  if(!LISTS.person)return `<div class="card"><h2>🔒 קוד סניף</h2><div class="empty" style="margin-bottom:10px">הנתונים מוצפנים. הקלידו את קוד הסניף (כמו באפליקציית סידור עבודה) — פעם אחת בלבד.</div>
+    <div style="display:flex;gap:8px"><input id="empCode" type="password" autocomplete="off" style="flex:1;border:1.5px solid var(--gold);border-radius:12px;padding:10px;font:inherit;font-size:17px" placeholder="קוד סניף">
+    <button id="empGo" class="open-full" style="width:auto;margin:0;padding:10px 18px">פתיחה</button></div></div>`;
+  const bd=e=>{if(!e.d)return '';const [m,d]=e.d.split('-');return +d+'/'+ +m};
+  const list=LISTS.person.slice().sort((a,b)=>heSort([a.n,a.l].join(' '),[b.n,b.l].join(' ')));
+  return `<div class="card"><h2>👥 עובדי הסניף<span class="cnt">${list.length}</span></h2>`+list.map(e=>{
+    const nm=[e.n,e.l].filter(Boolean).join(' ')+(e.k&&e.k!==e.n?` <small>(${esc(e.k)})</small>`:'');
+    const ph=e.ph?`<a class="ep" href="tel:${esc(e.ph.replace(/[^0-9+]/g,''))}">${esc(e.ph)}</a>`:'<span class="ep none">—</span>';
+    return `<div class="gl"><span class="gn">${nm.replace(/^[^<]*/,m=>esc(m))}</span>${ph}<span class="eb">${bd(e)?'🎂 '+bd(e):''}</span></div>`}).join('')+'</div>';
+}
+/* ברקוד מוגדל לסריקה */
+let jsbLoading=null;
+function loadJsb(){return window.JsBarcode?Promise.resolve():(jsbLoading||(jsbLoading=new Promise((ok,no)=>{const sc=document.createElement('script');
+  sc.src='https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js';sc.onload=ok;sc.onerror=no;document.head.appendChild(sc)})))}
+function ean13ok(c){if(!/^\d{13}$/.test(c))return false;let s=0;for(let i=0;i<12;i++)s+=(+c[i])*(i%2?3:1);return (10-s%10)%10===+c[12]}
+async function showBarcode(code,name,gif){
+  const ov=document.getElementById('bcOv');document.getElementById('bcName').textContent=name||'';
+  const box=document.getElementById('bcBox');box.innerHTML='';ov.classList.add('on');
+  if(!code&&gif){box.innerHTML=`<img src="${gif}" alt="" style="width:100%;image-rendering:pixelated">`;return}
+  try{await loadJsb();const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');box.appendChild(svg);
+    JsBarcode(svg,code,{format:ean13ok(code)?'EAN13':'CODE128',width:4,height:170,fontSize:28,margin:16,background:'#fff',lineColor:'#000'});
+    svg.removeAttribute('width');svg.removeAttribute('height');svg.style.width='100%';svg.style.height='auto'}
+  catch{box.innerHTML=`<div style="font-size:34px;font-weight:900;direction:ltr">${esc(code)}</div>`}
 }
 
 /* ═════════════ RENDER: ריכוז יומי ═════════════ */
@@ -917,7 +1025,6 @@ function renderPhoto(){
     if(dy>15&&!hdr.classList.contains('open')){set(true);moved=true;y0=null}else if(dy<-15&&hdr.classList.contains('open')){set(false);moved=true;y0=null}});
   t.addEventListener('pointerup',()=>{if(!moved&&y0!=null)set(!hdr.classList.contains('open'));y0=null});
 })();
-document.getElementById('cartBtn').onclick=()=>toast('בקרוב');
 
 /* לחיצה ארוכה על חלון → נפתח לכל המסך; עזיבת האצבע → חוזר למקומו */
 let zoomSuppress=false;
@@ -997,7 +1104,7 @@ function initFirebase(){loadExpiry();loadTickets();setInterval(()=>{loadExpiry()
 // ?day=2026-11-08 — לבדיקה של יום אחר
 const qd=new URLSearchParams(location.search).get('day');if(qd)day=startOfDay(new Date(qd+'T00:00:00'));
 const qs=new URLSearchParams(location.search).get('screen');
-renderHome();
+renderHome();document.body.classList.add('fab');
 if(qs)go(qs);
 loadLive();
 initFirebase();
