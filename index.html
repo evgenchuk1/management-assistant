@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="העוזר הניהולי">
+<meta name="apple-mobile-web-app-title" content="ניהול +">
 <meta name="theme-color" content="#203550">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>העוזר הניהולי</title>
+<title>ניהול +</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -56,7 +56,7 @@ button{font-family:inherit}
 .hdate.other{color:#fff}
 .hdate small{display:block;font-size:11px;font-weight:700;color:var(--gold2);opacity:.85}
 .hdr-ctl{display:flex;gap:6px;margin-top:6px}
-.pill{flex:1;padding:5px 10px;border-radius:999px;border:1.5px solid rgba(207,171,111,.55);background:transparent;
+.pill{flex:1;min-width:0;white-space:nowrap;padding:5px 6px;border-radius:999px;border:1.5px solid rgba(207,171,111,.55);background:transparent;
   color:rgba(255,255,255,.75);font-size:16px;font-weight:800;cursor:pointer}
 .pill.on{background:linear-gradient(180deg,var(--gold2),var(--gold));color:var(--deep);border-color:var(--gold2);box-shadow:0 2px 5px rgba(0,0,0,.3)}
 .back{flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);background:linear-gradient(180deg,#7E97B8,#4F6E96);color:#fff;box-shadow:0 2px 5px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.35);
@@ -86,6 +86,11 @@ button{font-family:inherit}
   font-size:15px;font-weight:900;display:flex;align-items:center;justify-content:center;color:#fff;
   background:linear-gradient(180deg,#E25544,var(--red));box-shadow:0 3px 6px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.35)}
 .badge[hidden]{display:none}
+.hrs{position:absolute;top:8px;right:8px;z-index:2;min-width:58px;padding:4px 8px 3px;border-radius:12px;text-align:center;line-height:1;
+  background:linear-gradient(180deg,#FFFDF8,#EADFC6);color:var(--deep);border:1.5px solid var(--gold);box-shadow:0 3px 6px rgba(0,0,0,.35)}
+.hrs b{display:block;font-size:19px;font-weight:900}
+.hrs small{display:block;font-size:9.5px;font-weight:700;color:var(--gold3);margin-top:2px}
+.hrs[hidden]{display:none}
 .badge.gold{background:linear-gradient(180deg,var(--gold2),var(--gold3));color:var(--deep)}
 .badge.ok{background:linear-gradient(180deg,#45B07A,var(--green))}
 
@@ -111,7 +116,8 @@ button{font-family:inherit}
 .home .rikuz-btn svg{width:32px;height:32px}
 .home .rikuz-btn .lbl{font-size:20px}
 .home .mini-row{margin-top:8px;flex-shrink:0}
-.home .mini{padding:5px 12px;font-size:14px}
+.home .mini{padding:5px 9px;font-size:13px;white-space:nowrap}
+.home .mini-row{flex-wrap:nowrap;gap:6px}
 .home .foot{margin-top:6px;font-size:11px;line-height:1.4;flex-shrink:0}
 .cp-link{cursor:pointer;text-decoration:underline;color:rgba(32,53,80,.55)}
 .ov{position:fixed;inset:0;background:rgba(20,35,56,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:90}
@@ -237,6 +243,16 @@ body.fab .home .foot{padding-right:62px}
 .ep{flex-shrink:0;direction:ltr;font-weight:800;color:var(--navy);text-decoration:none;font-size:15px}
 .ep.none{color:var(--muted)}
 .eb{flex-shrink:0;width:66px;text-align:left;font-size:14px;color:var(--gold3);font-weight:700;direction:ltr}
+.sbox{display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--gold);border-radius:14px;padding:4px 10px;margin-bottom:12px;
+  position:sticky;top:-16px;z-index:5;box-shadow:0 3px 8px rgba(32,53,80,.12)}
+.sbox input{flex:1;min-width:0;border:none;outline:none;font:inherit;font-size:17px;padding:7px 0;background:transparent}
+.sbox button{border:none;background:none;font-size:16px;color:var(--muted);cursor:pointer;padding:4px}
+.frm{display:flex;flex-wrap:wrap;gap:8px}
+.frm input,.frm select{flex:1 1 140px;min-width:0;border:1.5px solid var(--cream2);border-radius:12px;padding:10px;font:inherit;font-size:16px;background:#fff}
+.frm .sv{flex:0 0 auto;border:none;border-radius:12px;padding:10px 18px;font:inherit;font-size:16px;font-weight:900;color:#fff;cursor:pointer;
+  background:linear-gradient(170deg,var(--navy3),var(--navy))}
+.frm .sv.ghost{background:#EEF2F8;color:var(--navy)}
+.mini-x{flex-shrink:0;border:1px solid var(--cream2);background:#fff;border-radius:9px;padding:4px 8px;font:inherit;font-size:13px;font-weight:800;color:var(--navy);cursor:pointer}
 .bc-ov{position:fixed;inset:0;z-index:95;background:rgba(20,35,56,.75);display:none;align-items:center;justify-content:center;padding:14px}
 .bc-ov.on{display:flex}
 .bc-card{background:#fff;border-radius:18px;padding:16px 10px;width:100%;max-width:520px;text-align:center;border-top:4px solid var(--gold)}
@@ -434,16 +450,16 @@ table.al td.x{width:34px;text-align:center}
   <div class="hdr">
     <div class="hdr-row">
       <img src="et-mark.png" class="logo" alt="ET studio">
-      <div class="ttl"><h1>העוזר הניהולי</h1></div></div>
+      <div class="ttl"><h1>ניהול +</h1></div></div>
     <div class="hdate-row"><button class="dbtn" data-day="-1" aria-label="יום קודם">›</button><div class="hdate" id="hDate" data-today></div><button class="dbtn" data-day="1" aria-label="יום הבא">‹</button></div>
-    <div class="hdr-ctl"><button class="pill" data-b="118">סניף 118</button><button class="pill" data-b="208">סניף 208</button></div>
+    <div class="hdr-ctl"><button class="pill" data-b="118">סניף 118</button><button class="pill" data-b="208">סניף 208</button><button class="pill" data-b="266">סניף 266</button></div>
     <div class="cats"></div>
   </div>
   <div class="body home">
     <div class="grid">
       <button class="tile" data-go="expiry"><span class="badge" id="bExpiry" hidden></span><svg><use href="#i-expiry"/></svg><span class="lbl">פגי תוקף</span></button>
       <button class="tile" data-go="spira"><span class="badge gold" id="bSpira" hidden></span><svg><use href="#i-count"/></svg><span class="lbl">מה סופרים היום</span></button>
-      <button class="tile" data-go="sidur"><span class="badge gold" id="bSidur" hidden></span><svg><use href="#i-sidur"/></svg><span class="lbl">סידור עבודה</span></button>
+      <button class="tile" data-go="sidur"><span class="badge gold" id="bSidur" hidden></span><span class="hrs" id="hSidur" hidden><b></b><small>שעות השבוע</small></span><svg><use href="#i-sidur"/></svg><span class="lbl">סידור עבודה</span></button>
       <button class="tile" data-go="orders"><span class="badge gold" id="bOrders" hidden></span><svg><use href="#i-orders"/></svg><span class="lbl">מה מזמינים היום</span></button>
       <button class="tile" data-go="quality"><svg><use href="#i-quality"/></svg><span class="lbl">מעקב איכות ותברואה</span></button>
       <button class="tile" data-go="tech"><span class="badge" id="bTech" hidden></span><svg><use href="#i-tech"/></svg><span class="lbl">מצב טכני</span></button>
@@ -452,6 +468,7 @@ table.al td.x{width:34px;text-align:center}
     <div class="mini-row">
       <button class="mini" data-go="access">👥 מורשי גישה</button>
       <button class="mini" data-go="install">📲 התקנה</button>
+      <button class="mini" data-act="push" id="pushBtn">🔔 התראות בוקר</button>
     </div>
     <div class="foot"><span class="cp-link" data-cp>© 2026 ET studio · Evgeniy Tsipis — All rights reserved · כל הזכויות שמורות</span></div>
   </div>
@@ -464,7 +481,7 @@ table.al td.x{width:34px;text-align:center}
       <img src="et-mark.png" class="logo" alt="ET studio">
       <div class="ttl"><h1 id="appTitle"></h1></div></div>
     <div class="hdate-row"><button class="dbtn" data-day="-1" aria-label="יום קודם">›</button><div class="hdate" id="appDate" data-today></div><button class="dbtn" data-day="1" aria-label="יום הבא">‹</button></div>
-    <div class="hdr-ctl"><button class="pill" data-b="118">סניף 118</button><button class="pill" data-b="208">סניף 208</button><button class="back" data-back>חזרה ›</button></div>
+    <div class="hdr-ctl"><button class="pill" data-b="118">סניף 118</button><button class="pill" data-b="208">סניף 208</button><button class="pill" data-b="266">סניף 266</button><button class="back" data-back>חזרה ›</button></div>
     <div class="cats"></div>
   </div>
   <div class="body" id="appBody"></div>
@@ -475,12 +492,12 @@ table.al td.x{width:34px;text-align:center}
   <div class="hdr compact" id="rkHdr">
     <div class="mini-bar">
       <img src="et-mark.png" alt="ET studio">
-      <div class="t">ריכוז יומי · <span id="rkBranch"></span><small>העוזר הניהולי</small></div>
+      <div class="t">ריכוז יומי · <span id="rkBranch"></span><small>ניהול +</small></div>
       <div class="dt" id="rkMiniDate"></div>
     </div>
     <div class="hdr-more"><div class="hdr-more-in">
       <div class="hdate-row"><button class="dbtn" data-day="-1" aria-label="יום קודם">›</button><div class="hdate" id="rkHdrDate" data-today></div><button class="dbtn" data-day="1" aria-label="יום הבא">‹</button></div>
-      <div class="hdr-ctl"><button class="pill" data-b="118">סניף 118</button><button class="pill" data-b="208">סניף 208</button><button class="back" data-back>חזרה ›</button></div>
+      <div class="hdr-ctl"><button class="pill" data-b="118">סניף 118</button><button class="pill" data-b="208">סניף 208</button><button class="pill" data-b="266">סניף 266</button><button class="back" data-back>חזרה ›</button></div>
       <div class="cats"></div>
     </div></div>
     <button class="tongue" id="rkTongue" aria-label="פתח כותרת"><span>⌄</span></button>
@@ -501,7 +518,7 @@ table.al td.x{width:34px;text-align:center}
   <div id="poster">
     <div class="ps-top">
       <img src="et-mark.png" alt="ET">
-      <div class="t">ריכוז יומי · <span id="psBranch"></span><small>העוזר הניהולי</small></div>
+      <div class="t">ריכוז יומי · <span id="psBranch"></span><small>ניהול +</small></div>
       <div class="dt" id="psDate"></div>
     </div>
     <div class="ps-grid" id="psGrid"></div>
@@ -569,9 +586,12 @@ const APPS = {
   person: {url:null, he:'עובדי הסניף'},
   produce:{url:null, he:'פירות וירקות'},
   meat:   {url:null, he:'בשר ועוף'},
+  expedit:{url:null, he:'הזנת פגי תוקף'},
 };
 const VEG_URL='https://evgenchuk1.github.io/vegcount-app/', MEAT_URL='https://evgenchuk1.github.io/meatcount-app/';
-const BRANCHES = {118:'סניף 118 · אילת', 208:'סניף 208 · נחל אורה'};
+const BRANCHES = {118:'סניף 118 · אילת', 208:'סניף 208', 266:'סניף 266'};
+const OWN=b=>b!==118; // סניפים שמזינים בעצמם: עובדים, פגי תוקף, תקלות
+const TECH_NAMES = {refrigeration:'קירור',lighting:'תאורה',equipment:'ציוד',bakery:'מאפייה',infrastructure:'תשתיות',safety:'בטיחות',shelving:'מדפים',plumbing:'אינסטלציה',electrical:'חשמל',general:'כללי'};
 const TECH_CAT = {refrigeration:'❄️',lighting:'💡',equipment:'⚙️',bakery:'🥖',infrastructure:'🏗️',safety:'🦺',shelving:'🗄️',plumbing:'🚿',electrical:'⚡',general:'🔧'};
 const EXP_CAT = {cheese:'🧀 גבינות',milk:'🥛 חלב',sausages:'🌭 נקניקים',meat:'🥩 בשר ועוף',fish:'🐟 דגים',vegetables:'🥦 ירקות',
   choc:'🍫 שוקולד',cakes:'🎂 עוגות',bakery:'🥖 מאפייה',spreads:'🫙 ממרחים',sweet:'🍯 ממרחים מתוקים',green:'🥬 גרין',drinks:'🥤 משקאות',
@@ -659,6 +679,13 @@ function sidurWeeks(){
 function isOff(v){const s=(v||'').trim();
   if(!s||['-','–','—','+'].includes(s))return true;
   return /חופש|מחלה|בריאות|חל"?ת|חלת/.test(s)||s.startsWith('חג')||s.startsWith('צום')}
+/* סה"כ שעות של כל העובדים בשבוע (כל הטווחים בתא: „8-13, 17-21”; ברוטו) */
+function cellHours(v){let h=0;const re=/(\d{1,2})(?::(\d{2}))?\s*-\s*(\d{1,2})(?::(\d{2}))?/g;let m;
+  while((m=re.exec(v||''))){let a=+m[1]+(+m[2]||0)/60,b=+m[3]+(+m[4]||0)/60;if(b<=a)b+=24;if(b-a<=16)h+=b-a}return h}
+function weekHours(d){
+  for(const w of sidurWeeks()){const ws=weekStart(w.label);if(!ws)continue;const i=Math.round((d-ws)/86400000);
+    if(i>=-1&&i<=6){let h=0;Object.values(w.depts||{}).forEach(dp=>(dp.rows||[]).forEach(r=>(r.cells||[]).forEach(c=>{if(!isOff(c))h+=cellHours(c)})));return h}}
+  return 0}
 function sidurFor(d){
   let wk=null,idx=-1;
   for(const w of sidurWeeks()){const ws=weekStart(w.label);if(!ws)continue;
@@ -694,6 +721,7 @@ function show(id){SCREENS.forEach(s=>document.getElementById('screen-'+s).classL
 function go(key){
   if(key==='rikuz'){stack.push('rikuz');show('rikuz');renderRikuz();return}
   if(key==='photo'){stack.push('photo');show('photo');renderPhoto();return}
+  if(stack.at(-1)!=='app:'+key){listQ='';ownEdit=null}
   stack.push('app:'+key);show('app');renderApp(key);
   document.getElementById('appBody').scrollTop=0;
 }
@@ -748,6 +776,7 @@ function renderHome(){
   const s=spiraFor(t);badge('bSpira',(s.chor?1:0)+(s.yomi&&!s.yomi.cancelled?1:0)+(s.pachat&&!s.pachat.cancelled?1:0));
   badge('bOrders',ordersFor(t).filter(o=>!o.past).length);
   const sd=sidurFor(t);badge('bSidur',sd.ok?sd.total:0);
+  const wh=branch===118?weekHours(t):0,hb=document.getElementById('hSidur');hb.hidden=!wh;hb.firstChild.textContent=Math.round(wh).toLocaleString('he-IL');
   badge('bTech',techOpen().length);
 }
 
@@ -837,11 +866,17 @@ function renderApp(key){
     if(!expiryLive)h+='<div class="card"><div class="empty">⏳ טוען נתונים…</div></div>';
     h+=card('🔴 היום','Today',e.today.length?e.today.map(row).join(''):'<div class="ok">✓ אין</div>',e.today.length);
     h+=card('🟠 מחר','Tomorrow',e.tomorrow.length?e.tomorrow.map(row).join(''):'<div class="ok">✓ אין</div>',e.tomorrow.length);
+    if(OWN(branch))h+=`<button class="open-full" data-go="expedit">＋ הזנה וניהול מוצרים</button>`;
   }
+  if(key==='expedit')h+=renderExpEdit();
   if(key==='tech'){
     const t=techOpen();
+    if(OWN(branch))h+=`<div class="card"><h2>＋ תקלה חדשה</h2><div class="frm">
+      <input id="tkDesc" placeholder="תיאור התקלה" autocomplete="off">
+      <select id="tkCat">${Object.entries(TECH_NAMES).map(([k,v])=>`<option value="${k}">${TECH_CAT[k]} ${v}</option>`).join('')}</select>
+      <button class="sv" data-act="tk-add">שמירה</button></div></div>`;
     if(!ticketsLive)h+='<div class="card"><div class="empty">⏳ טוען נתונים…</div></div>';
-    h+=card('🔧 תקלות פתוחות','Open tickets',t.length?t.map(x=>`<div class="row"><div class="sq" style="background:${ageColor(x.age)}">${x.age}</div><div class="tx"><div class="nm">${TECH_CAT[x.category]||'🔧'} ${esc(x.description||'תקלה')}</div><div class="ds">נפתח ${dd(x.dateReported)} · ${x.age} ימים</div></div></div>`).join(''):'<div class="ok">✓ אין תקלות פתוחות</div>',t.length);
+    h+=card('🔧 תקלות פתוחות','Open tickets',t.length?t.map(x=>`<div class="row"><div class="sq" style="background:${ageColor(x.age)}">${x.age}</div><div class="tx"><div class="nm">${TECH_CAT[x.category]||'🔧'} ${esc(x.description||'תקלה')}</div><div class="ds">נפתח ${dd(x.dateReported)} · ${x.age} ימים</div></div>${OWN(branch)?`<button class="mini-x" data-act="tk-close" data-id="${x.id}">✓ טופל</button>`:''}</div>`).join(''):'<div class="ok">✓ אין תקלות פתוחות</div>',t.length);
   }
   if(key==='quality'){
     h+=`<div class="card" style="text-align:center;padding:28px 16px"><svg width="96" height="96"><use href="#i-quality"/></svg>
@@ -852,8 +887,8 @@ function renderApp(key){
   if(key==='meat') h+=renderGoods('meat');
   if(key==='access') return renderAccess();
   if(key==='install') return renderInstall();
-  if(APPS[key]?.url)h+=fullBtn(key);
-  const body=document.getElementById('appBody');body.innerHTML=h;
+  if(APPS[key]?.url&&!(OWN(branch)&&['expiry','tech'].includes(key)))h+=fullBtn(key);
+  const body=document.getElementById('appBody');body.innerHTML=h;if(document.getElementById('listQ'))applySearch();
   body.classList.toggle('fit',!!FIT[key]);
   if(FIT[key]){fitScreen(key);requestAnimationFrame(()=>{if(stack[stack.length-1]==='app:'+key)refit()})}
   if(key==='sidur')initLens();
@@ -889,7 +924,7 @@ function renderInstall(){
     <div class="empty" style="color:var(--ink)">כל האפליקציות (פגי תוקף, ספירות, הזמנות, סידור עבודה, תקלות) נפתחות <b>בתוך</b> העוזר — אין צורך להתקין כל אחת בנפרד.</div>
     <div class="step"><b class="n">1</b><span>פתחו את הקישור של העוזר ב-<b>Safari</b> (iPhone) או ב-<b>Chrome</b> (Android).</span></div>
     <div class="step"><b class="n">2</b><span>iPhone: כפתור השיתוף <b>⬆️</b> ← „הוסף למסך הבית”.<br>Android: תפריט <b>⋮</b> ← „התקן אפליקציה”.</span></div>
-    <div class="step"><b class="n">3</b><span>פתחו את „העוזר הניהולי” מהמסך הראשי ואשרו קבלת התראות.</span></div>
+    <div class="step"><b class="n">3</b><span>פתחו את „ניהול +” מהמסך הראשי ואשרו קבלת התראות.</span></div>
   </div>`;
 }
 
@@ -913,11 +948,11 @@ const heSort=(a,b)=>String(a).localeCompare(String(b),'he');
 function renderGoods(kind){
   if(!LISTS[kind]){loadList(kind);return `<div class="card"><div class="empty">${LISTS[kind+'_err']?'⚠️ אין חיבור — נסו שוב':'⏳ טוען רשימה…'}</div></div>`}
   const base=kind==='produce'?VEG_URL:MEAT_URL;
-  return LISTS[kind].map(([title,items])=>{
+  return searchBox('חיפוש מוצר…')+LISTS[kind].map(([title,items])=>{
     const rows=items.slice().sort((a,b)=>heSort(a.name,b.name)).map(it=>{
       const code=it.barcodeNum||it.ean||'',gif=!code&&it.barcode?base+it.barcode:'';
       const btn=code||gif?`<button class="bcn" data-bc="${esc(code)}" data-nm="${esc(it.name)}" data-gif="${esc(gif)}">${code?esc(code):'▮▯▮ ברקוד'}</button>`:'<span class="bcn none">—</span>';
-      return `<div class="gl"><span class="gi">${it.emoji||'•'}</span><span class="gn">${esc(it.name)}</span>${btn}</div>`}).join('');
+      return `<div class="gl" data-s="${esc(sKey(it.name))}"><span class="gi">${it.emoji||'•'}</span><span class="gn">${esc(it.name)}</span>${btn}</div>`}).join('');
     return `<div class="card"><h2>${title}<span class="cnt">${items.length}</span></h2>${rows}</div>`}).join('')+
     '<div class="note" style="text-align:center">הקישו על מספר הברקוד להגדלה לסריקה</div>';
 }
@@ -934,17 +969,121 @@ async function unlockEmps(){
   catch{toast('קוד שגוי')}
 }
 function renderPeople(){
+  if(OWN(branch))return renderOwnPeople();
   if(!LISTS.empEnc){loadList('person');return `<div class="card"><div class="empty">${LISTS.person_err?'⚠️ אין חיבור — נסו שוב':'⏳ טוען…'}</div></div>`}
   if(!LISTS.person)return `<div class="card"><h2>🔒 קוד סניף</h2><div class="empty" style="margin-bottom:10px">הנתונים מוצפנים. הקלידו את קוד הסניף (כמו באפליקציית סידור עבודה) — פעם אחת בלבד.</div>
     <div style="display:flex;gap:8px"><input id="empCode" type="password" autocomplete="off" style="flex:1;border:1.5px solid var(--gold);border-radius:12px;padding:10px;font:inherit;font-size:17px" placeholder="קוד סניף">
     <button id="empGo" class="open-full" style="width:auto;margin:0;padding:10px 18px">פתיחה</button></div></div>`;
   const bd=e=>{if(!e.d)return '';const [m,d]=e.d.split('-');return +d+'/'+ +m};
   const list=LISTS.person.slice().sort((a,b)=>heSort([a.n,a.l].join(' '),[b.n,b.l].join(' ')));
-  return `<div class="card"><h2>👥 עובדי הסניף<span class="cnt">${list.length}</span></h2>`+list.map(e=>{
+  return searchBox('חיפוש עובד…')+`<div class="card"><h2>👥 עובדי הסניף<span class="cnt">${list.length}</span></h2>`+list.map(e=>{
     const nm=[e.n,e.l].filter(Boolean).join(' ')+(e.k&&e.k!==e.n?` <small>(${esc(e.k)})</small>`:'');
     const ph=e.ph?`<a class="ep" href="tel:${esc(e.ph.replace(/[^0-9+]/g,''))}">${esc(e.ph)}</a>`:'<span class="ep none">—</span>';
-    return `<div class="gl"><span class="gn">${nm.replace(/^[^<]*/,m=>esc(m))}</span>${ph}<span class="eb">${bd(e)?'🎂 '+bd(e):''}</span></div>`}).join('')+'</div>';
+    return `<div class="gl" data-s="${esc(sKey([e.n,e.l,e.k].join(' ')))}"><span class="gn">${nm.replace(/^[^<]*/,m=>esc(m))}</span>${ph}<span class="eb">${bd(e)?'🎂 '+bd(e):''}</span></div>`}).join('')+'</div>';
 }
+/* ── חיפוש לפי אותיות פתיחה (בכל הרשימות) ── */
+let listQ='';
+const sKey=t=>String(t||'').toLowerCase().replace(/["'׳״()\-.,]/g,' ').replace(/\s+/g,' ').trim();
+function searchBox(ph){return `<div class="sbox"><span>🔍</span><input id="listQ" type="search" placeholder="${ph}" value="${esc(listQ)}" autocomplete="off"><button data-act="q-clear" aria-label="ניקוי">✕</button></div>`}
+function applySearch(){
+  const q=sKey(listQ),body=document.getElementById('appBody');
+  body.querySelectorAll('.gl[data-s]').forEach(r=>{const s=r.dataset.s;
+    r.style.display=!q||s.startsWith(q)||s.split(' ').some(w=>w.startsWith(q))||(' '+s).includes(' '+q)?'':'none'});
+  body.querySelectorAll('.card').forEach(c=>{const rows=c.querySelectorAll('.gl[data-s]');if(!rows.length)return;
+    c.style.display=[...rows].some(r=>r.style.display!=='none')?'':'none'});
+}
+document.addEventListener('input',e=>{if(e.target.id==='listQ'){listQ=e.target.value;applySearch()}});
+
+/* ── עובדים של סניף 208/266: נשמרים מוצפנים בקוד הסניף (Firestore פתוח) ── */
+const b64=u=>btoa(String.fromCharCode(...u)),ub64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+const OWNK={};   // מפתחות AES לכל סניף (בזיכרון)
+async function brKey(code,salt){const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(code),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:150000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
+async function encJ(key,obj){const iv=crypto.getRandomValues(new Uint8Array(12));
+  return {iv:b64(iv),ct:b64(new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode(JSON.stringify(obj)))))}}
+async function decJ(key,iv,ct){return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:ub64(iv)},key,ub64(ct))))}
+async function loadOwnEmps(b,code){
+  const doc=await fsGet('ma_emps/b'+b);
+  if(!doc){ // סניף חדש — הקוד הראשון שמוקלד נקבע כקוד הסניף
+    const salt=crypto.getRandomValues(new Uint8Array(16)),key=await brKey(code,salt),e=await encJ(key,[]);
+    await fsSet('ma_emps/b'+b,{salt:b64(salt),iv:e.iv,ct:e.ct,updatedAt:new Date()});OWNK[b]={key,salt:b64(salt)};return []}
+  const key=await brKey(code,ub64(doc.salt));const list=await decJ(key,doc.iv,doc.ct);OWNK[b]={key,salt:doc.salt};return list}
+async function saveOwnEmps(b,list){const k=OWNK[b];const e=await encJ(k.key,list);await fsSet('ma_emps/b'+b,{salt:k.salt,iv:e.iv,ct:e.ct,updatedAt:new Date()})}
+let ownEdit=null;
+function renderOwnPeople(){
+  const b=branch,lk='own_'+b;
+  if(!LISTS[lk]){const code=ls.get('ma_emp_k_'+b,'');
+    if(code&&!LISTS[lk+'_busy']){LISTS[lk+'_busy']=1;loadOwnEmps(b,code).then(l=>{LISTS[lk]=l}).catch(()=>{ls.set('ma_emp_k_'+b,'');toast('קוד שגוי')}).finally(()=>{LISTS[lk+'_busy']=0;if(stack.at(-1)==='app:person')renderApp('person')});
+      return '<div class="card"><div class="empty">⏳ טוען…</div></div>'}
+    if(LISTS[lk+'_busy'])return '<div class="card"><div class="empty">⏳ טוען…</div></div>';
+    return `<div class="card"><h2>🔒 קוד ${BRANCHES[b]}</h2><div class="empty" style="margin-bottom:10px">רשימת העובדים נשמרת מוצפנת. הקלידו את קוד הסניף.<br>בכניסה הראשונה של הסניף — הקוד שתקלידו ייקבע כקוד הסניף (שמרו אותו!).</div>
+      <div class="frm"><input id="ownCode" type="password" autocomplete="off" placeholder="קוד סניף"><button class="sv" data-act="own-code">פתיחה</button></div></div>`}
+  const list=LISTS[lk].slice().sort((x,y)=>heSort(x.n,y.n)),ed=ownEdit!=null?LISTS[lk].find(e=>e.id===ownEdit):null;
+  const form=`<div class="card"><h2>${ed?'✏️ עריכת עובד':'＋ עובד חדש'}</h2><div class="frm">
+    <input id="emN" placeholder="שם מלא" value="${esc(ed?.n||'')}" autocomplete="off">
+    <input id="emP" placeholder="טלפון" inputmode="tel" dir="ltr" value="${esc(ed?.ph||'')}" autocomplete="off">
+    <input id="emD" placeholder="יום הולדת (יום/חודש)" inputmode="numeric" dir="ltr" value="${ed?.d?(+ed.d.split('-')[1])+'/'+(+ed.d.split('-')[0]):''}" autocomplete="off">
+    <button class="sv" data-act="em-save">${ed?'עדכון':'הוספה'}</button>${ed?'<button class="sv ghost" data-act="em-cancel">ביטול</button>':''}</div></div>`;
+  const bd=e=>{if(!e.d)return '';const [m,d]=e.d.split('-');return +d+'/'+ +m};
+  return form+searchBox('חיפוש עובד…')+`<div class="card"><h2>👥 עובדי ${BRANCHES[b]}<span class="cnt">${list.length}</span></h2>`+(list.length?list.map(e=>
+    `<div class="gl" data-s="${esc(sKey(e.n))}"><span class="gn">${esc(e.n)}</span>${e.ph?`<a class="ep" href="tel:${esc(e.ph.replace(/[^0-9+]/g,''))}">${esc(e.ph)}</a>`:'<span class="ep none">—</span>'}<span class="eb">${bd(e)?'🎂 '+bd(e):''}</span>
+     <button class="mini-x" data-act="em-edit" data-id="${e.id}">✏️</button><button class="mini-x" data-act="em-del" data-id="${e.id}">✕</button></div>`).join(''):'<div class="empty">עדיין אין עובדים — הוסיפו למעלה</div>')+'</div>';
+}
+
+/* ── פגי תוקף של סניף 208/266: הזנה ומחיקה (אותה טבלה כמו Expiry Tracker) ── */
+function renderExpEdit(){
+  const all=expiry.filter(p=>p.expiryDate).slice().sort((a,b)=>a.expiryDate.localeCompare(b.expiryDate));
+  const form=`<div class="card"><h2>＋ מוצר חדש · ${BRANCHES[branch]}</h2><div class="frm">
+    <input id="exN" placeholder="שם המוצר" autocomplete="off">
+    <select id="exC">${Object.entries(EXP_CAT).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select>
+    <input id="exD" type="date" value="${iso(new Date())}">
+    <button class="sv" data-act="ex-add">שמירה</button></div></div>`;
+  return form+searchBox('חיפוש מוצר…')+`<div class="card"><h2>📋 כל המוצרים<span class="cnt">${all.length}</span></h2>`+(all.length?all.map(p=>{const df=daysFrom(p.expiryDate,startOfDay(new Date()));
+    return `<div class="gl" data-s="${esc(sKey(p.name))}"><span class="gi">${(EXP_CAT[p.category]||'📦').split(' ')[0]}</span><span class="gn">${esc(p.name)}</span>
+      <span class="xd" style="color:${df<0?'var(--maroon)':df<=1?'var(--red)':'var(--navy)'}">${dd(p.expiryDate)}</span><button class="mini-x" data-act="ex-del" data-id="${p.id}">✕</button></div>`}).join(''):'<div class="empty">אין מוצרים</div>')+'</div>';
+}
+
+/* ── פעולות טפסים ── */
+document.addEventListener('click',async e=>{
+  const a=e.target.closest('[data-act]');if(!a)return;const act=a.dataset.act,id=a.dataset.id,b=branch,v=x=>(document.getElementById(x)?.value||'').trim();
+  try{
+    if(act==='q-clear'){listQ='';const i=document.getElementById('listQ');if(i)i.value='';applySearch()}
+    if(act==='own-code'){const c=v('ownCode');if(!c)return;ls.set('ma_emp_k_'+b,c);renderApp('person')}
+    if(act==='em-save'){const n=v('emN');if(!n){toast('חסר שם');return}
+      const dm=v('emD').match(/^(\d{1,2})[\/.](\d{1,2})/),d=dm?String(dm[2]).padStart(2,'0')+'-'+String(dm[1]).padStart(2,'0'):'';
+      const L=LISTS['own_'+b];if(ownEdit!=null){Object.assign(L.find(x=>x.id===ownEdit),{n,ph:v('emP'),d})}else L.push({id:Date.now().toString(36),n,ph:v('emP'),d});
+      a.disabled=true;await saveOwnEmps(b,L);ownEdit=null;toast('נשמר ✓');renderApp('person')}
+    if(act==='em-edit'){ownEdit=id;renderApp('person');document.getElementById('appBody').scrollTop=0}
+    if(act==='em-cancel'){ownEdit=null;renderApp('person')}
+    if(act==='em-del'){const L=LISTS['own_'+b],x=L.find(q=>q.id===id);if(!x||!confirm('למחוק את '+x.n+'?'))return;
+      L.splice(L.indexOf(x),1);await saveOwnEmps(b,L);toast('נמחק');renderApp('person')}
+    if(act==='ex-add'){const n=v('exN'),d=v('exD');if(!n||!d){toast('חסר שם או תאריך');return}a.disabled=true;
+      await fsAdd('products_'+b,{name:n,expiryDate:d,category:v('exC'),notes:'',photoUrl:null,barcode:null,addedBy:'ניהול +',addedAt:new Date()});
+      toast('נשמר ✓');await loadExpiry()}
+    if(act==='ex-del'){const x=expiry.find(q=>q.id===id);if(!x||!confirm('למחוק את '+x.name+'?'))return;await fsDel('products_'+b+'/'+id);toast('נמחק');await loadExpiry()}
+    if(act==='tk-add'){const d=v('tkDesc');if(!d){toast('חסר תיאור');return}a.disabled=true;
+      await fsAdd('tickets_'+b,{description:d,category:v('tkCat'),dateReported:iso(new Date()),status:'open',addedBy:'ניהול +',addedAt:new Date()});
+      toast('נשמר ✓');await loadTickets()}
+    if(act==='tk-close'){if(!confirm('לסמן כטופל?'))return;await fsPatch('tickets_'+b+'/'+id,{status:'closed',closedAt:new Date()});toast('סומן כטופל ✓');await loadTickets()}
+    if(act==='push'){await enablePush()}
+  }catch(err){console.log(err);toast('שגיאה — בדקו חיבור לאינטרנט');a.disabled=false}
+});
+
+/* ── התראת בוקר 07:00 (Web Push) ── */
+const VAPID_PUB='BOfiIOogM7PRBBGrDtIoNpdWoUXeAZex-s4RBDsfTmv8VWddCY9lQXU6MisevoHJyurKflc-sf634VrqCInHXpc';
+function pushLabel(){const el=document.getElementById('pushBtn');if(el)el.textContent=ls.get('ma_push_on',false)?'🔔 התראות פעילות':'🔔 התראות בוקר'}
+async function enablePush(){
+  const standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+  if(!('serviceWorker' in navigator)||!('PushManager' in window)){toast(/iPhone|iPad/.test(navigator.userAgent)&&!standalone?'קודם: הוסיפו את ניהול + למסך הבית, ופתחו משם':'הדפדפן לא תומך בהתראות');return}
+  const perm=await Notification.requestPermission();if(perm!=='granted'){toast('ההתראות לא אושרו');return}
+  const reg=await navigator.serviceWorker.ready;
+  const key=Uint8Array.from(atob(VAPID_PUB.replace(/-/g,'+').replace(/_/g,'/')+'='.repeat((4-VAPID_PUB.length%4)%4)),c=>c.charCodeAt(0));
+  const sub=(await reg.pushManager.getSubscription())||await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:key});
+  const j=sub.toJSON(),h=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(j.endpoint)))).slice(0,16).map(x=>x.toString(16).padStart(2,'0')).join('');
+  await fsSet('ma_push_subs/'+h,{endpoint:j.endpoint,p256dh:j.keys.p256dh,auth:j.keys.auth,branch:String(branch),ua:navigator.userAgent.slice(0,120),createdAt:new Date()});
+  ls.set('ma_push_on',true);pushLabel();toast('✓ תקבלו התראה כל בוקר ב-07:00');
+}
+
 /* ברקוד מוגדל לסריקה */
 let jsbLoading=null;
 function loadJsb(){return window.JsBarcode?Promise.resolve():(jsbLoading||(jsbLoading=new Promise((ok,no)=>{const sc=document.createElement('script');
@@ -1091,20 +1230,32 @@ async function fsList(col,fields){
 }
 async function loadExpiry(){
   const b=branch;
-  try{const list=await fsList(b===118?'products':'products_208',['name','category','expiryDate']);
+  try{const list=await fsList(b===118?'products':'products_'+b,['name','category','expiryDate']);
     if(b!==branch)return;expiry=list;expiryLive=true;renderAll()}catch(e){console.log('expiry',e.message)}
 }
 async function loadTickets(){
-  try{tickets=await fsList('tickets',['description','category','dateReported','status']);ticketsLive=true;renderAll()}catch(e){console.log('tickets',e.message)}
+  const b=branch;
+  try{const list=await fsList(b===118?'tickets':'tickets_'+b,['description','category','dateReported','status']);if(b!==branch)return;
+    tickets=list;ticketsLive=true;renderAll()}catch(e){console.log('tickets',e.message)}
 }
-function subscribeExpiry(){expiryLive=false;expiry=[];loadExpiry()}
+function subscribeExpiry(){expiryLive=false;expiry=[];ticketsLive=false;tickets=[];loadExpiry();loadTickets()}
+/* כתיבה ל-Firestore (חוקים פתוחים, כמו Expiry Tracker) */
+const fv=v=>v==null?{nullValue:null}:typeof v==='boolean'?{booleanValue:v}:typeof v==='number'?{integerValue:String(v)}:v instanceof Date?{timestampValue:v.toISOString()}:{stringValue:String(v)};
+const fsFields=o=>({fields:Object.fromEntries(Object.entries(o).map(([k,v])=>[k,fv(v)]))});
+async function fsAdd(col,obj){const r=await fetch(FS_BASE+col+'?key='+FS_KEY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(fsFields(obj))});if(!r.ok)throw new Error(r.status)}
+async function fsSet(path,obj){const r=await fetch(FS_BASE+path+'?key='+FS_KEY,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(fsFields(obj))});if(!r.ok)throw new Error(r.status)}
+async function fsPatch(path,obj){const q=Object.keys(obj).map(k=>'&updateMask.fieldPaths='+k).join('');
+  const r=await fetch(FS_BASE+path+'?key='+FS_KEY+q,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(fsFields(obj))});if(!r.ok)throw new Error(r.status)}
+async function fsDel(path){const r=await fetch(FS_BASE+path+'?key='+FS_KEY,{method:'DELETE'});if(!r.ok)throw new Error(r.status)}
+async function fsGet(path){const r=await fetch(FS_BASE+path+'?key='+FS_KEY,{cache:'no-store'});if(r.status===404)return null;if(!r.ok)throw new Error(r.status);
+  const j=await r.json(),o={};for(const [k,v] of Object.entries(j.fields||{}))o[k]=v.stringValue??v.integerValue??v.booleanValue??v.timestampValue??null;return o}
 function initFirebase(){loadExpiry();loadTickets();setInterval(()=>{loadExpiry();loadTickets()},120000)}
 
 /* ═════════════ INIT ═════════════ */
 // ?day=2026-11-08 — לבדיקה של יום אחר
 const qd=new URLSearchParams(location.search).get('day');if(qd)day=startOfDay(new Date(qd+'T00:00:00'));
 const qs=new URLSearchParams(location.search).get('screen');
-renderHome();document.body.classList.add('fab');
+renderHome();document.body.classList.add('fab');pushLabel();
 if(qs)go(qs);
 loadLive();
 initFirebase();
