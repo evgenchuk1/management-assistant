@@ -61,12 +61,12 @@ button{font-family:inherit}
 .pill.on{background:linear-gradient(180deg,var(--gold2),var(--gold));color:var(--deep);border-color:var(--gold2);box-shadow:0 2px 5px rgba(0,0,0,.3)}
 .back{flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);background:linear-gradient(180deg,#7E97B8,#4F6E96);color:#fff;box-shadow:0 2px 5px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.35);
   border-radius:999px;padding:5px 14px;font-size:15px;font-weight:800;cursor:pointer;line-height:1.1}
-.cats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:7px auto 3px;max-width:300px}
+.cats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin:7px auto 3px;max-width:400px}
 .cat{height:38px;border:none;cursor:pointer;border-radius:11px;display:flex;align-items:center;justify-content:center;
   background:linear-gradient(170deg,#F3E3BE 0%,var(--gold) 55%,#B8955A 100%);
   box-shadow:0 3px 0 #8A6C3A,0 5px 9px rgba(0,0,0,.3),inset 0 2px 0 rgba(255,255,255,.6);transition:transform .09s,box-shadow .09s}
 .cat:active{transform:translateY(3px);box-shadow:0 0 0 #8A6C3A,0 2px 4px rgba(0,0,0,.3)}
-.cat svg{width:30px;height:30px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
+.cat svg{width:28px;height:28px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
 
 /* ── home tiles (3D) ── */
 .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px 14px}
@@ -243,6 +243,29 @@ body.fab .home .foot{padding-right:62px}
 .ep{flex-shrink:0;direction:ltr;font-weight:800;color:var(--navy);text-decoration:none;font-size:15px}
 .ep.none{color:var(--muted)}
 .eb{flex-shrink:0;width:66px;text-align:left;font-size:14px;color:var(--gold3);font-weight:700;direction:ltr}
+.lib{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin-top:6px}
+.libt{min-height:220px}
+.libt svg{width:96px;height:96px}
+.libt .sub2{font-size:13px;color:var(--gold2);font-weight:600}
+.pr-add{display:flex;gap:8px;margin-bottom:12px}
+.pr-add .sv{flex:1;text-align:center;border:none;border-radius:14px;padding:12px;font:inherit;font-size:16px;font-weight:900;color:#fff;cursor:pointer;
+  background:linear-gradient(170deg,var(--navy3),var(--navy));box-shadow:0 3px 0 #0E1A2A}
+.pr-add .sv.ghost{background:#fff;color:var(--navy);border:1.5px solid var(--gold);box-shadow:none}
+.pr-add .cam{background:linear-gradient(170deg,#F3E3BE,var(--gold) 55%,#B8955A);color:var(--deep);box-shadow:0 3px 0 #8A6C3A}
+.prf .frm label{flex:1 1 140px;display:flex;flex-direction:column;font-size:12px;color:var(--muted);gap:3px}
+.prf .frm label input{flex:none;width:100%}
+.prf .frm input:placeholder-shown,.prf .frm input[value=""]{border-color:#E25544;background:#FFF5F4}
+.primg{display:block;width:100%;max-height:220px;object-fit:contain;border-radius:12px;margin-bottom:10px;background:#000}
+.gl.pr{align-items:flex-start}
+.prm{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.prp{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.prp s{color:var(--muted);font-size:14px}
+.prp b{color:#C0392B;font-size:20px;font-weight:900}
+.prp .dq{font-size:13px;font-weight:800;color:var(--navy);background:#FBF4E6;border:1px solid #EBDDBF;border-radius:999px;padding:1px 8px}
+.prc{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pru{font-size:13px;font-weight:800;color:var(--navy);margin-inline-start:auto}
+.pru.soon{color:#D9822B}.pru.old{color:var(--muted)}
+.old-pr{opacity:.6}
 .sbox{display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--gold);border-radius:14px;padding:4px 10px;margin-bottom:12px;
   position:sticky;top:-16px;z-index:5;box-shadow:0 3px 8px rgba(32,53,80,.12)}
 .sbox input{flex:1;min-width:0;border:none;outline:none;font:inherit;font-size:17px;padding:7px 0;background:transparent}
@@ -438,6 +461,18 @@ table.al td.x{width:34px;text-align:center}
     <path d="M23 23c0-5 1.5-9 4-11" stroke="#6B4423" stroke-width="2.6" fill="none" stroke-linecap="round"/>
     <path d="M26 15c4-6 11-6 13-3-4 5-9 5-13 3z" fill="url(#gGreen)" stroke="#22794A" stroke-width="1"/>
   </symbol>
+  <symbol id="c-library" viewBox="0 0 64 64">
+    <rect x="6" y="14" width="12" height="40" rx="2" fill="#203550"/><rect x="8" y="20" width="8" height="3" fill="#CFAB6F"/><rect x="8" y="44" width="8" height="3" fill="#CFAB6F"/>
+    <rect x="20" y="8" width="13" height="46" rx="2" fill="#C0392B"/><rect x="22" y="14" width="9" height="3" fill="#F6E6C2"/><rect x="22" y="46" width="9" height="3" fill="#F6E6C2"/>
+    <rect x="35" y="18" width="10" height="36" rx="2" fill="#2E8B57"/><rect x="37" y="24" width="6" height="3" fill="#F6E6C2"/>
+    <g transform="rotate(16 52 36)"><rect x="47" y="16" width="10" height="38" rx="2" fill="#3B67A3"/><rect x="49" y="22" width="6" height="3" fill="#F6E6C2"/></g>
+    <rect x="3" y="54" width="58" height="5" rx="2" fill="#7A5A2E"/>
+  </symbol>
+  <symbol id="c-promos" viewBox="0 0 64 64">
+    <circle cx="32" cy="28" r="22" fill="#203550" stroke="#fff" stroke-width="2.5"/>
+    <path d="M22 18v14a4 4 0 0 0 4 4h4V24M30 18h6a4 4 0 0 1 4 4v14" fill="none" stroke="#F6E6C2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M32 46v10M24 50l8 8 8-8" fill="none" stroke="#C0392B" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
   <symbol id="c-person" viewBox="0 0 64 64">
     <circle cx="32" cy="19" r="12" fill="#203550"/>
     <path d="M9 60c0-16 10-25 23-25s23 9 23 25z" fill="#203550"/>
@@ -584,6 +619,8 @@ const APPS = {
   quality:{url:null, he:'מעקב איכות ותברואה', en:'Quality & sanitation'},
   tech:   {url:'https://evgenchuk1.github.io/-ticket-tracker-/', he:'מצב טכני', en:'Technical status'},
   person: {url:null, he:'עובדי הסניף'},
+  library:{url:null, he:'ספריה'},
+  promos: {url:null, he:'מבצעים'},
   produce:{url:null, he:'פירות וירקות'},
   meat:   {url:null, he:'בשר ועוף'},
   expedit:{url:null, he:'הזנת פגי תוקף'},
@@ -687,6 +724,7 @@ function weekHours(d){
     if(i>=-1&&i<=6){let h=0;Object.values(w.depts||{}).forEach(dp=>(dp.rows||[]).forEach(r=>(r.cells||[]).forEach(c=>{if(!isOff(c))h+=cellHours(c)})));return h}}
   return 0}
 function sidurFor(d){
+  if(OWN(branch))return {ok:false,own:true}; // הסידור באפליקציה שייך לסניף 118 בלבד
   let wk=null,idx=-1;
   for(const w of sidurWeeks()){const ws=weekStart(w.label);if(!ws)continue;
     const i=Math.round((d-ws)/86400000);if(i>=0&&i<=5){wk=w;idx=i;break}}
@@ -754,7 +792,7 @@ document.addEventListener('click',e=>{
     if(c==='fish'){toast('דגים — הרשימה בהכנה, בקרוב');return}
     document.getElementById('rkHdr')?.classList.remove('open');
     const top=stack[stack.length-1];if(top==='app:'+c)return;
-    if(['app:person','app:produce','app:meat'].includes(top))stack.pop(); // מעבר בין רשימות — בלי לערום מסכים
+    if(['app:person','app:produce','app:meat','app:library','app:promos'].includes(top))stack.pop(); // מעבר בין רשימות — בלי לערום מסכים
     go(c);return}
   const bc=e.target.closest('[data-bc]');if(bc){showBarcode(bc.dataset.bc,bc.dataset.nm,bc.dataset.gif);return}
   if(e.target.closest('#bcOv')){document.getElementById('bcOv').classList.remove('on');return}
@@ -762,7 +800,7 @@ document.addEventListener('click',e=>{
   if(e.target.closest('.cart-fab,#cartBtn')){toast('בקרוב');return}
 });
 /* 4 כפתורי קטגוריה בכותרת (הפעולה תוגדר בהמשך) */
-const CATS=[['fish','דגים'],['meat','בשר'],['produce','פירות וירקות'],['person','עובדים']];
+const CATS=[['promos','מבצעים'],['library','ספריה'],['fish','דגים'],['meat','בשר'],['produce','פירות וירקות'],['person','עובדים']];
 document.querySelectorAll('.cats').forEach(el=>el.innerHTML=CATS.map(([k,he])=>
   `<button class="cat" data-cat="${k}" aria-label="${he}" title="${he}"><svg><use href="#c-${k}"/></svg></button>`).join(''));
 
@@ -803,7 +841,7 @@ function fitVar(el,name,lo,hi,unit=''){
   let best=lo;
   for(let i=0;i<16;i++){const m=(lo+hi)/2;el.style.setProperty(name,m+unit);if(fits()){best=m;lo=m}else hi=m}
   el.style.setProperty(name,best+unit);return best}
-const FIT={spira:1,expiry:1,sidur:1};
+const FIT={spira:1,expiry:1,sidur:1};const fitOn=k=>FIT[k]&&!(k==='sidur'&&OWN(branch));
 function fitScreen(key){
   const body=document.getElementById('appBody');
   if(key==='sidur'){const box=document.getElementById('sd2');if(!box)return;
@@ -850,15 +888,13 @@ function renderApp(key){
   if(key==='orders'){
     const list=ordersFor(day);
     h+=card('🚚 הזמנות היום','Orders today',list.length?list.map(o=>`<div class="row" style="${o.past?'opacity:.5':''}"><div class="ic">${o.ic||'📦'}</div><div class="tx"><div class="nm">${esc(o.nm)}</div><div class="ds">${esc(o.nt||'—')} · אספקה: ${esc(o.dlDay)}</div></div>${o.past?'':`<span class="tag gold">עד ${o.dl}</span>`}</div>`).join(''):'<div class="empty">אין הזמנות היום</div>',list.length);
-    if(branch===208)h+='<div class="note" style="margin:-6px 4px 12px">* מוצג לוח הזמנות של סניף 118</div>';
   }
   if(key==='sidur'){
     const s=sidurFor(day);
-    if(!s.ok)h+=card('👥 סידור עבודה','Work schedule',`<div class="empty">${day.getDay()===6?'שבת — אין עבודה':'אין סידור לתאריך זה (השבוע השמור: '+esc(s.label||'—')+')'}</div>`);
+    if(!s.ok)h+=card('👥 סידור עבודה','Work schedule',`<div class="empty">${s.own?'אין סידור עבודה ל'+BRANCHES[branch]+' — אפליקציית סידור העבודה שייכת לסניף 118 בלבד.':day.getDay()===6?'שבת — אין עבודה':'אין סידור לתאריך זה (השבוע השמור: '+esc(s.label||'—')+')'}</div>`);
     else h+='<div class="sd2" id="sd2">'+s.depts.filter(dp=>dp.work.length).map(dp=>
       `<div class="sdh">${esc(dp.name)} (${dp.work.length})</div>`+
       dp.work.map(w=>`<div class="sdr"><span>${esc(w.name)}</span><b>${esc(shortH(w.v))}</b></div>`).join('')).join('')+'</div>';
-    if(branch===208)h+='<div class="note" style="margin:-6px 4px 12px">* מוצג סידור העבודה של סניף 118</div>';
   }
   if(key==='expiry'){
     const e=expiryFor(day);
@@ -883,14 +919,16 @@ function renderApp(key){
       <h2 style="justify-content:center;margin-top:10px">בקרוב</h2><div class="empty">אפליקציית מעקב איכות ותברואה נמצאת בתכנון.<br>כאן יופיעו משימות הבדיקה של היום.</div></div>`;
   }
   if(key==='person') h+=renderPeople();
+  if(key==='library') h+=renderLibrary();
+  if(key==='promos') h+=renderPromos();
   if(key==='produce') h+=renderGoods('produce');
   if(key==='meat') h+=renderGoods('meat');
   if(key==='access') return renderAccess();
   if(key==='install') return renderInstall();
-  if(APPS[key]?.url&&!(OWN(branch)&&['expiry','tech'].includes(key)))h+=fullBtn(key);
+  if(APPS[key]?.url&&!(OWN(branch)&&['expiry','tech','sidur'].includes(key)))h+=fullBtn(key);
   const body=document.getElementById('appBody');body.innerHTML=h;if(document.getElementById('listQ'))applySearch();
-  body.classList.toggle('fit',!!FIT[key]);
-  if(FIT[key]){fitScreen(key);requestAnimationFrame(()=>{if(stack[stack.length-1]==='app:'+key)refit()})}
+  body.classList.toggle('fit',!!fitOn(key));
+  if(fitOn(key)){fitScreen(key);requestAnimationFrame(()=>{if(stack[stack.length-1]==='app:'+key)refit()})}
   if(key==='sidur')initLens();
 }
 
@@ -981,6 +1019,91 @@ function renderPeople(){
     const ph=e.ph?`<a class="ep" href="tel:${esc(e.ph.replace(/[^0-9+]/g,''))}">${esc(e.ph)}</a>`:'<span class="ep none">—</span>';
     return `<div class="gl" data-s="${esc(sKey([e.n,e.l,e.k].join(' ')))}"><span class="gn">${nm.replace(/^[^<]*/,m=>esc(m))}</span>${ph}<span class="eb">${bd(e)?'🎂 '+bd(e):''}</span></div>`}).join('')+'</div>';
 }
+/* ── ספריה: שני נושאים (התוכן יוגדר בהמשך) ── */
+function renderLibrary(){
+  return `<div class="lib">
+    <button class="tile libt" data-act="lib" data-id="nehalim"><svg viewBox="0 0 64 64"><rect x="12" y="6" width="40" height="52" rx="5" fill="url(#gCream)" stroke="#9C7A42" stroke-width="2"/>
+      <rect x="12" y="6" width="40" height="12" rx="5" fill="url(#gGold)"/><g stroke="#203550" stroke-width="3" stroke-linecap="round"><path d="M20 27h24M20 35h24M20 43h16"/></g>
+      <circle cx="47" cy="49" r="11" fill="#203550" stroke="#fff" stroke-width="2"/><path d="M42 49l4 4 7-8" fill="none" stroke="#CFAB6F" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="lbl">נוהלים</span><span class="sub2">הוראות ותהליכי עבודה</span></button>
+    <button class="tile libt" data-act="lib" data-id="yedion"><svg viewBox="0 0 64 64"><rect x="6" y="12" width="46" height="42" rx="5" fill="url(#gCream)" stroke="#9C7A42" stroke-width="2"/>
+      <rect x="12" y="18" width="18" height="14" rx="2" fill="url(#gBlue)"/><g stroke="#203550" stroke-width="2.6" stroke-linecap="round"><path d="M34 20h12M34 26h12M12 38h34M12 45h26"/></g>
+      <path d="M52 22h6v28a4 4 0 0 1-8 0V22z" fill="url(#gGold)"/>
+      <path d="M44 4l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z" fill="#C0392B"/></svg>
+      <span class="lbl">ידיעון</span><span class="sub2">עדכונים וחדשות</span></button></div>`;
+}
+
+/* ── מבצעים: רשימה משותפת לכל הסניפים (Firestore ma_promos), הזנה מצילום ממצא ── */
+let promoDraft=null,promoBusy='';
+async function loadPromos(){try{LISTS.promos=await fsList('ma_promos',['name','brand','deal','price','dealQty','regUnit','until','codes']);}catch{LISTS.promos_err=1}
+  if(stack.at(-1)==='app:promos')renderApp('promos')}
+const money=v=>v===''||v==null||isNaN(+v)?'':(+v).toFixed(2);
+function renderPromos(){
+  if(!LISTS.promos){if(!LISTS.promos_busy){LISTS.promos_busy=1;loadPromos().finally(()=>LISTS.promos_busy=0)}
+    return `<div class="card"><div class="empty">${LISTS.promos_err?'⚠️ אין חיבור — נסו שוב':'⏳ טוען מבצעים…'}</div></div>`}
+  const today=iso(new Date());
+  const all=LISTS.promos.slice().sort((a,b)=>(a.until||'9').localeCompare(b.until||'9'));
+  const act=all.filter(p=>!p.until||p.until>=today),old=all.filter(p=>p.until&&p.until<today);
+  const row=p=>{const q=+p.dealQty||1,before=p.regUnit?(+p.regUnit)*q:null,left=p.until?daysFrom(p.until,startOfDay(new Date())):null;
+    const codes=String(p.codes||'').split(/[,\s]+/).filter(c=>c.length>=4);
+    return `<div class="gl pr" data-s="${esc(sKey(p.name+' '+(p.brand||'')))}">
+      <div class="prm"><div class="gn">${esc(p.name)}${p.brand?` <small>· ${esc(p.brand)}</small>`:''}</div>
+        <div class="prp">${before?`<s>₪${money(before)}</s>`:''}<b>₪${money(p.price)}</b>${q>1?`<span class="dq">${q} יח' ב-${money(p.price)}</span>`:''}</div>
+        <div class="prc">${codes.length?codes.map(c=>`<button class="bcn" data-bc="${esc(c)}" data-nm="${esc(p.name)}">${esc(c)}</button>`).join(''):'<span class="bcn none">אין קוד</span>'}
+          <span class="pru ${left!=null&&left<0?'old':left!=null&&left<=3?'soon':''}">עד ${p.until?dd(p.until)+'/'+p.until.slice(2,4):'—'}</span></div></div>
+      <button class="mini-x" data-act="pr-del" data-id="${p.id}">✕</button></div>`};
+  const form=promoDraft?`<div class="card prf"><h2>${promoBusy?'⏳ '+esc(promoBusy):'✏️ בדקו ותקנו לפני שמירה'}</h2>
+    ${promoDraft.img?`<img src="${promoDraft.img}" class="primg" alt="">`:''}
+    <div class="frm">
+      <input id="prN" placeholder="שם המוצר" value="${esc(promoDraft.name||'')}" autocomplete="off">
+      <input id="prB" placeholder="מותג / יצרן" value="${esc(promoDraft.brand||'')}" autocomplete="off">
+      <label>מחיר מבצע ₪<input id="prP" inputmode="decimal" dir="ltr" value="${esc(promoDraft.price||'')}"></label>
+      <label>כמות במבצע (יח')<input id="prQ" inputmode="numeric" dir="ltr" value="${esc(promoDraft.dealQty||1)}"></label>
+      <label>מחיר רגיל ליח' ₪<input id="prR" inputmode="decimal" dir="ltr" value="${esc(promoDraft.regUnit||'')}"></label>
+      <label>בתוקף עד<input id="prU" type="date" value="${esc(promoDraft.until||'')}"></label>
+      <input id="prC" placeholder="קוד / ברקוד (כמה — בפסיקים)" dir="ltr" value="${esc(promoDraft.codes||'')}" autocomplete="off">
+      <button class="sv" data-act="pr-save" ${promoBusy?'disabled':''}>שמירה</button><button class="sv ghost" data-act="pr-cancel">ביטול</button></div></div>`:'';
+  return `<div class="pr-add"><label class="sv cam">📷 צילום ממצא<input type="file" accept="image/*" capture="environment" id="prFile" hidden></label>
+    <button class="sv ghost" data-act="pr-manual">✍️ הזנה ידנית</button></div>`+form+searchBox('חיפוש מבצע…')+
+    `<div class="card"><h2>🏷️ מבצעים פעילים<span class="cnt">${act.length}</span></h2>${act.length?act.map(row).join(''):'<div class="empty">אין מבצעים פעילים</div>'}</div>`+
+    (old.length?`<div class="card old-pr"><h2>⌛ הסתיימו<span class="cnt">${old.length}</span></h2>${old.map(row).join('')}</div>`:'');
+}
+/* זיהוי טקסט מתמונת הממצא (Tesseract.js, עברית+אנגלית) */
+let tessLoading=null;
+function loadTess(){return window.Tesseract?Promise.resolve():(tessLoading||(tessLoading=new Promise((ok,no)=>{const sc=document.createElement('script');
+  sc.src='https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.1.1/tesseract.min.js';sc.onload=ok;sc.onerror=no;document.head.appendChild(sc)})))}
+function shrinkImg(file,max=2000,filter=''){return new Promise(ok=>{const im=new Image();im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height));
+  const c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;const g=c.getContext('2d');g.filter=filter;g.drawImage(im,0,0,c.width,c.height);ok(c.toDataURL('image/jpeg',.9))};
+  im.src=typeof file==='string'?file:URL.createObjectURL(file)})}
+/* פירוק טקסט הממצא. lines: [{t,h}] — h = גובה השורה (השם = השורה העברית הגבוהה ביותר) */
+function parseTag(lines){
+  const T=lines.map(l=>l.t).join('\n').replace(/[|]/g,' ').replace(/[״“”]/g,'"'),num=x=>x?x.replace(',','.'):'';
+  const out={};
+  let m=T.match(/בתוקף\s*עד\s*(\d{1,2})[\/.\-](\d{1,2})[\/.\-](20\d{2})/)||T.match(/(\d{1,2})[\/.\-](\d{1,2})[\/.\-](20\d{2})/);
+  if(m&&+m[1]<=31&&+m[2]<=12)out.until=m[3]+'-'+String(m[2]).padStart(2,'0')+'-'+String(m[1]).padStart(2,'0');
+  m=T.match(/מחיר\s*רג[יו]ל[:\s]*(\d+[.,]\d{2})/);if(m)out.regUnit=num(m[1]);
+  m=T.match(/קוד[:\s]*([\d ,]{5,})/);if(m)out.codes=m[1].split(/[ ,]+/).filter(c=>c.length>=5).join(', ');
+  m=T.match(/(\d{1,2})\s*יח['׳]?\s*ב/);if(m)out.dealQty=m[1];
+  const bad=/שופרסל|מחיר|בתוקף|קוד|ליח|ל\s*100|COMFORT|SIZE|WARM|Slippers|Winter/i;
+  const cand=lines.map((l,i)=>({...l,i,he:(l.t.match(/[\u05D0-\u05EA]/g)||[]).length})).filter(l=>l.he>=3&&!bad.test(l.t)&&l.he/l.t.replace(/\s/g,'').length>.6);
+  const nm=cand.sort((a,b)=>b.h-a.h)[0];
+  if(nm){out.name=nm.t.replace(/[^\u05D0-\u05EA0-9%\/\s'"-]/g,'').replace(/\s+/g,' ').trim();
+    const nx=lines.slice(nm.i+1,nm.i+3).map(l=>l.t.trim()).find(t=>(/^[\u05D0-\u05EA'"\s-]{3,24}$/.test(t)&&(t.match(/[\u05D0-\u05EA]/g)||[]).length>=3)||/^[A-Z][A-Z0-9 &'-]{2,20}$/.test(t));if(nx)out.brand=nx}
+  return out;
+}
+document.addEventListener('change',async e=>{
+  if(e.target.id!=='prFile'||!e.target.files[0])return;
+  const f=e.target.files[0],img=await shrinkImg(f,1400);promoDraft={img,dealQty:1};promoBusy='מזהה טקסט מהצילום… (עד חצי דקה)';renderApp('promos');
+  try{await loadTess();const src=await shrinkImg(f,2000,'grayscale(1) contrast(1.4)');
+    const w=await Tesseract.createWorker('heb+eng');await w.setParameters({tessedit_pageseg_mode:'11'});
+    const {data}=await w.recognize(src,{},{blocks:true,text:true});await w.terminate();
+    const lines=[];(data.blocks||[]).forEach(b=>b.paragraphs.forEach(p=>p.lines.forEach(l=>lines.push({t:l.text.trim(),h:l.bbox.y1-l.bbox.y0}))));
+    Object.assign(promoDraft,parseTag(lines.length?lines:(data.text||'').split('\n').map(t=>({t,h:0}))));promoBusy='';
+    toast(promoDraft.price?'זוהה — בדקו את השדות':'זוהה — הקלידו את מחיר המבצע ובדקו')}
+  catch(err){console.log(err);promoBusy='';toast('הזיהוי נכשל — מלאו ידנית')}
+  if(stack.at(-1)==='app:promos'){renderApp('promos');const pp=document.getElementById(promoDraft&&!promoDraft.price?'prP':'prN');pp&&pp.focus()}
+});
+
 /* ── חיפוש לפי אותיות פתיחה (בכל הרשימות) ── */
 let listQ='';
 const sKey=t=>String(t||'').toLowerCase().replace(/["'׳״()\-.,]/g,' ').replace(/\s+/g,' ').trim();
@@ -1066,6 +1189,15 @@ document.addEventListener('click',async e=>{
       toast('נשמר ✓');await loadTickets()}
     if(act==='tk-close'){if(!confirm('לסמן כטופל?'))return;await fsPatch('tickets_'+b+'/'+id,{status:'closed',closedAt:new Date()});toast('סומן כטופל ✓');await loadTickets()}
     if(act==='push'){await enablePush()}
+    if(act==='lib'){toast((id==='nehalim'?'נוהלים':'ידיעון')+' — התוכן יתווסף בקרוב')}
+    if(act==='pr-manual'){promoDraft={dealQty:1};promoBusy='';renderApp('promos')}
+    if(act==='pr-cancel'){promoDraft=null;promoBusy='';renderApp('promos')}
+    if(act==='pr-save'){const n=v('prN'),pr=v('prP').replace(',','.');if(!n||!pr){toast('חסר שם או מחיר');return}a.disabled=true;
+      await fsAdd('ma_promos',{name:n,brand:v('prB'),price:pr,dealQty:Math.max(1,parseInt(v('prQ'))||1),regUnit:v('prR').replace(',','.'),until:v('prU'),codes:v('prC'),
+        deal:'',addedBy:'ניהול + · '+BRANCHES[branch],addedAt:new Date()});
+      promoDraft=null;toast('המבצע נשמר ✓');LISTS.promos=null;await loadPromos()}
+    if(act==='pr-del'){const x=(LISTS.promos||[]).find(q=>q.id===id);if(!x||!confirm('למחוק את המבצע „'+x.name+'”?'))return;
+      await fsDel('ma_promos/'+id);toast('נמחק');LISTS.promos=null;await loadPromos()}
   }catch(err){console.log(err);toast('שגיאה — בדקו חיבור לאינטרנט');a.disabled=false}
 });
 
@@ -1108,7 +1240,7 @@ function panelData(d){
     s.pachat?`<div class="it"><span class="k">📉 פחת:</span> ${s.pachat.cancelled?'🚫 בוטל':esc(s.pachat.items.join(', '))+' ['+s.pachat.codes.join(',')+']'}</div>`:'',
   ].join('')||'<div class="mut">אין ספירות היום</div>';
   const orders=o.length?o.map(x=>`<div class="it" style="${x.past?'opacity:.45':''}">${x.ic||'📦'} ${esc(x.nm)} <span class="k">${x.dl}</span></div>`).join(''):'<div class="mut">אין הזמנות</div>';
-  const sidur=sd.ok?'<div class="sd2">'+sd.depts.filter(dp=>dp.work.length).map(dp=>`<div class="sdh">${esc(dp.name)} (${dp.work.length})</div>`+dp.work.map(w=>`<div class="sdr"><span>${esc(w.name)}</span><b>${esc(shortH(w.v))}</b></div>`).join('')).join('')+'</div>':`<div class="mut">${d.getDay()===6?'שבת':'אין סידור לתאריך זה'}</div>`;
+  const sidur=sd.ok?'<div class="sd2">'+sd.depts.filter(dp=>dp.work.length).map(dp=>`<div class="sdh">${esc(dp.name)} (${dp.work.length})</div>`+dp.work.map(w=>`<div class="sdr"><span>${esc(w.name)}</span><b>${esc(shortH(w.v))}</b></div>`).join('')).join('')+'</div>':`<div class="mut">${sd.own?'אין סידור לסניף זה':d.getDay()===6?'שבת':'אין סידור לתאריך זה'}</div>`;
   const ex=(arr)=>arr.map(p=>esc(p.name)).join(', ');
   const expiryH=!expiryLive?'<div class="mut">טוען…</div>':
     (e.expired.length?`<div class="it" style="color:var(--maroon)"><span class="k" style="color:var(--maroon)">⛔ פג (${e.expired.length}):</span> ${ex(e.expired.slice(0,4))}${e.expired.length>4?'…':''}</div>`:'')+
