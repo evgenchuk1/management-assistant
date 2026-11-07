@@ -266,6 +266,21 @@ body.fab .home .foot{padding-right:62px}
 .pru{font-size:13px;font-weight:800;color:var(--navy);margin-inline-start:auto}
 .pru.soon{color:#D9822B}.pru.old{color:var(--muted)}
 .old-pr{opacity:.6}
+#intro{position:fixed;inset:0;z-index:200;background:#000;transition:opacity .5s}
+#intro[hidden]{display:none}
+#intro.out{opacity:0;pointer-events:none}
+#intro video{width:100%;height:100%;object-fit:cover}
+#intro button{position:absolute;top:calc(var(--safe-top) + 12px);border:1.5px solid rgba(255,255,255,.6);background:rgba(0,0,0,.35);color:#fff;
+  border-radius:999px;padding:8px 16px;font:inherit;font-size:16px;font-weight:800;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+#intro .in-skip{left:14px}
+#intro .in-snd{right:14px;padding:8px 12px}
+.clean .cl{display:flex;align-items:center;gap:10px;padding:12px 4px;border-bottom:1px solid #EFEADF;text-decoration:none;color:inherit;font-size:18px}
+.clean .cl:last-child{border-bottom:none}
+.clean .cl:active{background:#FBF4E6}
+.cln{flex:1;font-weight:800;color:var(--ink)}
+.clp{direction:ltr;font-weight:800;color:var(--navy)}
+.clc{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#45B07A,#2E8B57);font-size:18px}
+.cl.none .clp{color:var(--muted);font-weight:500;font-size:15px}
 .sbox{display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--gold);border-radius:14px;padding:4px 10px;margin-bottom:12px;
   position:sticky;top:-16px;z-index:5;box-shadow:0 3px 8px rgba(32,53,80,.12)}
 .sbox input{flex:1;min-width:0;border:none;outline:none;font:inherit;font-size:17px;padding:7px 0;background:transparent}
@@ -600,6 +615,8 @@ table.al td.x{width:34px;text-align:center}
   </div>
 </div>
 
+<div id="intro" hidden><video id="introV" playsinline muted preload="auto" poster="intro.jpg"><source src="intro.mp4" type="video/mp4"></video>
+  <button class="in-skip" id="introSkip">דלג ›</button><button class="in-snd" id="introSnd" aria-label="קול">🔇</button></div>
 <div id="lens"></div>
 <div class="bc-ov" id="bcOv"><div class="bc-card"><div class="bc-name" id="bcName"></div><div id="bcBox"></div><div class="bc-hint">הקישו בכל מקום לסגירה</div></div></div>
 <button class="cart-btn cart-fab" aria-label="עגלה"><svg><use href="#i-cart"/></svg><span class="plus">+</span></button>
@@ -915,8 +932,9 @@ function renderApp(key){
     h+=card('🔧 תקלות פתוחות','Open tickets',t.length?t.map(x=>`<div class="row"><div class="sq" style="background:${ageColor(x.age)}">${x.age}</div><div class="tx"><div class="nm">${TECH_CAT[x.category]||'🔧'} ${esc(x.description||'תקלה')}</div><div class="ds">נפתח ${dd(x.dateReported)} · ${x.age} ימים</div></div>${OWN(branch)?`<button class="mini-x" data-act="tk-close" data-id="${x.id}">✓ טופל</button>`:''}</div>`).join(''):'<div class="ok">✓ אין תקלות פתוחות</div>',t.length);
   }
   if(key==='quality'){
-    h+=`<div class="card" style="text-align:center;padding:28px 16px"><svg width="96" height="96"><use href="#i-quality"/></svg>
-      <h2 style="justify-content:center;margin-top:10px">בקרוב</h2><div class="empty">אפליקציית מעקב איכות ותברואה נמצאת בתכנון.<br>כאן יופיעו משימות הבדיקה של היום.</div></div>`;
+    h+=`<div class="card" style="text-align:center;padding:16px"><svg width="64" height="64"><use href="#i-quality"/></svg>
+      <h2 style="justify-content:center;margin:6px 0 4px">בקרוב</h2><div class="empty" style="padding:0">כאן יופיעו משימות הבדיקה של היום.</div></div>`;
+    h+=renderCleaners();
   }
   if(key==='person') h+=renderPeople();
   if(key==='library') h+=renderLibrary();
@@ -980,7 +998,7 @@ async function loadList(kind){
       const k=ls.get('ma_emp_k','');if(k)try{LISTS.person=await decEmps(LISTS.empEnc,k)}catch{}}
   }catch(e){LISTS[kind+'_err']=1}
   LISTS[kind+'_busy']=0;
-  if(stack[stack.length-1]==='app:'+kind)renderApp(kind);
+  const tp=stack[stack.length-1];if(tp==='app:'+kind||(kind==='person'&&tp==='app:quality'))renderApp(tp.slice(4));
 }
 const heSort=(a,b)=>String(a).localeCompare(String(b),'he');
 function renderGoods(kind){
@@ -1001,9 +1019,22 @@ async function decEmps(enc,code){
   const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:150000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt']);
   return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv},key,ct))).list;
 }
+/* צוות הניקיון (מתוך רשימת העובדים המוצפנת של סניף 118; הטלפונים לא נשמרים בקוד) */
+const CLEAN_TEAM=[['e9','אבי'],['x7','יוהנס'],['e8','טואלדה'],[null,'קובי'],['e7','מאלאס'],[null,'מולו']];
+function renderCleaners(){
+  const head='<div class="card clean"><h2>🧹 בינתיים — צוות עובדי ניקיון</h2>';
+  if(OWN(branch))return head+'<div class="empty">רשימת צוות הניקיון קיימת כרגע לסניף 118 בלבד.</div></div>';
+  if(!LISTS.empEnc){loadList('person');return head+'<div class="empty">⏳ טוען…</div></div>'}
+  if(!LISTS.person)return head+`<div class="empty" style="margin-bottom:8px">להצגת הטלפונים הקלידו את קוד הסניף (פעם אחת).</div>
+    <div class="frm"><input id="empCode" type="password" autocomplete="off" placeholder="קוד סניף"><button id="empGo" class="sv">פתיחה</button></div></div>`;
+  return head+CLEAN_TEAM.map(([id,nm])=>{const e=id&&LISTS.person.find(x=>x.id===id),ph=e&&e.ph;
+    const tel=ph?ph.replace(/[^0-9+]/g,''):'';
+    return ph?`<a class="cl" href="tel:${esc(tel)}"><span class="cln">${esc(nm)} המנקה</span><span class="clp">${esc(ph)}</span><span class="clc">📞</span></a>`
+             :`<div class="cl none"><span class="cln">${esc(nm)} המנקה</span><span class="clp">אין מספר</span></div>`}).join('')+'</div>';
+}
 async function unlockEmps(){
   const inp=document.getElementById('empCode'),code=(inp?.value||'').trim();if(!code||!LISTS.empEnc)return;
-  try{LISTS.person=await decEmps(LISTS.empEnc,code);ls.set('ma_emp_k',code);renderApp('person')}
+  try{LISTS.person=await decEmps(LISTS.empEnc,code);ls.set('ma_emp_k',code);const t=stack.at(-1)||'';if(t.startsWith('app:'))renderApp(t.slice(4))}
   catch{toast('קוד שגוי')}
 }
 function renderPeople(){
@@ -1387,6 +1418,15 @@ function initFirebase(){loadExpiry();loadTickets();setInterval(()=>{loadExpiry()
 // ?day=2026-11-08 — לבדיקה של יום אחר
 const qd=new URLSearchParams(location.search).get('day');if(qd)day=startOfDay(new Date(qd+'T00:00:00'));
 const qs=new URLSearchParams(location.search).get('screen');
+/* סרטון פתיחה במסך מלא בכל פתיחה של האפליקציה (לא בקישור עמוק / מהתראה) */
+(()=>{if(qs||new URLSearchParams(location.search).has('nointro'))return;
+  const box=document.getElementById('intro'),v=document.getElementById('introV'),snd=document.getElementById('introSnd');
+  box.hidden=false;let done=false;
+  const end=()=>{if(done)return;done=true;box.classList.add('out');setTimeout(()=>{box.remove()},520)};
+  v.addEventListener('ended',end);v.addEventListener('error',end);document.getElementById('introSkip').onclick=end;
+  snd.onclick=()=>{v.muted=!v.muted;snd.textContent=v.muted?'🔇':'🔊';if(v.paused)v.play().catch(()=>{})};
+  v.play().catch(()=>{});setTimeout(end,13000); // ביטחון: לא נתקעים על הסרטון
+})();
 renderHome();document.body.classList.add('fab');pushLabel();
 if(qs)go(qs);
 loadLive();
