@@ -666,6 +666,7 @@ const APPS = {
   promos: {url:null, he:'מבצעים'},
   produce:{url:null, he:'פירות וירקות'},
   meat:   {url:null, he:'בשר ועוף'},
+  fish:   {url:null, he:'דגים'},
   expedit:{url:null, he:'הזנת פגי תוקף'},
 };
 const VEG_URL='https://evgenchuk1.github.io/vegcount-app/', MEAT_URL='https://evgenchuk1.github.io/meatcount-app/';
@@ -832,10 +833,9 @@ document.addEventListener('click',e=>{
   if(e.target.closest('[data-cp]')){document.getElementById('cpOv').classList.add('active');return}
   if(e.target.id==='cpClose'||e.target.id==='cpOv'){document.getElementById('cpOv').classList.remove('active');return}
   const ct=e.target.closest('[data-cat]');if(ct){const c=ct.dataset.cat;
-    if(c==='fish'){toast('דגים — הרשימה בהכנה, בקרוב');return}
     document.getElementById('rkHdr')?.classList.remove('open');
     const top=stack[stack.length-1];if(top==='app:'+c)return;
-    if(['app:person','app:produce','app:meat','app:library','app:promos'].includes(top))stack.pop(); // מעבר בין רשימות — בלי לערום מסכים
+    if(['app:person','app:produce','app:meat','app:fish','app:library','app:promos'].includes(top))stack.pop(); // מעבר בין רשימות — בלי לערום מסכים
     go(c);return}
   const bc=e.target.closest('[data-bc]');if(bc){showBarcode(bc.dataset.bc,bc.dataset.nm,bc.dataset.gif);return}
   if(e.target.closest('#bcOv')){document.getElementById('bcOv').classList.remove('on');return}
@@ -967,6 +967,7 @@ function renderApp(key){
   if(key==='promos') h+=renderPromos();
   if(key==='produce') h+=renderGoods('produce');
   if(key==='meat') h+=renderGoods('meat');
+  if(key==='fish') h+=renderGoods('fish');
   if(key==='access') return renderAccess();
   if(key==='install') return renderInstall();
   if(APPS[key]?.url&&!(OWN(branch)&&['expiry','tech','sidur'].includes(key)))h+=fullBtn(key);
@@ -1013,7 +1014,17 @@ function renderInstall(){
 }
 
 /* ═════════════ רשימות: עובדים / פירות וירקות / בשר ═════════════ */
-const LISTS={};            // נטען פעם אחת לכל הפעלה
+/* מחלקת דגים — קודי מוצר מתוך מסך המשקל בדלפק (צולם 09.11.2026) */
+const FISH=[['🐟 דג שלם',[
+  ['דניס שלם נקי טרי','1125786'],['לברק שלם נקי טרי','1127742'],['אמנון שלם נקי','1126820'],['בורי שלם נקי טרי','1126868'],
+  ['קרפיון שלם נקי טרי','1126806'],['פורל נקי ורוד M','2706625'],['מוסר שלם נקי טרי','1127810'],['בס שלם נקי טרי','1127803'],
+  ['ברמונדי נקי טרי','2866701'],['אדמונית בינוני','2866589'],['לוקוס שלם טרי','2830269']]],
+ ['🍣 פילה ונתחים',[
+  ['פילה סלמון טרי','2345404'],['פילה סלמון טרי','1126721'],['מנות סלמון','918174'],['נתחי פילה סלמון','1641804'],['נתחי פילה סלמון','9137774'],
+  ['פילה דג זניס טרי','2866084'],['פילה לברק טרי','2866145'],['פילה אמנון טרי','1127162'],['פילה בורי טרי','2866220'],
+  ['פילה פורל לבן טרי','1127841'],['פילה בס טרי','2866510'],['פילה נילוס טרי','2787075'],['פילה טונה טרי','9106909']]]]
+  .map(([t,a])=>[t,a.map(([name,barcodeNum])=>({name,barcodeNum,emoji:'🐟'}))]);
+const LISTS={fish:FISH};   // נטען פעם אחת לכל הפעלה
 async function loadList(kind){
   if(LISTS[kind]||LISTS[kind+'_busy'])return;LISTS[kind+'_busy']=1;
   try{
