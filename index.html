@@ -1059,7 +1059,7 @@ async function decEmps(enc,code){
   return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv},key,ct))).list;
 }
 /* צוות הניקיון (מתוך רשימת העובדים המוצפנת של סניף 118; הטלפונים לא נשמרים בקוד) */
-const CLEAN_TEAM=[['e9','אבי'],['x7','יוהנס'],['e8','טואלדה'],['x8','קובי'],['e7','מאלאס'],[null,'מולו']];
+const CLEAN_TEAM=[['e9','אבי'],['x7','יוהנס'],['e8','טואלדה'],['x8','קובי'],['e7','מאלאס'],['x10','מולו']];
 function renderCleaners(){
   const head='<div class="card clean"><h2>🧹 בינתיים — צוות עובדי ניקיון</h2>';
   if(OWN(branch))return head+'<div class="empty">רשימת צוות הניקיון קיימת כרגע לסניף 118 בלבד.</div></div>';
