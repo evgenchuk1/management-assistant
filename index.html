@@ -1217,7 +1217,7 @@ async function findDealNo(file,codes){
   }finally{await w.terminate()}
   return ''}
 /* זיהוי ממצא ב-AI: Gemini דרך Firebase AI Logic של אותו פרויקט (expiry-tracker-ebf92) — בלי שרת, מפתח ה-Web הציבורי */
-const AI_MODELS=['gemini-2.5-flash','gemini-flash-latest','gemini-2.5-flash-lite'];
+const AI_MODELS=['gemini-3.8-flash','gemini-3.5-flash-lite','gemini-flash-latest'];
 let aiOff=false;
 const AI_PROMPT=`זהו צילום של ממצא (שלט מחיר מבצע) מרשת שופרסל בישראל. קרא אותו בדיוק והחזר JSON בלבד.
 חוקים:
