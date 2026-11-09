@@ -252,8 +252,14 @@ body.fab .home .foot{padding-right:62px}
   background:linear-gradient(170deg,var(--navy3),var(--navy));box-shadow:0 3px 0 #0E1A2A}
 .pr-add .sv.ghost{background:#fff;color:var(--navy);border:1.5px solid var(--gold);box-shadow:none}
 .pr-add .cam{background:linear-gradient(170deg,#F3E3BE,var(--gold) 55%,#B8955A);color:var(--deep);box-shadow:0 3px 0 #8A6C3A}
-.prf .frm label{flex:1 1 140px;display:flex;flex-direction:column;font-size:12px;color:var(--muted);gap:3px}
+.prf .frm label{flex:1 1 140px;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;font-size:12px;color:var(--muted);gap:3px}
 .prf .frm label input{flex:none;width:100%}
+.prf .frm input{box-sizing:border-box;height:48px}
+/* iPhone: שדה תאריך יוצא רחב/גבוה מהאחרים — מאפסים את העיצוב המובנה */
+.prf .frm input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-width:0;max-width:100%;width:100%;line-height:26px;text-align:right}
+.prf .frm input[type=date]::-webkit-date-and-time-value{text-align:right;margin:0}
+.prf .frm input[type=date]::-webkit-calendar-picker-indicator{margin:0}
+.ai-tag{display:inline-block;font-size:12px;font-weight:800;color:var(--deep);background:linear-gradient(170deg,#F3E3BE,var(--gold));border-radius:8px;padding:2px 8px;margin-inline-start:6px;vertical-align:middle}
 .prf .frm input:placeholder-shown,.prf .frm input[value=""]{border-color:#E25544;background:#FFF5F4}
 .primg{display:block;width:100%;max-height:220px;object-fit:contain;border-radius:12px;margin-bottom:10px;background:#000}
 .gl.pr{align-items:flex-start}
@@ -1137,14 +1143,14 @@ function renderPromos(){
         <div><span>בתוקף עד:</span> <b class="pru ${left!=null&&left<0?'old':left!=null&&left<=3?'soon':''}">${p.until?dd(p.until)+'/'+p.until.slice(0,4):'—'}</b>${left!=null&&left>=0?` (עוד ${left} ימים)`:''}</div>
         <div class="prc"><span>ברקוד:</span> ${codes.length?codes.map(c=>`<button class="bcn" data-bc="${esc(c)}" data-nm="${esc(p.name)}">${esc(c)}</button>`).join(''):'אין'}</div></div>`:''}</div>`};
   const d=promoDraft;
-  const form=d?`<div class="card prf"><h2>${promoBusy?'⏳ '+esc(promoBusy):d.id?'✏️ עריכת מבצע':'✏️ בדקו ותקנו לפני שמירה'}</h2>
+  const dq=Math.max(1,parseInt(d&&d.dealQty)||1);
+  const form=d?`<div class="card prf"><h2>${promoBusy?'⏳ '+esc(promoBusy):d.id?'✏️ עריכת מבצע':'✏️ בדקו ותקנו לפני שמירה'}${!promoBusy&&d.ai?'<span class="ai-tag">✨ זוהה ע״י AI</span>':''}</h2>
     ${d.img?`<img src="${d.img}" class="primg" alt="">`:''}
     <div class="frm">
       <input id="prN" placeholder="שם המוצר" value="${esc(d.name||'')}" autocomplete="off">
       <input id="prB" placeholder="מותג / יצרן" value="${esc(d.brand||'')}" autocomplete="off">
-      <label>מס' מבצע (7 ספרות, בשוליים השמאליים)<input id="prD" inputmode="numeric" dir="ltr" value="${esc(d.dealNo||'')}"></label>
-      <label>מחיר מבצע ₪<input id="prP" inputmode="decimal" dir="ltr" value="${esc(d.price||'')}"></label>
-      <label>כמות במבצע (יח')<input id="prQ" inputmode="numeric" dir="ltr" value="${esc(d.dealQty||1)}"></label>
+      <label>מס' מבצע (7 ספרות)<input id="prD" inputmode="numeric" dir="ltr" value="${esc(d.dealNo||'')}"></label>
+      <label>מחיר מבצע ₪${dq>1?` (ל-${dq} יח')`:''}<input id="prP" inputmode="decimal" dir="ltr" value="${esc(d.price||'')}"></label>
       <label>מחיר רגיל ליח' ₪<input id="prR" inputmode="decimal" dir="ltr" value="${esc(d.regUnit||'')}"></label>
       <label>בתוקף עד<input id="prU" type="date" value="${esc(d.until||'')}"></label>
       <label>קנייה מינימלית ₪ (אם יש)<input id="prMin" inputmode="decimal" dir="ltr" value="${esc(d.minBuy||'')}" placeholder="—"></label>
@@ -1183,7 +1189,8 @@ function parseTag(lines){
   m=T.match(/מ?חיר\s*רג[יו]ל[:\s]*(\d+[.,]\d{2})/);if(m)out.regUnit=num(m[1]);
   m=T.match(/קו[דר][:\s]*([\d ,]{5,})/);if(m){const c=m[1].split(/[ ,]+/).filter(c=>c.length>=5);if(c.length)out.codes=c.join(', ')}
   m=T.match(/(\d{1,2})\s*יח['׳]?\s*ב/);if(m)out.dealQty=m[1];
-  const bad=/שופרסל|חיר|בתוקף|קוד|ליח|ל\s*100|COMFORT|SIZE|WARM|Slippers|Winter/i;
+  // לא שם מוצר: לוגו, שורות מחיר/תוקף/קוד, וסיסמאות השבוע בכותרת הממצא („שוברים שיאים במבצעים!” וכד')
+  const bad=/שופרסל|חיר|בתוקף|קוד|ליח|ל\s*100|מבצע|שובר|שיא|!|COMFORT|SIZE|WARM|Slippers|Winter/i;
   const cand=lines.map((l,i)=>({...l,i,he:(l.t.match(/[\u05D0-\u05EA]/g)||[]).length})).filter(l=>l.he>=3&&!bad.test(l.t)&&l.he/l.t.replace(/\s/g,'').length>.6);
   const nm=cand.sort((a,b)=>b.h-a.h)[0];
   if(nm){out.name=nm.t.replace(/[^\u05D0-\u05EA0-9%\/\s'"-]/g,'').replace(/\s+/g,' ').trim();
@@ -1209,9 +1216,59 @@ async function findDealNo(file,codes){
       if(hit)return hit.text}
   }finally{await w.terminate()}
   return ''}
+/* זיהוי ממצא ב-AI: Gemini דרך Firebase AI Logic של אותו פרויקט (expiry-tracker-ebf92) — בלי שרת, מפתח ה-Web הציבורי */
+const AI_MODELS=['gemini-2.5-flash','gemini-flash-latest','gemini-2.5-flash-lite'];
+let aiOff=false;
+const AI_PROMPT=`זהו צילום של ממצא (שלט מחיר מבצע) מרשת שופרסל בישראל. קרא אותו בדיוק והחזר JSON בלבד.
+חוקים:
+- name: שם המוצר כפי שמודפס בשורה הבולטת מעל המחיר (כולל משקל/נפח, למשל "קפה נמס 190 גרם"). לעולם לא סיסמת שבוע/כותרת פרסומית בפס הצבעוני העליון (למשל "שוברים שיאים במבצעים!", "מבצעי השבוע", "שופרסל דיל") — אלה אינם שם המוצר.
+- brand: שורת היצרן/המותג הקטנה שמתחת לשם (למשל "ג'קובס"), או "".
+- price: מחיר המבצע הכולל (המספר הגדול; הספרות הקטנות המורמות הן האגורות: 38 ו-10 → 38.10).
+- dealQty: אם כתוב "N יח' ב-" → N, אחרת 1.
+- regUnit: "מחיר רגיל" ליחידה (מהשורה הקטנה התחתונה), או המחיר המחוק. מספר.
+- until: תאריך "בתוקף עד" בפורמט YYYY-MM-DD (בכתב ישראלי DD/MM/YYYY).
+- codes: מערך הקודים/הברקודים שאחרי "קוד:" (מחרוזות ספרות).
+- dealNo: מספר המבצע — 7 ספרות המודפסות לאורך (מסובב 90°) בשוליים השמאליים התחתונים של הממצא. "" אם לא נראה.
+- minBuy: סכום קנייה מינימלי בש"ח אם כתוב, אחרת "". maxQty: מקסימום יחידות ללקוח אם כתוב, אחרת "".
+- note: תנאי מיוחד נוסף (למשל "בקנייה עם כרטיס מועדון"), אחרת "".
+אם שדה לא קריא — "" (אל תנחש).`;
+const AI_SCHEMA={type:'OBJECT',properties:{name:{type:'STRING'},brand:{type:'STRING'},price:{type:'NUMBER'},dealQty:{type:'INTEGER'},regUnit:{type:'NUMBER'},
+  until:{type:'STRING'},codes:{type:'ARRAY',items:{type:'STRING'}},dealNo:{type:'STRING'},minBuy:{type:'STRING'},maxQty:{type:'STRING'},note:{type:'STRING'}},required:['name']};
+async function aiReadTag(dataUrl){
+  if(aiOff)return null;
+  const body=JSON.stringify({contents:[{role:'user',parts:[{inlineData:{mimeType:'image/jpeg',data:dataUrl.split(',')[1]}},{text:AI_PROMPT}]}],
+    generationConfig:{temperature:0,responseMimeType:'application/json',responseSchema:AI_SCHEMA}});
+  for(const m of AI_MODELS){
+    const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),40000);
+    try{const r=await fetch(`https://firebasevertexai.googleapis.com/v1beta/projects/expiry-tracker-ebf92/models/${m}:generateContent`,
+        {method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':FS_KEY},body,signal:ctl.signal});
+      if(r.status===403){aiOff=true;console.log('AI 403',await r.text());return null} // השירות לא מופעל בפרויקט
+      if(!r.ok){console.log('AI',m,r.status);continue}
+      const j=await r.json(),txt=(j.candidates?.[0]?.content?.parts||[]).map(p=>p.text||'').join('');
+      const o=JSON.parse(txt.replace(/^```(json)?|```$/g,'').trim());
+      const s=x=>x==null?'':String(x).trim(),n=x=>x===''||x==null||isNaN(+x)||+x<=0?'':(+x).toFixed(2);
+      const out={name:s(o.name),brand:s(o.brand),price:n(o.price),dealQty:Math.max(1,parseInt(o.dealQty)||1),regUnit:n(o.regUnit),
+        until:/^20\d\d-\d\d-\d\d$/.test(s(o.until))?s(o.until):'',codes:(Array.isArray(o.codes)?o.codes:[o.codes]).map(s).filter(c=>/^\d{5,}$/.test(c)).join(', '),
+        dealNo:/^\d{7}$/.test(s(o.dealNo).replace(/\D/g,''))?s(o.dealNo).replace(/\D/g,''):'',minBuy:n(o.minBuy),maxQty:s(o.maxQty).replace(/\D/g,''),note:s(o.note)};
+      if(/שוברים|שיאים|מבצעי השבוע/.test(out.name))out.name=''; // ביטחון נוסף נגד סיסמת השבוע
+      return out}
+    catch(err){console.log('AI',m,err)}finally{clearTimeout(t)}}
+  return null}
 document.addEventListener('change',async e=>{
   if(!['prFile','prGal'].includes(e.target.id)||!e.target.files[0])return;
-  const f=e.target.files[0],img=await shrinkImg(f,1400);promoAdd=false;promoDraft={img,dealQty:1};promoBusy='מזהה טקסט מהצילום… (עד חצי דקה)';renderApp('promos');
+  const f=e.target.files[0],img=await shrinkImg(f,1400);promoAdd=false;promoDraft={img,dealQty:1};
+  /* 1) בינה מלאכותית (Gemini) — קורא את כל הממצא כמו אדם */
+  promoBusy='✨ ה-AI קורא את הממצא…';renderApp('promos');
+  try{const r=await aiReadTag(await shrinkImg(f,1600));
+    if(r&&r.name){Object.assign(promoDraft,r,{ai:1});
+      if(!promoDraft.dealNo){promoBusy='מחפש את מס׳ המבצע…';renderApp('promos');
+        try{await loadTess();const no=await findDealNo(f,promoDraft.codes);if(no)promoDraft.dealNo=no}catch(er){console.log(er)}}
+      promoBusy='';
+      toast(promoDraft.price?'✨ זוהה — בדקו ושמרו':'✨ זוהה — השלימו מחיר מבצע');
+      if(stack.at(-1)==='app:promos')renderApp('promos');return}}
+  catch(err){console.log('AI',err)}
+  /* 2) גיבוי — זיהוי מקומי (Tesseract), אם אין חיבור ל-AI */
+  promoBusy='מזהה טקסט מהצילום… (עד חצי דקה)';renderApp('promos');
   try{await loadTess();const src=await shrinkImg(f,2000,'grayscale(1) contrast(1.4)');
     const w=await Tesseract.createWorker('heb+eng');await w.setParameters({tessedit_pageseg_mode:'11'});
     const read=async s=>{const {data}=await w.recognize(s,{},{blocks:true,text:true});
@@ -1333,7 +1390,7 @@ document.addEventListener('click',async e=>{
       if(navigator.share)navigator.share({text:t}).catch(()=>{});else{navigator.clipboard?.writeText(t);toast('הועתק')}}
     if(act==='pr-cancel'){promoDraft=null;promoBusy='';promoAdd=false;renderApp('promos')}
     if(act==='pr-save'){const n=v('prN'),pr=v('prP').replace(',','.');if(!n||!pr){toast('חסר שם או מחיר');return}a.disabled=true;
-      const rec={name:n,brand:v('prB'),dealNo:v('prD').replace(/\D/g,''),price:pr,dealQty:Math.max(1,parseInt(v('prQ'))||1),regUnit:v('prR').replace(',','.'),until:v('prU'),codes:v('prC'),
+      const rec={name:n,brand:v('prB'),dealNo:v('prD').replace(/\D/g,''),price:pr,dealQty:Math.max(1,parseInt(promoDraft&&promoDraft.dealQty)||1),regUnit:v('prR').replace(',','.'),until:v('prU'),codes:v('prC'),
         minBuy:v('prMin').replace(',','.'),maxQty:v('prMax'),note:v('prNote')};
       if(promoDraft&&promoDraft.id)await fsPatch('ma_promos/'+promoDraft.id,{...rec,updatedAt:new Date()});
       else await fsAdd('ma_promos',{...rec,deal:'',addedBy:'ניהול + · '+BRANCHES[branch],addedAt:new Date()});
