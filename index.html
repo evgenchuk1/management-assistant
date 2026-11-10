@@ -61,7 +61,7 @@ button{font-family:inherit}
 .pill.on{background:linear-gradient(180deg,var(--gold2),var(--gold));color:var(--deep);border-color:var(--gold2);box-shadow:0 2px 5px rgba(0,0,0,.3)}
 .back{flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);background:linear-gradient(180deg,#7E97B8,#4F6E96);color:#fff;box-shadow:0 2px 5px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.35);
   border-radius:999px;padding:5px 14px;font-size:15px;font-weight:800;cursor:pointer;line-height:1.1}
-.cats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin:7px auto 3px;max-width:400px}
+.cats{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin:7px auto 3px;max-width:400px}
 .cat{height:38px;border:none;cursor:pointer;border-radius:11px;display:flex;align-items:center;justify-content:center;
   background:linear-gradient(170deg,#F3E3BE 0%,var(--gold) 55%,#B8955A 100%);
   box-shadow:0 3px 0 #8A6C3A,0 5px 9px rgba(0,0,0,.3),inset 0 2px 0 rgba(255,255,255,.6);transition:transform .09s,box-shadow .09s}
@@ -512,6 +512,14 @@ table.al td.x{width:34px;text-align:center}
     <path d="M23 23c0-5 1.5-9 4-11" stroke="#6B4423" stroke-width="2.6" fill="none" stroke-linecap="round"/>
     <path d="M26 15c4-6 11-6 13-3-4 5-9 5-13 3z" fill="url(#gGreen)" stroke="#22794A" stroke-width="1"/>
   </symbol>
+  <symbol id="c-bakery" viewBox="0 0 64 64">
+    <defs><linearGradient id="gBread" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2C27A"/><stop offset=".6" stop-color="#D08A3A"/><stop offset="1" stop-color="#9A5A1E"/></linearGradient></defs>
+    <path d="M6 40c0-14 12-24 26-24s26 10 26 24c0 6-4 10-10 10H16C10 50 6 46 6 40z" fill="url(#gBread)" stroke="#6E3B10" stroke-width="2" stroke-linejoin="round"/>
+    <g stroke="#7A4214" stroke-width="2.6" fill="none" stroke-linecap="round"><path d="M18 28l6 9"/><path d="M28 24l6 10"/><path d="M39 24l6 10"/></g>
+    <g stroke="#FFE3B3" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".8"><path d="M19 27l4 6"/><path d="M29 23l4 7"/><path d="M40 23l4 7"/></g>
+    <path d="M13 34c2-6 7-10 12-11" stroke="#FFF1D6" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".6"/>
+    <rect x="4" y="51" width="56" height="5" rx="2.5" fill="#203550" opacity=".55"/>
+  </symbol>
   <symbol id="c-library" viewBox="0 0 64 64">
     <rect x="6" y="14" width="12" height="40" rx="2" fill="#203550"/><rect x="8" y="20" width="8" height="3" fill="#CFAB6F"/><rect x="8" y="44" width="8" height="3" fill="#CFAB6F"/>
     <rect x="20" y="8" width="13" height="46" rx="2" fill="#C0392B"/><rect x="22" y="14" width="9" height="3" fill="#F6E6C2"/><rect x="22" y="46" width="9" height="3" fill="#F6E6C2"/>
@@ -677,6 +685,7 @@ const APPS = {
   produce:{url:null, he:'פירות וירקות'},
   meat:   {url:null, he:'בשר ועוף'},
   fish:   {url:null, he:'דגים'},
+  bakery: {url:null, he:'מאפייה וקונדיטוריה'},
   expedit:{url:null, he:'הזנת פגי תוקף'},
 };
 const VEG_URL='https://evgenchuk1.github.io/vegcount-app/', MEAT_URL='https://evgenchuk1.github.io/meatcount-app/';
@@ -845,7 +854,7 @@ document.addEventListener('click',e=>{
   const ct=e.target.closest('[data-cat]');if(ct){const c=ct.dataset.cat;
     document.getElementById('rkHdr')?.classList.remove('open');
     const top=stack[stack.length-1];if(top==='app:'+c)return;
-    if(['app:person','app:produce','app:meat','app:fish','app:library','app:promos'].includes(top))stack.pop(); // מעבר בין רשימות — בלי לערום מסכים
+    if(['app:person','app:produce','app:meat','app:fish','app:bakery','app:library','app:promos'].includes(top))stack.pop(); // מעבר בין רשימות — בלי לערום מסכים
     go(c);return}
   const bc=e.target.closest('[data-bc]');if(bc){showBarcode(bc.dataset.bc,bc.dataset.nm,bc.dataset.gif);return}
   if(e.target.closest('#bcOv')){document.getElementById('bcOv').classList.remove('on');return}
@@ -853,7 +862,7 @@ document.addEventListener('click',e=>{
   if(e.target.closest('.cart-fab,#cartBtn')){toast('בקרוב');return}
 });
 /* 4 כפתורי קטגוריה בכותרת (הפעולה תוגדר בהמשך) */
-const CATS=[['promos','מבצעים'],['library','ספריה'],['fish','דגים'],['meat','בשר'],['produce','פירות וירקות'],['person','עובדים']];
+const CATS=[['promos','מבצעים'],['library','ספריה'],['bakery','מאפייה'],['fish','דגים'],['meat','בשר'],['produce','פירות וירקות'],['person','עובדים']];
 document.querySelectorAll('.cats').forEach(el=>el.innerHTML=CATS.map(([k,he])=>
   `<button class="cat" data-cat="${k}" aria-label="${he}" title="${he}"><svg><use href="#c-${k}"/></svg></button>`).join(''));
 
@@ -978,6 +987,7 @@ function renderApp(key){
   if(key==='produce') h+=renderGoods('produce');
   if(key==='meat') h+=renderGoods('meat');
   if(key==='fish') h+=renderGoods('fish');
+  if(key==='bakery') h+=renderGoods('bakery');
   if(key==='access') return renderAccess();
   if(key==='install') return renderInstall();
   if(APPS[key]?.url&&!(OWN(branch)&&['expiry','tech','sidur'].includes(key)))h+=fullBtn(key);
@@ -1034,7 +1044,16 @@ const FISH=[['🐟 דג שלם',[
   ['פילה דג זניס טרי','2866084'],['פילה לברק טרי','2866145'],['פילה אמנון טרי','1127162'],['פילה בורי טרי','2866220'],
   ['פילה פורל לבן טרי','1127841'],['פילה בס טרי','2866510'],['פילה נילוס טרי','2787075'],['פילה טונה טרי','9106909']]]]
   .map(([t,a])=>[t,a.map(([name,barcodeNum])=>({name,barcodeNum,emoji:'🐟'}))]);
-const LISTS={fish:FISH};   // נטען פעם אחת לכל הפעלה
+/* מאפייה וקונדיטוריה — קודי מוצר מתוך מסך המשקל בדלפק המאפייה (צולם 10.11.2026) */
+const BAKERY=[['🥟 מאפים מלוחים',[
+  ['בורקס גבינה','99248'],['בורקס פטריות','99354'],['בורקס פיצה חלבי','3495405'],['בורקיטס חלבי','99927'],
+  ['גביניות חלבי','99385'],['מאפה מלוח','9951899'],['פילו ריקוטה','3158164'],['פילו תרד','2020493']],'🥟'],
+ ['🥐 מאפים מתוקים',[
+  ['בורקס תפוח','99255'],['מאפה כיס תפוח עץ','92218'],['מאפה פרג','99392'],['מאפה שקדים','3495030'],['מאפה תפוח-עץ','99491'],
+  ['מיני רוגלך','1696385'],['מיני שטרודל','4504649'],['פילו תפוח עץ','95486'],['קרואסון קטן ריק','99439'],['קרואסון שוקולד','99477'],
+  ['רוגלך בטעם','99415'],['שנק קינמון','96018']],'🥐']]
+  .map(([t,a,em])=>[t,a.map(([name,barcodeNum])=>({name,barcodeNum,emoji:em}))]);
+const LISTS={fish:FISH,bakery:BAKERY};   // נטען פעם אחת לכל הפעלה
 async function loadList(kind){
   if(LISTS[kind]||LISTS[kind+'_busy'])return;LISTS[kind+'_busy']=1;
   try{
@@ -1130,7 +1149,7 @@ function renderPromos(){
   if(!LISTS.promos){if(!LISTS.promos_busy){LISTS.promos_busy=1;loadPromos().finally(()=>LISTS.promos_busy=0)}
     return `<div class="card"><div class="empty">${LISTS.promos_err?'⚠️ אין חיבור — נסו שוב':'⏳ טוען מבצעים…'}</div></div>`}
   const today=iso(new Date());
-  const all=LISTS.promos.slice().sort((a,b)=>(a.until||'9').localeCompare(b.until||'9'));
+  const all=LISTS.promos.slice().sort((a,b)=>heSort(a.name,b.name)); // לפי א-ב
   const act=all.filter(p=>!p.until||p.until>=today),old=all.filter(p=>p.until&&p.until<today);
   const row=p=>{const q=+p.dealQty||1,before=p.regUnit?(+p.regUnit)*q:null,left=p.until?daysFrom(p.until,startOfDay(new Date())):null;
     const codes=String(p.codes||'').split(/[,\s]+/).filter(c=>c.length>=4),open=promoOpen===p.id;
