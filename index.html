@@ -243,6 +243,41 @@ body.fab .home .foot{padding-right:62px}
 .ep{flex-shrink:0;direction:ltr;font-weight:800;color:var(--navy);text-decoration:none;font-size:15px}
 .ep.none{color:var(--muted)}
 .eb{flex-shrink:0;width:66px;text-align:left;font-size:14px;color:var(--gold3);font-weight:700;direction:ltr}
+/* ידיעון — שלט תמונה (מגירה) + מגירה עם תיקיות */
+.yd-hero{position:relative;overflow:hidden;background:#fff;direction:ltr;aspect-ratio:790/560;border-radius:16px;margin:2px 0 10px;box-shadow:0 2px 10px rgba(20,35,56,.12)}
+.yd-art{position:relative;width:129.6%;margin-left:-15.2%;margin-top:-19%;aspect-ratio:1}
+.yd-art img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.yd-stk{position:absolute;transform:translate(-50%,-50%) rotate(-22deg);border:1.5px solid var(--cd);background:var(--c);border-radius:7px 7px 3px 3px;font-weight:800;color:#142338;
+  white-space:nowrap;text-align:center;line-height:1.05;font-size:12px;padding:4px 9px;max-width:30%;overflow:hidden;text-overflow:ellipsis;cursor:pointer;font-family:inherit}
+.yd-stk small{display:block;font-weight:600;font-size:.62em;opacity:.75}
+.yd-cap{position:absolute;bottom:8px;left:10px;background:#142338E6;color:#F3E3BE;border-radius:10px;padding:4px 10px;font-size:13px;font-weight:700;direction:rtl}
+.yd-tools{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.yd-tools .sbox{flex:1 1 160px;margin:0}
+.yd-chip{border:1.5px solid #E1D6BF;background:#fff;border-radius:12px;padding:7px 10px;font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;font-family:inherit}
+.yd-chip.on{background:var(--deep);color:#F3E3BE;border-color:var(--deep)}
+.yd-add{display:flex;gap:8px;margin:4px 0 8px}
+.yd-up{flex:1;text-align:center;cursor:pointer;padding:11px;border-radius:14px;font-weight:800;font-size:15px;color:var(--deep);background:linear-gradient(170deg,#F3E3BE,var(--gold) 55%,#B8955A);box-shadow:0 3px 0 #8C6E3C}
+.yd-drawer{background:linear-gradient(180deg,#D7E0EA,#C3CFDC);border:2px solid #8FA2B8;border-radius:14px;padding:16px 10px 10px;position:relative}
+.yd-drawer::before{content:"";position:absolute;inset:0 0 auto;height:8px;background:#E8EEF4;border-radius:12px 12px 0 0;border-bottom:1.5px solid #8FA2B8}
+.yd-f{position:relative;margin-top:18px;transition:transform .2s}
+.yd-f:first-child{margin-top:8px}
+.yd-f:active{transform:translateY(-5px)}
+.yd-f .tab{position:absolute;top:-18px;height:20px;padding:2px 10px 0;border-radius:8px 8px 0 0;font-size:12px;font-weight:800;background:var(--c);border:1.5px solid var(--cd);border-bottom:none;color:#142338}
+.yd-f.t0 .tab{right:12px}.yd-f.t1 .tab{right:38%}.yd-f.t2 .tab{left:12px}
+.yd-f .bd{background:var(--c);border:1.5px solid var(--cd);border-radius:4px 10px 8px 8px;padding:9px 10px;display:flex;gap:10px;align-items:center;box-shadow:inset 0 -3px 0 rgba(0,0,0,.06);color:#142338}
+.yd-f .ic{width:32px;height:38px;border-radius:4px;background:#fff;border:1.5px solid var(--cd);display:grid;place-items:center;font-size:9.5px;font-weight:800;color:var(--cd);flex:none;cursor:pointer}
+.yd-f .tx{flex:1;min-width:0;cursor:pointer;text-align:right;background:none;border:none;padding:0;font-family:inherit;color:inherit}
+.yd-f .tx b{display:block;font-size:15px;line-height:1.25}
+.yd-f .tx span{font-size:12px;color:#3E4C60}
+.yd-f .nw{background:#E25544;color:#fff;font-size:10.5px;font-weight:800;border-radius:8px;padding:1px 6px}
+.yd-f .pmenu{top:auto;bottom:100%}
+.yd-pdf{--c:#A9C8EA;--cd:#6F95C2}.yd-xls{--c:#A8DDB0;--cd:#5FA36D}.yd-doc{--c:#FBD98A;--cd:#D9A441}.yd-oth{--c:#E4DCCB;--cd:#A8987A}
+.yd-months{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+.yd-handle{min-width:110px;height:30px;border:2px solid #8FA2B8;border-radius:7px;background:#EEF2F7;font-size:13px;font-weight:800;color:#5B6E86;cursor:pointer;font-family:inherit;padding:0 10px}
+.yd-handle.on{background:#5B6E86;color:#fff}
+.yd-leg{display:flex;gap:12px;justify-content:center;font-size:12px;color:var(--muted);margin-top:8px}
+.yd-leg i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-inline-end:4px;vertical-align:-1px;border:1px solid #0002}
+.yd-empty{background:#F4F7FA;border:1.5px dashed #8FA2B8;border-radius:10px;padding:18px 12px;text-align:center;color:#3E4C60;line-height:1.5}
 .lib{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin-top:6px}
 .libt{min-height:220px}
 .libt svg{width:96px;height:96px}
@@ -686,6 +721,7 @@ const APPS = {
   meat:   {url:null, he:'בשר ועוף'},
   fish:   {url:null, he:'דגים'},
   bakery: {url:null, he:'מאפייה וקונדיטוריה'},
+  yedion: {url:null, he:'ידיעון'},
   expedit:{url:null, he:'הזנת פגי תוקף'},
 };
 const VEG_URL='https://evgenchuk1.github.io/vegcount-app/', MEAT_URL='https://evgenchuk1.github.io/meatcount-app/';
@@ -983,6 +1019,7 @@ function renderApp(key){
   }
   if(key==='person') h+=renderPeople();
   if(key==='library') h+=renderLibrary();
+  if(key==='yedion') h+=renderDocs('yedion');
   if(key==='promos') h+=renderPromos();
   if(key==='produce') h+=renderGoods('produce');
   if(key==='meat') h+=renderGoods('meat');
@@ -1133,6 +1170,65 @@ function renderLibrary(){
     <div class="card" style="text-align:center;padding:16px;margin-top:16px"><div style="font-size:40px">🚧</div>
       <h2 style="justify-content:center;margin:6px 0 4px">הדף בבנייה</h2><div class="empty" style="padding:0">בקרוב יתווספו כאן הנוהלים והידיעון של הרשת.</div></div>`;
 }
+
+/* ═════════════ ספריה: ידיעון (ובהמשך נוהלים) ═════════════
+   מטא-דאטה ב-Firestore ma_docs, הקובץ עצמו ב-ma_docs_bin בחלקים של ~700KB (base64) — בלי שרת קבצים */
+const DOC_TYPES={pdf:['PDF','yd-pdf'],doc:['DOC','yd-doc'],xls:['XLS','yd-xls'],oth:['FILE','yd-oth']};
+const DOC_SRC={mail:'✉️',wa:'💬',manual:'📱'};
+const MONTHS_HE=['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+let docQ={type:'',month:'',sort:'date',menu:null,busy:''};
+const docType=n=>{const e=String(n).split('.').pop().toLowerCase();return e==='pdf'?'pdf':/^docx?$/.test(e)?'doc':/^xls[xm]?$|^csv$/.test(e)?'xls':'oth'};
+async function loadDocs(){try{LISTS.docs=await fsList('ma_docs',['shelf','title','type','src','date','fname','mime','size','chunks','from'])}catch{LISTS.docs_err=1}
+  const tp=stack.at(-1);if(tp==='app:yedion')renderApp('yedion')}
+function renderDocs(shelf){
+  if(!LISTS.docs){if(!LISTS.docs_busy){LISTS.docs_busy=1;loadDocs().finally(()=>LISTS.docs_busy=0)}
+    return `<div class="card"><div class="empty">${LISTS.docs_err?'⚠️ אין חיבור — נסו שוב':'⏳ טוען…'}</div></div>`}
+  const all=LISTS.docs.filter(d=>d.shelf===shelf).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+  const newCut=iso(new Date(Date.now()-3*864e5)),isNew=d=>String(d.date)>=newCut,nNew=all.filter(isNew).length;
+  const mk=d=>String(d.date).slice(0,7),months=[...new Set(all.map(mk))];
+  const month=docQ.month&&months.includes(docQ.month)?docQ.month:months[0]||'';
+  const mName=m=>m?MONTHS_HE[+m.slice(5,7)-1]+' '+m.slice(0,4):'';
+  const top3=all.slice(0,3),stk=[[26.4,30.2,'#A9C8EA','#6F95C2'],[38.6,38.0,'#A8DDB0','#5FA36D'],[49.6,44.6,'#FBD98A','#D9A441']];
+  const hero=`<div class="yd-hero"><div class="yd-art"><img src="yedion-hero.webp" alt="מגירת תיוק">${top3.map((d,i)=>`<button class="yd-stk" data-act="doc-open" data-id="${d.id}"
+      style="left:${stk[i][0]}%;top:${stk[i][1]}%;--c:${stk[i][2]};--cd:${stk[i][3]}">${esc(d.title)}<small>${dd(d.date)}</small></button>`).join('')}</div>
+    ${nNew?`<span class="yd-cap">📥 ${nNew} חדשים</span>`:''}</div>`;
+  const add=`<div class="yd-add"><label class="yd-up">📎 הוספת מסמך (PDF / Word / Excel)<input type="file" id="docFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,.csv,application/pdf" hidden></label></div>
+    ${docQ.busy?`<div class="card"><div class="empty">⏳ ${esc(docQ.busy)}</div></div>`:''}`;
+  if(!all.length)return hero+add+`<div class="yd-empty">📂 המגירה עדיין ריקה.<br>הוסיפו מסמך (PDF / Word / Excel) מהטלפון — גם קובץ שנשמר מ-WhatsApp או מהמייל.</div>`;
+  let list=all.filter(d=>mk(d)===month&&(!docQ.type||d.type===docQ.type));
+  if(docQ.sort==='abc')list=list.slice().sort((a,b)=>heSort(a.title,b.title));
+  const chip=(k,v,l)=>`<button class="yd-chip${docQ[k]===v?' on':''}" data-act="doc-q" data-k="${k}" data-v="${v}">${l}</button>`;
+  const tools=`<div class="yd-tools">${searchBox('חיפוש בידיעון…')}${chip('type','','הכל')}${chip('type','pdf','PDF')}${chip('type','doc','Word')}${chip('type','xls','Excel')}
+    ${chip('sort',docQ.sort==='date'?'abc':'date',docQ.sort==='date'?'↕ א-ב':'↕ לפי תאריך')}</div>`;
+  const rows=list.map((d,i)=>{const [lab,cls]=DOC_TYPES[d.type]||DOC_TYPES.oth;
+    return `<div class="yd-f ${cls} t${i%3}" data-s="${esc(sKey(d.title+' '+(d.fname||'')))}"><span class="tab">${dd(d.date)}</span><div class="bd">
+      <span class="ic" data-act="doc-open" data-id="${d.id}">${lab}</span>
+      <button class="tx" data-act="doc-open" data-id="${d.id}"><b>${esc(d.title)}</b><span>${DOC_SRC[d.src]||'📱'} ${esc(d.from||({mail:'מייל',wa:'WhatsApp'}[d.src]||'הועלה מהטלפון'))}${d.size?' · '+Math.max(1,Math.round(d.size/1024))+' KB':''}</span></button>
+      ${isNew(d)?'<span class="nw">חדש</span>':''}
+      <button class="pr2m" data-act="doc-menu" data-id="${d.id}" aria-label="אפשרויות">⋮</button>
+      ${docQ.menu===d.id?`<div class="pmenu"><button data-act="doc-share" data-id="${d.id}">📤 שליחה</button><button data-act="doc-ren" data-id="${d.id}">✏️ שינוי שם</button><button data-act="doc-del" data-id="${d.id}" class="del">🗑️ מחיקה</button></div>`:''}
+    </div></div>`}).join('')||'<div class="yd-empty">אין מסמכים מסוג זה בחודש הזה</div>';
+  return hero+add+tools+`<div class="yd-drawer">${rows}
+    <div class="yd-months">${months.map(m=>`<button class="yd-handle${m===month?' on':''}" data-act="doc-q" data-k="month" data-v="${m}">${mName(m)}${m===month?'':' ←'}</button>`).join('')}</div></div>
+    <div class="yd-leg"><span><i style="background:#A9C8EA"></i>PDF</span><span><i style="background:#FBD98A"></i>Word</span><span><i style="background:#A8DDB0"></i>Excel</span></div>`;
+}
+const b64ToBlob=(parts,mime)=>{const bin=atob(parts.join(''));const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return new Blob([u],{type:mime||'application/octet-stream'})};
+async function docBlob(d){
+  docQ.busy='פותח את „'+d.title+'”…';renderApp('yedion');
+  try{const parts=[];for(let i=0;i<(+d.chunks||1);i++){const c=await fsGet('ma_docs_bin/'+d.id+'_'+i);if(!c)throw new Error('missing');parts.push(c.d)}
+    return b64ToBlob(parts,d.mime)}finally{docQ.busy='';renderApp('yedion')}}
+async function docUpload(f){
+  if(f.size>12*1024*1024){toast('הקובץ גדול מדי (עד 12MB)');return}
+  docQ.busy='מעלה „'+f.name+'”…';renderApp('yedion');
+  try{const b64=await new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(',')[1]);r.onerror=no;r.readAsDataURL(f)});
+    const id='d'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),CH=700000,n=Math.ceil(b64.length/CH);
+    for(let i=0;i<n;i++){docQ.busy=`מעלה „${f.name}” · ${i+1}/${n}`;renderApp('yedion');await fsSet('ma_docs_bin/'+id+'_'+i,{d:b64.slice(i*CH,(i+1)*CH)})}
+    const title=f.name.replace(/\.[^.]+$/,'').replace(/[_]+/g,' ').trim();
+    await fsSet('ma_docs/'+id,{shelf:'yedion',title,type:docType(f.name),src:'manual',from:'הועלה ע״י '+BRANCHES[branch],date:iso(new Date()),fname:f.name,mime:f.type||'',size:f.size,chunks:n,addedAt:new Date()});
+    toast('המסמך נוסף ✓')}
+  catch(e){console.log(e);toast('ההעלאה נכשלה — בדקו חיבור')}
+  docQ.busy='';LISTS.docs=null;await loadDocs()}
+document.addEventListener('change',e=>{if(e.target.id==='docFile'&&e.target.files[0])docUpload(e.target.files[0])});
 
 /* ── מבצעים: רשימה משותפת לכל הסניפים (Firestore ma_promos), הזנה מצילום ממצא ── */
 let promoDraft=null,promoBusy='';
@@ -1371,7 +1467,7 @@ const sKey=t=>String(t||'').toLowerCase().replace(/["'׳״()\-.,]/g,' ').replace
 function searchBox(ph){return `<div class="sbox"><span>🔍</span><input id="listQ" type="search" placeholder="${ph}" value="${esc(listQ)}" autocomplete="off"><button data-act="q-clear" aria-label="ניקוי">✕</button></div>`}
 function applySearch(){
   const q=sKey(listQ),body=document.getElementById('appBody');
-  body.querySelectorAll('.gl[data-s],.pr2[data-s]').forEach(r=>{const s=r.dataset.s;
+  body.querySelectorAll('.gl[data-s],.pr2[data-s],.yd-f[data-s]').forEach(r=>{const s=r.dataset.s;
     r.style.display=!q||s.startsWith(q)||s.split(' ').some(w=>w.startsWith(q))||(' '+s).includes(' '+q)?'':'none'});
   body.querySelectorAll('.card').forEach(c=>{const rows=c.querySelectorAll('.gl[data-s],.pr2[data-s]');if(!rows.length)return;
     c.style.display=[...rows].some(r=>r.style.display!=='none')?'':'none'});
@@ -1452,7 +1548,18 @@ document.addEventListener('click',async e=>{
     if(act==='push'){await enablePush()}
     if(act==='share-inst'){const u=new URL('install.html',location.href).href,t='ניהול+ — מדריך התקנה · Install guide · Инструкция по установке: '+u;
       if(navigator.share)navigator.share({title:'ניהול+',text:t}).catch(()=>{});else{navigator.clipboard?.writeText(u);toast('הקישור הועתק')}}
-    if(act==='lib'){toast((id==='nehalim'?'נוהלים':'ידיעון')+' — התוכן יתווסף בקרוב')}
+    if(act==='lib'){if(id==='yedion')go('yedion');else toast('נוהלים — העיצוב בבחירה, יתווסף בקרוב')}
+    if(act==='doc-q'){const k=a.dataset.k;docQ[k]=a.dataset.v;docQ.menu=null;renderApp('yedion')}
+    if(act==='doc-menu'){docQ.menu=docQ.menu===id?null:id;renderApp('yedion')}
+    if(act==='doc-open'||act==='doc-share'){const d=(LISTS.docs||[]).find(q=>q.id===id);if(!d)return;docQ.menu=null;
+      const blob=await docBlob(d),file=new File([blob],d.fname||d.title,{type:blob.type});
+      if(act==='doc-share'&&navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],title:d.title}).catch(()=>{});return}
+      const u=URL.createObjectURL(blob),l=document.createElement('a');l.href=u;l.target='_blank';l.rel='noopener';
+      if(d.type!=='pdf')l.download=d.fname||d.title;document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),60000)}
+    if(act==='doc-ren'){const d=(LISTS.docs||[]).find(q=>q.id===id);const t=d&&prompt('שם המסמך',d.title);docQ.menu=null;
+      if(t&&t.trim()){await fsPatch('ma_docs/'+id,{title:t.trim()});d.title=t.trim();toast('נשמר ✓')}renderApp('yedion')}
+    if(act==='doc-del'){const d=(LISTS.docs||[]).find(q=>q.id===id);docQ.menu=null;if(!d||!confirm('למחוק את „'+d.title+'”?'))return renderApp('yedion');
+      for(let i=0;i<(+d.chunks||1);i++)await fsDel('ma_docs_bin/'+id+'_'+i).catch(()=>{});await fsDel('ma_docs/'+id);toast('נמחק');LISTS.docs=null;await loadDocs()}
     if(act==='pr-add'){promoAdd=!promoAdd;promoDraft=null;renderApp('promos')}
     if(act==='pr-old'){promoOldOpen=!promoOldOpen;renderApp('promos')}
     if(act==='pr-manual'){promoAdd=false;promoDraft={dealQty:1};promoBusy='';renderApp('promos')}
