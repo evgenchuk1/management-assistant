@@ -1137,13 +1137,13 @@ function renderPromos(){
     const cond=[p.minBuy?`בקנייה מעל ₪${esc(p.minBuy)}`:'',p.maxQty?`עד ${esc(p.maxQty)} יח' ללקוח`:'',p.note?esc(p.note):''].filter(Boolean);
     return `<div class="pr2${open?' open':''}" data-s="${esc(sKey(p.name+' '+(p.brand||'')+' '+(p.dealNo||'')))}">
       <div class="pr2h"><button class="pr2n" data-act="pr-open" data-id="${p.id}">${esc(p.name)}</button>
-        <b class="pr2p">₪${money(p.price)}${q>1?`<small> / ${q} יח'</small>`:''}</b>
+        <b class="pr2p">${p.deal&&!p.price?esc(p.deal):`₪${money(p.price)}${q>1?`<small> / ${q} יח'${p.deal?' · '+esc(p.deal):''}</small>`:''}`}</b>
         <button class="pr2m" data-act="pr-menu" data-id="${p.id}" aria-label="אפשרויות">⋮</button>
         ${promoMenu===p.id?`<div class="pmenu"><button data-act="pr-edit" data-id="${p.id}">✏️ עריכה</button><button data-act="pr-share" data-id="${p.id}">📤 שיתוף</button><button data-act="pr-del" data-id="${p.id}" class="del">🗑️ מחיקה</button></div>`:''}</div>
       ${open?`<div class="pr2d">
         <div class="pr-old"><span>מחיר לפני מבצע:</span> ${before?`<b>₪${money(before)}</b>${q>1?` (${q} יח' × ₪${money(p.regUnit)})`:''}`:'—'}</div>
         <div class="pr-no"><span>מס' מבצע:</span> ${p.dealNo?`<button class="bcn" data-bc="${esc(p.dealNo)}" data-nm="${esc('מבצע '+p.name)}">${esc(p.dealNo)}</button>`:'—'}</div>
-        <div><span>מחיר מבצע:</span> ${before?`<s>₪${money(before)}</s> ← `:''}<b>₪${money(p.price)}</b>${q>1?` (${q} יח' ב-₪${money(p.price)})`:''}</div>
+        <div><span>מחיר מבצע:</span> ${p.deal?`<b>${esc(p.deal)}</b> `:''}${p.price?`${before?`<s>₪${money(before)}</s> ← `:''}<b>₪${money(p.price)}</b>`:''}${q>1?` (${q} יח' ב-₪${money(p.price)})`:''}</div>
         ${p.brand?`<div><span>יצרן:</span> ${esc(p.brand)}</div>`:''}
         <div><span>תנאים:</span> ${cond.length?cond.join(' · '):'ללא תנאים מיוחדים'}</div>
         <div><span>בתוקף עד:</span> <b class="pru ${left!=null&&left<0?'old':left!=null&&left<=3?'soon':''}">${p.until?dd(p.until)+'/'+p.until.slice(0,4):'—'}</b>${left!=null&&left>=0?` (עוד ${left} ימים)`:''}</div>
