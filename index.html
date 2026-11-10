@@ -261,6 +261,7 @@ body.fab .home .foot{padding-right:62px}
 .prf .frm input[type=date]::-webkit-calendar-picker-indicator{margin:0}
 .ai-tag{display:inline-block;font-size:12px;font-weight:800;color:var(--deep);background:linear-gradient(170deg,#F3E3BE,var(--gold));border-radius:8px;padding:2px 8px;margin-inline-start:6px;vertical-align:middle}
 .prf .frm input:placeholder-shown,.prf .frm input[value=""]{border-color:#E25544;background:#FFF5F4}
+.prf .frm input.chk{border-color:#E0A526;background:#FFF8E6}
 .primg{display:block;width:100%;max-height:220px;object-fit:contain;border-radius:12px;margin-bottom:10px;background:#000}
 .gl.pr{align-items:flex-start}
 .prm{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
@@ -651,7 +652,7 @@ table.al td.x{width:34px;text-align:center}
 </div>
 
 <div id="intro" hidden><video id="introV" playsinline preload="auto" poster="intro.jpg"><source src="intro.mp4" type="video/mp4"></video>
-  <button class="in-skip" id="introSkip">דלג ›</button><button class="in-snd" id="introSnd" aria-label="קול">🔊</button><button class="in-play" id="introPlay" hidden>▶<small>הפעלה עם קול</small></button></div>
+  <button class="in-skip" id="introSkip">דלג ›</button><button class="in-snd" id="introSnd" aria-label="קול">🔊</button></div>
 <div id="lens"></div>
 <div class="bc-ov" id="bcOv"><div class="bc-card"><div class="bc-name" id="bcName"></div><div id="bcBox"></div><div class="bc-hint">הקישו בכל מקום לסגירה</div></div></div>
 <button class="cart-btn cart-fab" aria-label="עגלה"><svg><use href="#i-cart"/></svg><span class="plus">+</span></button>
@@ -1116,6 +1117,11 @@ function renderLibrary(){
 
 /* ── מבצעים: רשימה משותפת לכל הסניפים (Firestore ma_promos), הזנה מצילום ממצא ── */
 let promoDraft=null,promoBusy='';
+function promoDup(rec,selfId){
+  const nk=t=>sKey(t).replace(/\s/g,''),cs=x=>String(x||'').split(/[,\s]+/).filter(c=>c.length>=5),rc=cs(rec.codes),today=iso(new Date());
+  return (LISTS.promos||[]).find(p=>p.id!==selfId&&(!p.until||p.until>=today)&&(
+    (rec.dealNo&&p.dealNo&&rec.dealNo===String(p.dealNo)&&(!rec.until||!p.until||rec.until===p.until))||
+    (+p.price===+rec.price&&(cs(p.codes).some(c=>rc.includes(c))||nk(p.name)===nk(rec.name)))))}
 async function loadPromos(){try{LISTS.promos=await fsList('ma_promos',['name','brand','deal','dealNo','price','dealQty','regUnit','until','codes','minBuy','maxQty','note']);}catch{LISTS.promos_err=1}
   if(stack.at(-1)==='app:promos')renderApp('promos')}
 const money=v=>v===''||v==null||isNaN(+v)?'':(+v).toFixed(2);
@@ -1137,8 +1143,8 @@ function renderPromos(){
       ${open?`<div class="pr2d">
         <div class="pr-old"><span>מחיר לפני מבצע:</span> ${before?`<b>₪${money(before)}</b>${q>1?` (${q} יח' × ₪${money(p.regUnit)})`:''}`:'—'}</div>
         <div class="pr-no"><span>מס' מבצע:</span> ${p.dealNo?`<button class="bcn" data-bc="${esc(p.dealNo)}" data-nm="${esc('מבצע '+p.name)}">${esc(p.dealNo)}</button>`:'—'}</div>
+        <div><span>מחיר מבצע:</span> ${before?`<s>₪${money(before)}</s> ← `:''}<b>₪${money(p.price)}</b>${q>1?` (${q} יח' ב-₪${money(p.price)})`:''}</div>
         ${p.brand?`<div><span>יצרן:</span> ${esc(p.brand)}</div>`:''}
-        <div><span>מחיר מבצע:</span> ${before?`<s>₪${money(before)}</s> ← `:''}<b>₪${money(p.price)}</b>${q>1?` (${q} יח' ב-₪${money(p.price)})`:''}${p.regUnit?` · רגיל ₪${money(p.regUnit)} ליח'`:''}</div>
         <div><span>תנאים:</span> ${cond.length?cond.join(' · '):'ללא תנאים מיוחדים'}</div>
         <div><span>בתוקף עד:</span> <b class="pru ${left!=null&&left<0?'old':left!=null&&left<=3?'soon':''}">${p.until?dd(p.until)+'/'+p.until.slice(0,4):'—'}</b>${left!=null&&left>=0?` (עוד ${left} ימים)`:''}</div>
         <div class="prc"><span>ברקוד:</span> ${codes.length?codes.map(c=>`<button class="bcn" data-bc="${esc(c)}" data-nm="${esc(p.name)}">${esc(c)}</button>`).join(''):'אין'}</div></div>`:''}</div>`};
@@ -1150,9 +1156,9 @@ function renderPromos(){
       <input id="prN" placeholder="שם המוצר" value="${esc(d.name||'')}" autocomplete="off">
       <input id="prB" placeholder="מותג / יצרן" value="${esc(d.brand||'')}" autocomplete="off">
       <label>מס' מבצע (7 ספרות)<input id="prD" inputmode="numeric" dir="ltr" value="${esc(d.dealNo||'')}"></label>
-      <label>מחיר מבצע ₪${dq>1?` (ל-${dq} יח')`:''}<input id="prP" inputmode="decimal" dir="ltr" value="${esc(d.price||'')}"></label>
+      <label>מחיר מבצע ₪${dq>1?` (ל-${dq} יח')`:''}${d.ocr&&d.price?' · לבדוק':''}<input id="prP" inputmode="decimal" dir="ltr" value="${esc(d.price||'')}"${d.ocr&&d.price?' class="chk"':''}></label>
       <label>מחיר רגיל ליח' ₪<input id="prR" inputmode="decimal" dir="ltr" value="${esc(d.regUnit||'')}"></label>
-      <label>בתוקף עד<input id="prU" type="date" value="${esc(d.until||'')}"></label>
+      <label>בתוקף עד${d.ocr&&d.until?' · לבדוק':''}<input id="prU" type="date" value="${esc(d.until||'')}"${d.ocr&&d.until?' class="chk"':''}></label>
       <label>קנייה מינימלית ₪ (אם יש)<input id="prMin" inputmode="decimal" dir="ltr" value="${esc(d.minBuy||'')}" placeholder="—"></label>
       <label>מקסימום יח' ללקוח (אם יש)<input id="prMax" inputmode="numeric" dir="ltr" value="${esc(d.maxQty||'')}" placeholder="—"></label>
       <input id="prC" placeholder="קוד / ברקוד (כמה — בפסיקים)" dir="ltr" value="${esc(d.codes||'')}" autocomplete="off">
@@ -1216,6 +1222,46 @@ async function findDealNo(file,codes){
       if(hit)return hit.text}
   }finally{await w.terminate()}
   return ''}
+/* ── גיבוי ל-AI ── */
+const loadImg=f=>new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=no;i.src=typeof f==='string'?f:URL.createObjectURL(f)});
+/* חיתוך מהתמונה המקורית → קנבס בערוץ אדום (כתום → לבן), עם סף אופציונלי */
+function cropRed(im,sx,sy,sw,sh,k,thr){const c=document.createElement('canvas');c.width=Math.max(1,sw*k);c.height=Math.max(1,sh*k);const g=c.getContext('2d');
+  g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(im,sx,sy,sw,sh,0,0,c.width,c.height);
+  const d=g.getImageData(0,0,c.width,c.height),a=d.data;for(let i=0;i<a.length;i+=4){const v=thr?(a[i]<thr?0:255):a[i];a[i]=a[i+1]=a[i+2]=v}g.putImageData(d,0,0);return c}
+const ocrWords=data=>{const ws=[];(data.blocks||[]).forEach(b=>b.paragraphs.forEach(p=>p.lines.forEach(l=>l.words.forEach(x=>ws.push({t:x.text,c:x.confidence,...x.bbox,h:x.bbox.y1-x.bbox.y0})))));return ws};
+/* המחיר הגדול: Tesseract לא קורא ספרות ענקיות בסריקה רגילה, אבל כן את האגורות המורמות („80”).
+   מוצאים אותן, חותכים את האזור שמשמאלן ומקטינים לגובה ~110px — ואז השקלים נקראים. (בדיקה: 5/5 ממצאים) */
+async function findBigPrice(file){
+  const im=await loadImg(file),w=await Tesseract.createWorker('eng');
+  try{for(const [mx,th] of [[1600,0],[1600,110],[1200,80],[2000,0]]){
+      const k=mx/Math.max(im.width,im.height);
+      await w.setParameters({tessedit_pageseg_mode:'11',tessedit_char_whitelist:'0123456789'});
+      const cents=ocrWords((await w.recognize(cropRed(im,0,0,im.width,im.height,k,th),{},{blocks:true})).data)
+        .filter(x=>/^\d\d$/.test(x.t)&&x.c>=60).sort((a,b)=>b.h-a.h).slice(0,2);
+      if(!cents.length)continue;
+      await w.setParameters({tessedit_pageseg_mode:'7',tessedit_char_whitelist:'0123456789'});
+      for(const ct of cents){const h=ct.h/k,x1=ct.x0/k,y0=Math.max(0,ct.y0/k-h*.15),bh=h*3.2,bw=Math.min(h*4.5,x1);if(bw<h)continue;
+        let best=null;
+        for(const thr of [100,0,140]){const r=(await w.recognize(cropRed(im,x1-bw,y0,bw,bh,110/bh,thr))).data,t=(r.text||'').replace(/\D/g,'');
+          if(/^\d{1,3}$/.test(t)&&r.confidence>=70&&(!best||r.confidence>best.c))best={t,c:r.confidence}}
+        if(best)return (+best.t)+'.'+ct.t}}
+  }finally{await w.terminate()}
+  return ''}
+/* תאריך: קריאה חוזרת של מילת התאריך בלבד (חיתוך מוגדל, ספרות ו-/ בלבד) — מדויק יותר מהסריקה הכללית */
+async function readDateCrop(file,dw){
+  if(!dw||!dw.length)return '';
+  const im=await loadImg(file),w=await Tesseract.createWorker('eng');let best=null;
+  try{await w.setParameters({tessedit_pageseg_mode:'7',tessedit_char_whitelist:'0123456789/'});
+    for(const x of dw.slice(0,4)){const h=x.h/x.k,pad=h*.25;
+      for(const thr of [0,120,90]){const r=(await w.recognize(cropRed(im,x.x0/x.k-pad,x.y0/x.k-pad,(x.x1-x.x0)/x.k+2*pad,h+2*pad,56/(h+2*pad),thr))).data;
+        const m=(r.text||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+        if(m&&+m[1]>=1&&+m[1]<=31&&+m[2]>=1&&+m[2]<=12&&r.confidence>=60&&(!best||r.confidence>best.c))best={u:m[3]+'-'+m[2].padStart(2,'0')+'-'+m[1].padStart(2,'0'),c:r.confidence}}}
+  }finally{await w.terminate()}
+  return best?best.u:''}
+/* שנה משובשת (2076, 2626…) → השנה הנוכחית או הבאה (מבצע לא נמשך שנים) */
+function fixYear(u){if(!u)return u;let [y,m,d]=u.split('-').map(Number);const c=new Date().getFullYear();
+  if(y<c-1||y>c+1){y=c;if(new Date(y,m-1,d)<new Date(Date.now()-60*864e5))y=c+1}
+  return y+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0')}
 /* זיהוי ממצא ב-AI: Gemini דרך Firebase AI Logic של אותו פרויקט (expiry-tracker-ebf92) — בלי שרת, מפתח ה-Web הציבורי */
 const AI_MODELS=['gemini-3.8-flash','gemini-3.5-flash-lite','gemini-flash-latest'];
 let aiOff=false;
@@ -1269,13 +1315,16 @@ document.addEventListener('change',async e=>{
   catch(err){console.log('AI',err)}
   /* 2) גיבוי — זיהוי מקומי (Tesseract), אם אין חיבור ל-AI */
   promoBusy='מזהה טקסט מהצילום… (עד חצי דקה)';renderApp('promos');
-  try{await loadTess();const src=await shrinkImg(f,2000,'grayscale(1) contrast(1.4)');
+  try{await loadTess();const src=await shrinkImg(f,2000,'grayscale(1) contrast(1.4)');promoDraft.ocr=1;
+    const im0=await loadImg(f),k0=Math.min(1,2000/Math.max(im0.width,im0.height));let dateWords=null;
     const w=await Tesseract.createWorker('heb+eng');await w.setParameters({tessedit_pageseg_mode:'11'});
     const read=async s=>{const {data}=await w.recognize(s,{},{blocks:true,text:true});
+      if(!dateWords)dateWords=ocrWords(data).filter(x=>/\d{1,2}\s*[\/.]\s*\d{1,2}\s*[\/.]|\d{1,2}\/\d{1,2}|\/\s*20\d\d/.test(x.t)).map(x=>({...x,k:k0}));
       const lines=[];(data.blocks||[]).forEach(b=>b.paragraphs.forEach(p=>p.lines.forEach(l=>lines.push({t:l.text.trim(),h:l.bbox.y1-l.bbox.y0}))));
       const o=parseTag(lines.length?lines:(data.text||'').split('\n').map(t=>({t,h:0})));
       // שנה שנקראה משובשת ותאריך שכבר עבר / תאריך ישן מאוד = קריאה שגויה (השתקפות) — להזין ידנית
-      if(o.until&&((o._yfix&&o.until<iso(new Date()))||o.until<iso(new Date(Date.now()-60*864e5))))delete o.until;delete o._yfix;
+      if(o.until)o.until=fixYear(o.until);
+      if(o.until&&o.until<iso(new Date(Date.now()-60*864e5)))delete o.until;delete o._yfix;
       return o};
     try{Object.assign(promoDraft,await read(src));
       /* מעבר שני בערוץ האדום (הכתום נעלם) — משלים מחיר רגיל / תוקף / קודים שלא נקראו */
@@ -1284,9 +1333,15 @@ document.addEventListener('change',async e=>{
         for(const k of ['regUnit','until','codes','dealQty','brand','name'])if(r[k]&&!promoDraft[k])promoDraft[k]=r[k];
         if(r.codes&&promoDraft.codes&&r.codes.length>promoDraft.codes.length)promoDraft.codes=r.codes}
     }finally{await w.terminate()}
+    /* מחיר המבצע הגדול */
+    if(!promoDraft.price){promoBusy='קורא את מחיר המבצע…';renderApp('promos');
+      try{const bp=await findBigPrice(f),before=(+promoDraft.regUnit||0)*(+promoDraft.dealQty||1);if(bp&&(!before||+bp<before))promoDraft.price=(+bp).toFixed(2)}catch(er){console.log(er)}}
+    /* קריאה חוזרת ומדויקת של התאריך */
+    promoBusy='בודק את התאריך…';renderApp('promos');
+    try{const u=fixYear(await readDateCrop(f,dateWords));if(u&&u>=iso(new Date(Date.now()-60*864e5)))promoDraft.until=u}catch(er){console.log(er)}
     if(!promoDraft.dealNo){promoBusy='מחפש את מס׳ המבצע…';renderApp('promos');try{const no=await findDealNo(f,promoDraft.codes);if(no)promoDraft.dealNo=no}catch(er){console.log(er)}}
     promoBusy='';
-    toast((promoDraft.price?'זוהה — בדקו את השדות':'זוהה — הקלידו את מחיר המבצע ובדקו')+(promoDraft.dealNo?'':' · מס׳ מבצע לא זוהה'))}
+    toast((promoDraft.price?'זוהה — בדקו מחיר ותאריך (מסומנים בצהוב)':'זוהה — הקלידו את מחיר המבצע ובדקו')+(promoDraft.dealNo?'':' · מס׳ מבצע לא זוהה'))}
   catch(err){console.log(err);promoBusy='';toast('הזיהוי נכשל — מלאו ידנית')}
   if(stack.at(-1)==='app:promos'){renderApp('promos');const pp=document.getElementById(promoDraft&&!promoDraft.price?'prP':'prN');pp&&pp.focus()}
 });
@@ -1392,6 +1447,11 @@ document.addEventListener('click',async e=>{
     if(act==='pr-save'){const n=v('prN'),pr=v('prP').replace(',','.');if(!n||!pr){toast('חסר שם או מחיר');return}a.disabled=true;
       const rec={name:n,brand:v('prB'),dealNo:v('prD').replace(/\D/g,''),price:pr,dealQty:Math.max(1,parseInt(promoDraft&&promoDraft.dealQty)||1),regUnit:v('prR').replace(',','.'),until:v('prU'),codes:v('prC'),
         minBuy:v('prMin').replace(',','.'),maxQty:v('prMax'),note:v('prNote')};
+      /* חסימת כפילות: אותו מס' מבצע, או אותו מוצר (קוד/שם) באותו מחיר */
+      const dup=promoDup(rec,promoDraft&&promoDraft.id);
+      if(dup){a.disabled=false;promoOpen=dup.id;
+        if(!confirm('המבצע כבר רשום:\n„'+dup.name+'” ₪'+money(dup.price)+(dup.dealNo?' · מס׳ '+dup.dealNo:'')+'\n\nלא נשמר כפילות. לבטל את הרשומה החדשה?'))return;
+        promoDraft=null;renderApp('promos');return}
       if(promoDraft&&promoDraft.id)await fsPatch('ma_promos/'+promoDraft.id,{...rec,updatedAt:new Date()});
       else await fsAdd('ma_promos',{...rec,deal:'',addedBy:'ניהול + · '+BRANCHES[branch],addedAt:new Date()});
       promoDraft=null;toast('המבצע נשמר ✓');LISTS.promos=null;await loadPromos()}
@@ -1592,13 +1652,14 @@ const qs=new URLSearchParams(location.search).get('screen');
   box.hidden=false;let done=false;
   const end=()=>{if(done)return;done=true;box.classList.add('out');setTimeout(()=>{box.remove()},520)};
   v.addEventListener('ended',end);v.addEventListener('error',end);document.getElementById('introSkip').onclick=end;
-  snd.onclick=()=>{v.muted=!v.muted;snd.textContent=v.muted?'🔇':'🔊';snd.classList.remove('ask');if(v.paused)v.play().catch(()=>{})};
-  // קודם עם קול; אם המכשיר חוסם קול בהפעלה אוטומטית — מנגנים בלי קול ומבקשים הקשה להפעלת הקול
-  // ברירת מחדל: עם קול (🔊 משתיק). אם הטלפון חוסם קול בלי הקשה (iPhone) — מחכים להקשה אחת על ▶ ומנגנים עם קול.
-  const pb=document.getElementById('introPlay');let safety=setTimeout(end,13000);
-  v.muted=false;v.play().then(()=>{snd.textContent='🔊'}).catch(()=>{
-    clearTimeout(safety);pb.hidden=false;snd.hidden=true;safety=setTimeout(end,8000); // בלי הקשה תוך 8 שניות — ממשיכים לאפליקציה
-    pb.onclick=()=>{clearTimeout(safety);pb.hidden=true;snd.hidden=false;v.muted=false;v.play().catch(()=>{v.muted=true;v.play()});snd.textContent=v.muted?'🔇':'🔊';safety=setTimeout(end,13000)}});
+  // מתחיל מיד ועם קול. iPhone לא מרשה קול לפני נגיעה ראשונה — אז מנגנים מיד בלי קול, והקול נדלק בנגיעה הראשונה במסך. 🔊/🔇 — השתקה.
+  let safety=setTimeout(end,13000),userMuted=false;
+  snd.onclick=e=>{e.stopPropagation();userMuted=!v.muted;v.muted=userMuted;snd.textContent=v.muted?'🔇':'🔊';snd.classList.remove('ask');if(v.paused)v.play().catch(()=>{})};
+  const EV=['touchend','click','keydown'],off=()=>EV.forEach(t=>window.removeEventListener(t,wake,true));
+  const wake=e=>{if(e.target===snd)return off(); // הכפתור עצמו מטפל בקול
+    off();if(!userMuted&&v.muted){v.muted=false;snd.textContent='🔊';snd.classList.remove('ask');v.play().catch(()=>{v.muted=true;snd.textContent='🔇'})}};
+  EV.forEach(t=>window.addEventListener(t,wake,true));
+  v.muted=false;v.play().then(()=>{snd.textContent='🔊'}).catch(()=>{v.muted=true;snd.textContent='🔇';snd.classList.add('ask');v.play().catch(()=>{})});
 })();
 renderHome();document.body.classList.add('fab');pushLabel();
 /* עגלה צפה: אפשר לגרור אותה (בחלק התחתון של המסך); המיקום נשמר */
