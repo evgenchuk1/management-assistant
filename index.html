@@ -198,6 +198,11 @@ button{font-family:inherit}
   border-radius:0 0 14px 14px;background:linear-gradient(180deg,var(--navy),var(--deep));border:2px solid var(--gold);border-top:none;
   box-shadow:0 4px 8px rgba(0,0,0,.3);color:var(--gold2);font-size:13px;line-height:15px;font-weight:900}
 .tongue span{display:inline-block;transition:transform .3s}
+.app-tongue{display:none}
+#screen-app .hdr.fold .app-tongue{display:block}
+#screen-app .hdr.fold:not(.open) .hdate-row,#screen-app .hdr.fold:not(.open) .hdr-ctl,#screen-app .hdr.fold:not(.open) .cats{display:none}
+#screen-app .hdr.fold:not(.open) .hdr-row{padding-bottom:2px}
+#screen-app .hdr.fold~.body{padding-top:26px}
 .hdr.open .tongue span{transform:rotate(180deg)}
 .rkbody{flex:1;min-height:0;display:flex;flex-direction:column;padding:26px 8px calc(4px + var(--safe-bot)*.6);overflow:hidden}
 .rk{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7px;
@@ -244,8 +249,8 @@ body.fab .home .foot{padding-right:62px}
 .ep.none{color:var(--muted)}
 .eb{flex-shrink:0;width:66px;text-align:left;font-size:14px;color:var(--gold3);font-weight:700;direction:ltr}
 /* ידיעון — שלט תמונה (מגירה) + מגירה עם תיקיות */
-.yd-hero{position:relative;overflow:hidden;background:#fff;direction:ltr;aspect-ratio:790/560;border-radius:16px;margin:2px 0 10px;box-shadow:0 2px 10px rgba(20,35,56,.12)}
-.yd-art{position:relative;width:129.6%;margin-left:-15.2%;margin-top:-19%;aspect-ratio:1}
+.yd-hero{position:relative;overflow:hidden;background:#fff;direction:ltr;aspect-ratio:800/760;border-radius:16px;margin:2px 0 10px;box-shadow:0 2px 10px rgba(20,35,56,.12)}
+.yd-art{position:relative;width:128%;margin-left:-13.75%;margin-top:-18.75%;aspect-ratio:1}
 .yd-art img{position:absolute;inset:0;width:100%;height:100%;display:block}
 .yd-stk{position:absolute;transform:translate(-50%,-50%) rotate(-22deg);border:1.5px solid var(--cd);background:var(--c);border-radius:7px 7px 3px 3px;font-weight:800;color:#142338;
   white-space:nowrap;text-align:center;line-height:1.05;font-size:12px;padding:4px 9px;max-width:30%;overflow:hidden;text-overflow:ellipsis;cursor:pointer;font-family:inherit}
@@ -255,8 +260,11 @@ body.fab .home .foot{padding-right:62px}
 .yd-tools .sbox{flex:1 1 160px;margin:0}
 .yd-chip{border:1.5px solid #E1D6BF;background:#fff;border-radius:12px;padding:7px 10px;font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;font-family:inherit}
 .yd-chip.on{background:var(--deep);color:#F3E3BE;border-color:var(--deep)}
-.yd-add{display:flex;gap:8px;margin:4px 0 8px}
-.yd-up{flex:1;text-align:center;cursor:pointer;padding:11px;border-radius:14px;font-weight:800;font-size:15px;color:var(--deep);background:linear-gradient(170deg,#F3E3BE,var(--gold) 55%,#B8955A);box-shadow:0 3px 0 #8C6E3C}
+.yd-add{display:flex;gap:8px;margin:4px 0 10px;align-items:stretch}
+.yd-add .sbox{flex:1 1 0;min-width:0;margin:0}
+.yd-add .yd-chip{flex:none}
+.yd-add .yd-up:only-child{flex:1}
+.yd-up{flex:0 0 auto;display:flex;align-items:center;justify-content:center;white-space:nowrap;text-align:center;cursor:pointer;padding:11px;border-radius:14px;font-weight:800;font-size:15px;color:var(--deep);background:linear-gradient(170deg,#F3E3BE,var(--gold) 55%,#B8955A);box-shadow:0 3px 0 #8C6E3C}
 .yd-drawer{background:linear-gradient(180deg,#D7E0EA,#C3CFDC);border:2px solid #8FA2B8;border-radius:14px;padding:16px 10px 10px;position:relative}
 .yd-drawer::before{content:"";position:absolute;inset:0 0 auto;height:8px;background:#E8EEF4;border-radius:12px 12px 0 0;border-bottom:1.5px solid #8FA2B8}
 .yd-f{position:relative;margin-top:18px;transition:transform .2s}
@@ -274,7 +282,7 @@ body.fab .home .foot{padding-right:62px}
 .yd-ppt{--c:#F6C3A0;--cd:#D07A45}
 /* ידיעון — ארון ארכיון ET studio: מדפים לפי חודש, קלסרים עם חלון שם */
 .ar-case{background:#203550;border-radius:16px;padding:10px;box-shadow:inset 0 0 0 2px #CFAB6F55,0 4px 14px rgba(20,35,56,.25)}
-.ar-sec{background:#142338;border-radius:11px;padding:10px 8px 16px;margin-bottom:10px;position:relative}
+.ar-sec{background:#142338;border-radius:11px;padding:14px 8px 16px;margin-bottom:10px;position:relative}
 .ar-sec:last-child{margin-bottom:0}
 .ar-sec h4{margin:0 2px 9px;color:#F3E3BE;font-size:15px;font-weight:800;display:flex;justify-content:space-between}
 .ar-sec h4 i{font-style:normal;color:#8FA2BE;font-weight:600}
@@ -634,6 +642,7 @@ table.al td.x{width:34px;text-align:center}
     <div class="hdate-row"><button class="dbtn" data-day="-1" aria-label="יום קודם">›</button><div class="hdate" id="appDate" data-today></div><button class="dbtn" data-day="1" aria-label="יום הבא">‹</button></div>
     <div class="hdr-ctl"><button class="pill" data-b="118">סניף 118</button><button class="pill" data-b="208">סניף 208</button><button class="pill" data-b="266">סניף 266</button><button class="back" data-back>חזרה ›</button></div>
     <div class="cats"></div>
+    <button class="tongue app-tongue" id="appTongue" aria-label="פתח כותרת"><span>⌄</span></button>
   </div>
   <div class="body" id="appBody"></div>
 </div>
@@ -941,6 +950,8 @@ function renderHome(){
 
 /* ═════════════ RENDER: APP SCREENS ═════════════ */
 function hdrApp(key){
+  const hd=document.querySelector('#screen-app .hdr'),fold=key==='yedion'||key==='nehalim';
+  if(hd.dataset.k!==key){hd.classList.remove('open');hd.dataset.k=key}hd.classList.toggle('fold',fold);
   const a=APPS[key]||{he:{access:'מורשי גישה',install:'התקנה'}[key]||''}; // מסכים שאינם אפליקציה
   document.getElementById('appTitle').textContent=a.he;
   paintDates();
@@ -1213,17 +1224,14 @@ function renderDocs(shelf){
   const mName=m=>m?MONTHS_HE[+m.slice(5,7)-1]+' '+m.slice(0,4):'';
   const ab=shelf==='yedion',nm=ab?'ידיעון':'נוהלים';
   const hero=ab?'':`<div class="yd-hero"><div class="yd-art"><img src="drawer-hero.webp" alt="מגירת תיוק"></div>${nNew?`<span class="yd-cap">📥 ${nNew} חדשים</span>`:''}</div>`;
-  const add=`<div class="yd-add"><label class="yd-up">📎 הוספת מסמך (PDF / Word / Excel)<input type="file" id="docFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,.csv,.ppt,.pptx,application/pdf" hidden></label></div>
+  const add=`<div class="yd-add"><label class="yd-up">📎 הוספת מסמך<input type="file" id="docFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,.csv,.ppt,.pptx,application/pdf" hidden></label>${all.length?searchBox('חיפוש…')+`<button class="yd-chip" data-act="doc-q" data-k="sort" data-v="${docQ.sort==='date'?'abc':'date'}" aria-label="מיון">${docQ.sort==='date'?'א-ב':'📅'}</button>`:''}</div>
     ${docQ.busy?`<div class="card"><div class="empty">⏳ ${esc(docQ.busy)}</div></div>`:''}`;
-  if(!all.length)return hero+add+`<div class="yd-empty">📂 ${ab?'הארון':'המגירה'} עדיין ${ab?'ריק':'ריקה'}.<br>הוסיפו מסמך (PDF / Word / Excel) מהטלפון — גם קובץ שנשמר מ-WhatsApp או מהמייל.</div>`;
-  let list=all.filter(d=>(ab||mk(d)===month)&&(!docQ.type||d.type===docQ.type));
+  if(!all.length)return hero+add;
+  let list=all.filter(d=>ab||mk(d)===month);
   if(docQ.sort==='abc')list=list.slice().sort((a,b)=>heSort(a.title,b.title));
-  const chip=(k,v,l)=>`<button class="yd-chip${docQ[k]===v?' on':''}" data-act="doc-q" data-k="${k}" data-v="${v}">${l}</button>`;
-  const tools=`<div class="yd-tools">${searchBox('חיפוש ב'+nm+'…')}${chip('type','','הכל')}${chip('type','pdf','PDF')}${chip('type','doc','Word')}${chip('type','xls','Excel')}
-    ${chip('sort',docQ.sort==='date'?'abc':'date',docQ.sort==='date'?'↕ א-ב':'↕ לפי תאריך')}</div>`;
-  const rows=list.map((d,i)=>{const [lab,cls]=DOC_TYPES[d.type]||DOC_TYPES.oth;
+  const rows=list.map((d,i)=>{const cls=['yd-pdf','yd-xls','yd-doc'][i%3];
     return `<div class="yd-f ${cls} t${i%3}" data-s="${esc(sKey(d.title+' '+(d.fname||'')))}"><span class="tab">${dd(d.date)}</span><div class="bd">
-      <span class="ic" data-act="doc-open" data-id="${d.id}">${lab}</span>
+      <span class="ic" data-act="doc-open" data-id="${d.id}">📄</span>
       <button class="tx" data-act="doc-open" data-id="${d.id}"><b>${esc(d.title)}</b><span>${DOC_SRC[d.src]||'📱'} ${esc(d.from||({mail:'מייל',wa:'WhatsApp'}[d.src]||'הועלה מהטלפון'))}${d.size?' · '+Math.max(1,Math.round(d.size/1024))+' KB':''}</span></button>
       ${isNew(d)?'<span class="nw">חדש</span>':''}
       <button class="pr2m" data-act="doc-menu" data-id="${d.id}" aria-label="אפשרויות">⋮</button>
@@ -1232,17 +1240,16 @@ function renderDocs(shelf){
   if(ab){ // ארון ארכיון: מדף לכל חודש, קלסרים עם חלון שם
     const byM={};list.forEach(d=>(byM[mk(d)]=byM[mk(d)]||[]).push(d));
     const tagT={pdf:'PDF',doc:'WORD',xls:'XLS',ppt:'PPT',oth:'FILE'};
-    const secs=Object.keys(byM).sort().reverse().map(m=>`<div class="ar-sec"><h4>🗂️ ${mName(m)} <i>${byM[m].length}</i></h4><div class="ar-row">${byM[m].map((d,i)=>
+    const secs=Object.keys(byM).sort().reverse().map(m=>`<div class="ar-sec"><div class="ar-row">${byM[m].map((d,i)=>
       `<div class="ar-b ar-c${(i+(+m.slice(5,7)))%6}" data-s="${esc(sKey(d.title+' '+(d.fname||'')+' '+(d.subject||'')))}">${isNew(d)?'<span class="nw">חדש</span>':''}
         <button class="win" data-act="doc-open" data-id="${d.id}">${esc(d.title)}</button>
-        <div class="meta"><span class="ar-tag ${d.type||'oth'}">${tagT[d.type]||'FILE'}</span><span>${DOC_SRC[d.src]||'📱'} ${dd(d.date)}</span></div>
+        <div class="meta"><span>${DOC_SRC[d.src]||'📱'}</span><span>${dd(d.date)}</span></div>
         <span class="hole"></span><button class="mn" data-act="doc-menu" data-id="${d.id}" aria-label="אפשרויות">⋮</button>
         ${docQ.menu===d.id?`<div class="pmenu"><button data-act="doc-share" data-id="${d.id}">📤 שליחה</button><button data-act="doc-ren" data-id="${d.id}">✏️ שינוי שם</button><button data-act="doc-del" data-id="${d.id}" class="del">🗑️ מחיקה</button></div>`:''}
       </div>`).join('')}</div></div>`).join('')||'<div class="yd-empty">אין מסמכים מסוג זה</div>';
-    return add+tools+`<div class="ar-case">${secs}</div>`}
-  return hero+add+tools+`<div class="yd-drawer">${rows}
-    <div class="yd-months">${months.map(m=>`<button class="yd-handle${m===month?' on':''}" data-act="doc-q" data-k="month" data-v="${m}">${mName(m)}${m===month?'':' ←'}</button>`).join('')}</div></div>
-    <div class="yd-leg"><span><i style="background:#A9C8EA"></i>PDF</span><span><i style="background:#FBD98A"></i>Word</span><span><i style="background:#A8DDB0"></i>Excel</span></div>`;
+    return add+`<div class="ar-case">${secs}</div>`}
+  return hero+add+`<div class="yd-drawer">${rows}
+    <div class="yd-months">${months.map(m=>`<button class="yd-handle${m===month?' on':''}" data-act="doc-q" data-k="month" data-v="${m}">${mName(m)}${m===month?'':' ←'}</button>`).join('')}</div></div>`;
 }
 const b64ToBlob=(parts,mime)=>{const bin=atob(parts.join(''));const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return new Blob([u],{type:mime||'application/octet-stream'})};
 async function docBlob(d){
@@ -1503,6 +1510,7 @@ function applySearch(){
     r.style.display=!q||s.startsWith(q)||s.split(' ').some(w=>w.startsWith(q))||(' '+s).includes(' '+q)?'':'none'});
   body.querySelectorAll('.card').forEach(c=>{const rows=c.querySelectorAll('.gl[data-s],.pr2[data-s]');if(!rows.length)return;
     c.style.display=[...rows].some(r=>r.style.display!=='none')?'':'none'});
+  body.querySelectorAll('.ar-sec').forEach(c=>{c.style.display=[...c.querySelectorAll('.ar-b')].some(r=>r.style.display!=='none')?'':'none'});
 }
 document.addEventListener('input',e=>{if(e.target.id==='listQ'){listQ=e.target.value;applySearch()}});
 
@@ -1705,6 +1713,12 @@ function renderPhoto(){
   fitPanels(document.getElementById('psGrid'));
 }
 
+(()=>{const t=document.getElementById('appTongue'),hd=t.closest('.hdr');let y0=null,moved=false;
+  t.addEventListener('pointerdown',e=>{y0=e.clientY;moved=false;try{t.setPointerCapture(e.pointerId)}catch{}});
+  t.addEventListener('pointermove',e=>{if(y0==null)return;const dy=e.clientY-y0;
+    if(dy>15&&!hd.classList.contains('open')){hd.classList.add('open');moved=true;y0=null}else if(dy<-15&&hd.classList.contains('open')){hd.classList.remove('open');moved=true;y0=null}});
+  t.addEventListener('pointerup',()=>{if(!moved&&y0!=null)hd.classList.toggle('open');y0=null});
+})();
 /* כותרת מקופלת: לשונית — משיכה למטה פותחת, למעלה סוגרת, הקשה מחליפה */
 (()=>{const hdr=document.getElementById('rkHdr'),t=document.getElementById('rkTongue');let y0=null,moved=false;
   const set=o=>{hdr.classList.toggle('open',o);setTimeout(()=>fitPanels(document.getElementById('rkGrid')),380)};
