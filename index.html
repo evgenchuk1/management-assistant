@@ -67,6 +67,17 @@ button{font-family:inherit}
   box-shadow:0 3px 0 #8A6C3A,0 5px 9px rgba(0,0,0,.3),inset 0 2px 0 rgba(255,255,255,.6);transition:transform .09s,box-shadow .09s}
 .cat:active{transform:translateY(3px);box-shadow:0 0 0 #8A6C3A,0 2px 4px rgba(0,0,0,.3)}
 .cat svg{width:28px;height:28px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
+.cat{position:relative}
+.cbadge{position:absolute;top:-7px;inset-inline-start:-5px;min-width:20px;height:18px;padding:0 4px;border-radius:9px;background:#C0392B;color:#fff;
+  font-size:11px;font-weight:800;line-height:18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.4);border:1.5px solid #fff;font-variant-numeric:tabular-nums}
+.pg{border-bottom:1px solid #EFEADF}.pg:last-child{border-bottom:none}
+.pgh{display:flex;align-items:center;gap:10px;width:100%;padding:12px 4px;background:none;border:none;cursor:pointer;font-family:inherit;text-align:start;color:var(--navy)}
+.pgi{font-size:24px;width:30px;text-align:center}.pgn{flex:1;font-size:20px;font-weight:800}
+.pgc{font-size:14px;font-weight:800;background:var(--navy);color:var(--gold2);border-radius:999px;padding:2px 10px;font-variant-numeric:tabular-nums}
+.pga{font-size:13px;color:var(--muted);width:16px}
+.pg.open{background:#FBF8F1}.pg.open .pgh{border-bottom:1px solid #EFEADF}
+.prg:not(.q) .pg:not(.open) .pr2{display:none}
+.prg.q .pga{visibility:hidden}
 
 /* ── home tiles (3D) ── */
 .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px 14px}
@@ -312,6 +323,21 @@ body.fab .home .foot{padding-right:62px}
 .libt{min-height:220px}
 .libt svg{width:96px;height:96px}
 .libt .sub2{font-size:13px;color:var(--gold2);font-weight:600}
+.libd{grid-column:1/-1;min-height:120px;flex-direction:row;gap:14px;justify-content:center;position:relative}
+.libd>span{display:flex;flex-direction:column;align-items:flex-start;text-align:start}
+.libd svg{width:78px;height:78px}
+.dmday{margin:16px 2px 6px;font-size:17px;font-weight:800;color:var(--navy);letter-spacing:.02em}
+.dm{background:#fff;border-radius:16px;padding:12px 14px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.18);position:relative;color:#1B2A3E}
+.dm.hot{box-shadow:0 0 0 2px #C0392B,0 2px 8px rgba(0,0,0,.18)}
+.dmh{display:flex;align-items:flex-start;gap:8px;position:relative}.dmh b{flex:1;font-size:19px;line-height:1.3;color:var(--navy)}
+.dms{font-size:18px;line-height:1.4}
+.dmf{font-size:13px;color:var(--muted);margin:3px 0 0 0;padding-inline-start:28px}
+.dmc{color:#8A6C3A;font-weight:700}.dmdue{color:#B45309;font-weight:800}
+.dmp{margin:8px 0 2px;padding-inline-start:22px;font-size:16.5px;line-height:1.5}
+.dmp li{margin-bottom:3px}.dmp li.hot{color:#B91C1C;font-weight:800}
+.dma{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.dma button{border:1.5px solid var(--gold);background:#FBF6EA;color:var(--navy);border-radius:10px;padding:6px 10px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dmb{margin-top:8px;padding:10px;background:#F6F3EC;border-radius:10px;font-size:14.5px;line-height:1.55;white-space:pre-wrap;max-height:50vh;overflow:auto}
 .pr-add{display:flex;gap:8px;margin-bottom:12px}
 .pr-add .sv{flex:1;text-align:center;border:none;border-radius:14px;padding:12px;font:inherit;font-size:16px;font-weight:900;color:#fff;cursor:pointer;
   background:linear-gradient(170deg,var(--navy3),var(--navy));box-shadow:0 3px 0 #0E1A2A}
@@ -754,6 +780,7 @@ const APPS = {
   bakery: {url:null, he:'מאפייה וקונדיטוריה'},
   yedion: {url:null, he:'ידיעון'},
   nehalim:{url:null, he:'נוהלים'},
+  daily:  {url:null, he:'מייל יומי'},
   expedit:{url:null, he:'הזנת פגי תוקף'},
 };
 const VEG_URL='https://evgenchuk1.github.io/vegcount-app/', MEAT_URL='https://evgenchuk1.github.io/meatcount-app/';
@@ -922,7 +949,7 @@ document.addEventListener('click',e=>{
   const ct=e.target.closest('[data-cat]');if(ct){const c=ct.dataset.cat;
     document.getElementById('rkHdr')?.classList.remove('open');
     const top=stack[stack.length-1];if(top==='app:'+c)return;
-    if(['app:person','app:produce','app:meat','app:fish','app:bakery','app:library','app:promos','app:yedion','app:nehalim'].includes(top))stack.pop(); // מעבר בין רשימות — בלי לערום מסכים
+    if(['app:person','app:produce','app:meat','app:fish','app:bakery','app:library','app:promos','app:yedion','app:nehalim','app:daily'].includes(top))stack.pop(); // מעבר בין רשימות — בלי לערום מסכים
     go(c);return}
   const bc=e.target.closest('[data-bc]');if(bc){showBarcode(bc.dataset.bc,bc.dataset.nm,bc.dataset.gif);return}
   if(e.target.closest('#bcOv')){document.getElementById('bcOv').classList.remove('on');return}
@@ -932,7 +959,7 @@ document.addEventListener('click',e=>{
 /* 4 כפתורי קטגוריה בכותרת (הפעולה תוגדר בהמשך) */
 const CATS=[['promos','מבצעים'],['library','ספריה'],['bakery','מאפייה'],['fish','דגים'],['meat','בשר'],['produce','פירות וירקות'],['person','עובדים']];
 document.querySelectorAll('.cats').forEach(el=>el.innerHTML=CATS.map(([k,he])=>
-  `<button class="cat" data-cat="${k}" aria-label="${he}" title="${he}"><svg><use href="#c-${k}"/></svg></button>`).join(''));
+  `<button class="cat" data-cat="${k}" aria-label="${he}" title="${he}"><svg><use href="#c-${k}"/></svg>${k==='promos'?'<span class="cbadge cbadge-promos" hidden></span>':''}</button>`).join(''));
 
 /* ═════════════ RENDER: HOME ═════════════ */
 function badge(id,n,cls){const b=document.getElementById(id);if(!b)return;b.hidden=!n;b.textContent=n;if(cls)b.className='badge '+cls}
@@ -950,7 +977,7 @@ function renderHome(){
 
 /* ═════════════ RENDER: APP SCREENS ═════════════ */
 function hdrApp(key){
-  const hd=document.querySelector('#screen-app .hdr'),fold=key==='yedion'||key==='nehalim';
+  const hd=document.querySelector('#screen-app .hdr'),fold=key==='yedion'||key==='nehalim'||key==='daily';
   if(hd.dataset.k!==key){hd.classList.remove('open');hd.dataset.k=key}hd.classList.toggle('fold',fold);
   const a=APPS[key]||{he:{access:'מורשי גישה',install:'התקנה'}[key]||''}; // מסכים שאינם אפליקציה
   document.getElementById('appTitle').textContent=a.he;
@@ -1052,8 +1079,9 @@ function renderApp(key){
     h+=renderCleaners();
   }
   if(key==='person') h+=renderPeople();
-  if(key==='library') h+=renderLibrary();
+  if(key==='library'){if(!LISTS.daily&&!LISTS.daily_busy){LISTS.daily_busy=1;loadDaily().finally(()=>LISTS.daily_busy=0)}h+=renderLibrary()}
   if(key==='yedion'||key==='nehalim') h+=renderDocs(key);
+  if(key==='daily') h+=renderDaily();
   if(key==='promos') h+=renderPromos();
   if(key==='produce') h+=renderGoods('produce');
   if(key==='meat') h+=renderGoods('meat');
@@ -1211,9 +1239,84 @@ function renderLibrary(){
       <rect x="12" y="18" width="18" height="14" rx="2" fill="url(#gBlue)"/><g stroke="#203550" stroke-width="2.6" stroke-linecap="round"><path d="M34 20h12M34 26h12M12 38h34M12 45h26"/></g>
       <path d="M52 22h6v28a4 4 0 0 1-8 0V22z" fill="url(#gGold)"/>
       <path d="M44 4l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z" fill="#C0392B"/></svg>
-      <span class="lbl">ידיעון</span><span class="sub2">עדכונים וחדשות</span></button></div>
+      <span class="lbl">ידיעון</span><span class="sub2">עדכונים וחדשות</span></button>
+    <button class="tile libt libd" data-act="lib" data-id="daily"><svg viewBox="0 0 64 64"><rect x="5" y="14" width="54" height="38" rx="6" fill="url(#gCream)" stroke="#9C7A42" stroke-width="2"/>
+      <path d="M7 17l25 19 25-19" fill="none" stroke="#203550" stroke-width="3.2" stroke-linejoin="round"/>
+      <circle cx="50" cy="16" r="10" fill="#C0392B" stroke="#fff" stroke-width="2"/><path d="M50 10.5v6.5l3.5 2" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span><span class="lbl">מייל יומי</span><span class="sub2">רק הדברים החשובים מהמיילים ומהקבוצה</span></span>${dailyNewCount()?`<span class="badge">${dailyNewCount()}</span>`:''}</button></div>
 `;
 }
+
+/* ═════════════ ספריה: מייל יומי ═════════════
+   Firestore ma_daily: {title, from, date, shelf, src: mail|wa, pointsJson, due, docsJson, body, subject}
+   ✉️ מהמייל etsipis@013.net — סקריפט docs_import.py (משימת Windows DocsImport013, כל 15 דק') מסכם עם AI;
+   💬 מהקבוצה — צילומי המיילים שנשלחים בקבוצת WhatsApp: „＋ צילומים מהקבוצה” → AI מסכם כאן בטלפון */
+let dailyQ={busy:'',menu:null,body:{},bodyOpen:null};
+const DAILY_ROLE='You help the deputy manager of Shufersal branch 118 (דיל אילת הסתת, Eilat). Write in short, plain Hebrew. Keep ONLY what matters for running the branch: '+
+  'tasks to do, deadlines and dates, counts (ספירות), orders and stock (מלאי), price changes and promotions, displays (תצוגות, פלנוגרמות), staff/hours rules, inspections, holidays. '+
+  'Drop greetings, signatures, distribution lists, phone numbers. Branch 118 is a "דיל" format store: when prices are given per format (דיל / שלי / יוניברס / אונליין), give the דיל price. '+
+  'Write "⚠️ 118:" ONLY when the number 118 or the words "אילת הסתת" are literally printed in that same mail, and say in which list/heading it is printed. Never guess that 118 is in a list.';
+const jparse=(t,d)=>{try{return JSON.parse(t||'')??d}catch{return d}};
+const dailyNewCount=()=>(LISTS.daily||[]).filter(x=>x.date&&daysFrom(x.date,startOfDay(new Date()))>=-1).length;
+async function loadDaily(){try{LISTS.daily=await fsList('ma_daily',['title','from','date','shelf','src','pointsJson','due','docsJson','subject'])}catch{LISTS.daily_err=1}
+  const tp=stack.at(-1);if(tp==='app:daily')renderApp('daily');else if(tp==='app:library')renderApp('library')}
+function renderDaily(){
+  if(!LISTS.daily){if(!LISTS.daily_busy){LISTS.daily_busy=1;loadDaily().finally(()=>LISTS.daily_busy=0)}
+    return `<div class="card"><div class="empty">${LISTS.daily_err?'⚠️ אין חיבור — נסו שוב':'⏳ טוען…'}</div></div>`}
+  if(!LISTS.docs&&!LISTS.docs_busy){LISTS.docs_busy=1;loadDocs().finally(()=>{LISTS.docs_busy=0;if(stack.at(-1)==='app:daily')renderApp('daily')})}
+  const today=startOfDay(new Date());
+  const all=LISTS.daily.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||'')||(a.title||'').localeCompare(b.title||''));
+  const dayLbl=d=>{const n=daysFrom(d,today);return n===0?'היום':n===-1?'אתמול':['יום א׳','יום ב׳','יום ג׳','יום ד׳','יום ה׳','יום ו׳','שבת'][new Date(d+'T12:00').getDay()]+' · '+dd(d)};
+  const SHELF={yedion:'📁 נשמר בידיעון',nehalim:'📁 נשמר בנוהלים'},TAG={yedion:'🏷️ ידיעון',nehalim:'🏷️ נוהל'};
+  const item=x=>{const pts=jparse(x.pointsJson,[]),docs=jparse(x.docsJson,[]).map(id=>(LISTS.docs||[]).find(d=>d.id===id)).filter(Boolean);
+    const open=dailyQ.bodyOpen===x.id;
+    return `<div class="dm${pts.some(p=>/118/.test(p))?' hot':''}" data-s="${esc(sKey(x.title+' '+pts.join(' ')+' '+(x.from||'')))}">
+      <div class="dmh"><span class="dms">${x.src==='wa'?'💬':'✉️'}</span><b>${esc(x.title||'—')}</b>
+        <button class="pr2m" data-act="dm-menu" data-id="${x.id}" aria-label="אפשרויות">⋮</button>
+        ${dailyQ.menu===x.id?`<div class="pmenu"><button data-act="dm-del" data-id="${x.id}" class="del">🗑️ מחיקה</button></div>`:''}</div>
+      <div class="dmf">${esc(x.from||'')}${(x.src==='mail'?SHELF:TAG)[x.shelf]?` · <span class="dmc">${(x.src==='mail'?SHELF:TAG)[x.shelf]}</span>`:''}${x.due?` · <span class="dmdue">⏰ עד ${dd(x.due)}</span>`:''}</div>
+      ${pts.length?`<ul class="dmp">${pts.map(p=>`<li${/118/.test(p)?' class="hot"':''}>${esc(p)}</li>`).join('')}</ul>`:''}
+      ${docs.length||x.src==='mail'?`<div class="dma">${docs.map(d=>`<button data-act="doc-open" data-id="${d.id}">📎 ${esc(d.title)}</button>`).join('')}
+        ${x.src==='mail'?`<button data-act="dm-body" data-id="${x.id}">${open?'▲ סגירת המייל':'📄 המייל המלא'}</button>`:''}</div>`:''}
+      ${open?`<div class="dmb">${dailyQ.body[x.id]==null?'⏳ טוען…':esc(dailyQ.body[x.id]||'(אין טקסט)')}</div>`:''}</div>`};
+  let h=`<div class="yd-add"><label class="yd-up">＋ צילומים מהקבוצה<input type="file" id="dmFiles" accept="image/*" multiple hidden></label>${all.length?searchBox('חיפוש…'):''}</div>`;
+  if(dailyQ.busy)h+=`<div class="card"><div class="empty">⏳ ${esc(dailyQ.busy)}</div></div>`;
+  if(!all.length&&!dailyQ.busy)h+=`<div class="card"><div class="empty">עוד אין מיילים.<br>✉️ מיילי עבודה מ-Snif118 נכנסים לכאן לבד (כל 15 דקות).<br>💬 צילומי מיילים מהקבוצה — „＋ צילומים מהקבוצה”.</div></div>`;
+  let last='';
+  for(const x of all){if(x.date!==last){last=x.date;h+=`<div class="dmday">${x.date?dayLbl(x.date):'ללא תאריך'}</div>`}h+=item(x)}
+  return h+'<div class="note" style="text-align:center">✉️ מהמייל · 💬 מהקבוצה · ⚠️ 118 = הסניף שלנו מוזכר</div>';
+}
+document.addEventListener('change',async e=>{
+  if(e.target.id!=='dmFiles'||!e.target.files.length)return;
+  const files=[...e.target.files].slice(0,24),today=iso(new Date());let added=0;
+  try{
+    for(let i=0;i<files.length;i+=8){const part=files.slice(i,i+8);
+      dailyQ.busy=`ה-AI קורא צילומים ${i+1}–${i+part.length} מתוך ${files.length}…`;renderApp('daily');
+      const parts=[];for(let k=0;k<part.length;k++){const d=await shrinkImg(part[k],1600);parts.push({text:'Photo #'+k},{inlineData:{mimeType:'image/jpeg',data:d.split(',')[1]}})}
+      parts.push({text:DAILY_ROLE+`\nToday is ${today}.\n\nThese are photos of a computer screen (Outlook e-mails, Word/PDF documents) that the area office sends to the branch managers as the "daily mail" (מייל יומי). `+
+        'Several photos can show the same e-mail/document — merge them into ONE item. For every distinct e-mail/document give: title (its subject, Hebrew, no FW:), sender (name if visible, else null), '+
+        'date (YYYY-MM-DD of the mail if visible, else null), shelf ("nehalim" = standing procedure; "yedion" = monthly bulletin/catalogue/presentation; "daily" = everything else), '+
+        'points (1–6 short Hebrew bullet points: what to do, when, numbers), due (main deadline YYYY-MM-DD or null), photos (numbers of the photos of this item). Never copy passwords, user names or phone numbers. '+
+        'Reply JSON only: {"items":[{"title":"...","sender":null,"date":null,"shelf":"daily","points":["..."],"due":null,"photos":[0]}]}'});
+      const r=await aiJSON(parts,240000),items=Array.isArray(r)?r:(r.items||[]);
+      // בדיקה שנייה: האם 118 באמת מודפס? (בלי זה ה-AI לפעמים „מוצא” את הסניף ברשימה שהוא לא בה)
+      for(const it of items){if(!(it.points||[]).some(x=>/118/.test(x)))continue;
+        const ph=(it.photos||[]).filter(k=>Number.isInteger(k)&&k<part.length),use=ph.length?ph:part.map((_,k)=>k),vp=[];
+        for(const k of use)vp.push(parts[2*k],parts[2*k+1]);
+        vp.push({text:'Look carefully at these photos. Is the branch number 118 (or the words "אילת הסתת") literally printed? If yes, copy the exact heading of the list or table where it appears. Reply JSON only: {"visible":true,"heading":"..."}'});
+        let v={visible:false};try{v=await aiJSON(vp,120000)}catch{}
+        it.points=v.visible?it.points.map(x=>/118/.test(x)&&v.heading?'⚠️ 118: מופיע ברשימה „'+String(v.heading).trim()+'”':x):it.points.filter(x=>!/118|אילת/.test(x))}
+      for(const it of items){const title=String(it.title||'').trim();if(!title)continue;
+        const date=/^20\d\d-\d\d-\d\d$/.test(it.date||'')?it.date:today;
+        if((LISTS.daily||[]).some(x=>sKey(x.title)===sKey(title)&&x.date===date))continue;   // כבר קיים
+        const rec={title,from:it.sender||'קבוצת WhatsApp',date,shelf:['yedion','nehalim'].includes(it.shelf)?it.shelf:'daily',src:'wa',
+          pointsJson:JSON.stringify((it.points||[]).map(String).slice(0,8)),due:/^20\d\d-\d\d-\d\d$/.test(it.due||'')?it.due:'',docsJson:'[]',subject:title,addedAt:new Date()};
+        const id='w'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+        await fsSet('ma_daily/'+id,rec);(LISTS.daily||(LISTS.daily=[])).push({id,...rec});added++}}
+    toast(added?`✓ נוספו ${added} מיילים`:'לא נמצא מייל חדש בצילומים');
+  }catch(err){console.log('daily',err);toast('⚠️ ה-AI לא זמין כרגע — נסו שוב')}
+  dailyQ.busy='';renderApp('daily');
+});
 
 /* ═════════════ ספריה: ידיעון (ובהמשך נוהלים) ═════════════
    מטא-דאטה ב-Firestore ma_docs, הקובץ עצמו ב-ma_docs_bin בחלקים של ~700KB (base64) — בלי שרת קבצים */
@@ -1287,10 +1390,43 @@ function promoDup(rec,selfId){
   return (LISTS.promos||[]).find(p=>p.id!==selfId&&(!p.until||p.until>=today)&&(
     (rec.dealNo&&p.dealNo&&rec.dealNo===String(p.dealNo)&&(!rec.until||!p.until||rec.until===p.until))||
     (+p.price===+rec.price&&(cs(p.codes).some(c=>rc.includes(c))||nk(p.name)===nk(rec.name)))))}
-async function loadPromos(){try{LISTS.promos=await fsList('ma_promos',['name','brand','deal','dealNo','price','dealQty','regUnit','until','codes','minBuy','maxQty','note']);}catch{LISTS.promos_err=1}
-  if(stack.at(-1)==='app:promos')renderApp('promos')}
+async function loadPromos(){try{LISTS.promos=await fsList('ma_promos',['name','brand','deal','dealNo','price','dealQty','regUnit','until','codes','minBuy','maxQty','note','cat']);}catch{LISTS.promos_err=1}
+  promoBadge();if(stack.at(-1)==='app:promos')renderApp('promos');classifyPromos()}
 const money=v=>v===''||v==null||isNaN(+v)?'':(+v).toFixed(2);
 let promoOpen=null,promoMenu=null,promoAdd=false,promoOldOpen=false;
+/* קבוצות מוצרים למבצעים — השדה cat ב-ma_promos (סווג ע״י AI 16.11.2026; מבצע חדש בלי cat מסווג אוטומטית ברקע) */
+const PGROUPS=[['dairy','🥛','מוצרי חלב וביצים'],['meat','🥩','בשר ועוף'],['fish','🐟','דגים'],['deli','🌭','נקניקים ומעדנייה'],
+  ['flour','🌾','קמח, אורז וקטניות'],['pasta','🍝','פסטה ואטריות'],['sauces','🥫','רטבים'],['spices','🧂','תבלינים ואבקות מרק'],['oil','🫒','שמן וחומץ'],
+  ['canned','🥫','שימורים'],['spreads','🍯','ממרחים, דבש וריבות'],['breakfast','🥣','דגני בוקר'],['sweets','🍫','ממתקים ושוקולד'],
+  ['cakes','🍰','עוגות ועוגיות'],['bread','🍞','לחם ומאפים'],['snacks','🍿','חטיפים ופיצוחים'],['soft','🥤','משקאות קלים'],
+  ['alcohol','🍷','משקאות אלכוהוליים'],['coffee','☕','קפה ותה'],['frozen','🧊','קפואים'],['produce','🥦','פירות וירקות'],['baby','🍼','תינוקות'],
+  ['cleaning','🧽','ניקיון וכביסה'],['hygiene','🧴','טיפוח והיגיינה'],['paper','🧻','נייר וחד-פעמי'],['home','🏠','בית וכלי בית'],['pets','🐾','מזון לחיות'],['other','📦','שונות']];
+const PG_IDS=PGROUPS.map(g=>g[0]);
+// כלל מהיר עד שה-AI מסווג (מילה בתחילת שם)
+const PG_RULES=[['alcohol',/בירה|יין |וודקה|ויסקי|ג'ין|ליקר|ערק|אוזו|קאווה|למברוסקו/],['soft',/מיץ|משקה|קולה|מים מינרל|סודה|נקטר|ספרייט|פפסי|תפוזינה|אנרגיה/],
+  ['coffee',/קפה|תה |נס קפה|קפסולות|שוקו/],['dairy',/גבינ|יוגורט|חלב|שמנת|חמאה|ביצים|מעדן|קוטג'|לבן |משקה סויה/],['meat',/בשר|עוף|הודו|אסאדו|כבד|שניצל טרי/],
+  ['fish',/דג |סלמון|טונה טרי|אמנון|פילה/],['deli',/נקניק|סלמי|פסטרמה|נקניקיות|קבנוס/],['cleaning',/ניקוי|כביסה|מרכך כביסה|אקונומיקה|נוזל כלים|ספוג|מבשם/],
+  ['hygiene',/שמפו|סבון|משחת שיניים|דאודורנט|קרם|גילוח|תחבושות|מרכך שיער|מברשת שיניים|ויטמין/],['paper',/נייר|מגבות|ממחטות|כוסות|צלחות חד|מפיות|נייר כסף|שקיות/],
+  ['baby',/חיתול|מגבונים|תמ"ל|מטרנה|סימילאק/],['pets',/לכלב|לחתול|בונזו|פריסקיז/],['sweets',/שוקולד|סוכריות|מסטיק|ביצת הפתעה|פרלין/],['cakes',/עוגיות|עוגה|ופל|ביסקוויט|רוגלך/],
+  ['snacks',/במבה|ביסלי|חטיף|צ'יפס|פיצוח|גרעינים|בייגלה|אגוזי|שקדים|קרקר/],['bread',/לחם|פיתות|לחמניות|חלה|טורטי/],['pasta',/פסטה|ספגטי|אטריות|איטריות/],
+  ['flour',/קמח|אורז|סוכר|עדשים|קוסקוס|פירורי לחם|שעועית יבשה/],['sauces',/רוטב|קטשופ|מיונז|חרדל|טחינה|סויה/],['spices',/תבלין|פפריקה|מלח|פלפל שחור|אבקת מרק|מרק /],
+  ['oil',/שמן|חומץ/],['canned',/שימורי|תירס|זיתים|מלפפונים|טונה|רסק/],['spreads',/ממרח|דבש|ריבה|קונפיטורה|חלבה|נוטלה|חמאת בוטנים/],['breakfast',/דגני בוקר|קורנפלקס|גרנולה|קוואקר/],
+  ['frozen',/קפוא|גלידה|ארטיק|קרטיב/]];
+const promoCat=p=>PG_IDS.includes(p.cat)?p.cat:((PG_RULES.find(([,re])=>re.test(p.name||''))||['other'])[0]);
+let promoGrpOpen=new Set(),promoClassBusy=false;
+/* מבצעים שעדיין אין להם קבוצה → AI מסווג (עד 120 בכל בקשה) ושומר ב-cat */
+async function classifyPromos(){
+  if(promoClassBusy||aiOff)return;const todo=(LISTS.promos||[]).filter(p=>!PG_IDS.includes(p.cat));if(!todo.length)return;
+  promoClassBusy=true;
+  try{for(let i=0;i<todo.length;i+=120){const part=todo.slice(i,i+120);
+    const r=await aiJSON([{text:'Classify Israeli supermarket products into store departments. Departments (id = name): '+PGROUPS.map(g=>g[0]+' = '+g[2]).join('; ')+
+      '. Mayonnaise/ketchup/tahini → sauces; soup powder → spices; tuna/corn/pickles → canned; cookies/wafers/cakes → cakes; chocolate/candy → sweets; chips/nuts → snacks; diapers/wipes → baby; disposables/foil → paper. '+
+      'Reply JSON only: {"r":[{"i":0,"c":"<id>"}]}\n\n'+part.map((p,k)=>k+'. '+p.name+(p.brand?' | '+p.brand:'')).join('\n')}],120000);
+    for(const x of (r.r||r||[])){const p=part[x.i];if(p&&PG_IDS.includes(x.c)){p.cat=x.c;fsPatch('ma_promos/'+p.id,{cat:x.c}).catch(()=>{})}}
+    if(stack.at(-1)==='app:promos')renderApp('promos')}}
+  catch(e){console.log('classify',e)}finally{promoClassBusy=false}}
+function promoBadge(){const today=iso(new Date()),n=LISTS.promos?LISTS.promos.filter(p=>!p.until||p.until>=today).length:0;
+  document.querySelectorAll('.cbadge-promos').forEach(b=>{b.hidden=!n;b.textContent=n})}
 function renderPromos(){
   if(!LISTS.promos){if(!LISTS.promos_busy){LISTS.promos_busy=1;loadPromos().finally(()=>LISTS.promos_busy=0)}
     return `<div class="card"><div class="empty">${LISTS.promos_err?'⚠️ אין חיבור — נסו שוב':'⏳ טוען מבצעים…'}</div></div>`}
@@ -1335,9 +1471,11 @@ function renderPromos(){
       <button class="sv ghost" data-act="pr-manual">✍️ הזנה ידנית</button></div>
       <div class="note">בחרו צילום של הממצא מהגלריה — האפליקציה תקרא את השם, המחירים, התוקף ומס' המבצע</div></div>`:'';
   return `<div class="pr-top">${searchBox('חיפוש מבצע…')}<button class="pr-addbtn" data-act="pr-add">＋ הוספה</button></div>`+addBox+form+
-    `<div class="card prl"><h2>🏷️ מבצעים פעילים<span class="cnt">${act.length}</span></h2>${act.length?act.map(row).join(''):'<div class="empty">אין מבצעים פעילים</div>'}</div>`+
+    `<div class="card prl prg${listQ?' q':''}"><h2>🏷️ מבצעים פעילים<span class="cnt">${act.length}</span></h2>${act.length?PGROUPS.map(([g,ic,he])=>{
+      const items=act.filter(p=>promoCat(p)===g);if(!items.length)return'';const op=promoGrpOpen.has(g);
+      return `<div class="pg${op?' open':''}"><button class="pgh" data-act="pr-grp" data-id="${g}"><span class="pgi">${ic}</span><span class="pgn">${he}</span><span class="pgc">${items.length}</span><span class="pga">${op?'▲':'▼'}</span></button>${items.map(row).join('')}</div>`}).join(''):'<div class="empty">אין מבצעים פעילים</div>'}</div>`+
     (old.length?`<div class="card prl old-pr"><h2 class="pr-oldh" data-act="pr-old">⌛ הסתיימו<span class="cnt">${old.length}</span><span class="pr-arr">${promoOldOpen?'▲':'▼'}</span></h2>${promoOldOpen?old.map(row).join(''):''}</div>`:'')+
-    '<div class="note" style="text-align:center">הקישו על שם המוצר לפרטים · ⋮ לאפשרויות</div>';
+    '<div class="note" style="text-align:center">הקישו על קבוצה לפתיחת הרשימה · על שם המוצר לפרטים · ⋮ לאפשרויות</div>';
 }
 /* זיהוי טקסט מתמונת הממצא (Tesseract.js, עברית+אנגלית) */
 let tessLoading=null;
@@ -1428,7 +1566,7 @@ function fixYear(u){if(!u)return u;let [y,m,d]=u.split('-').map(Number);const c=
   if(y<c-1||y>c+1){y=c;if(new Date(y,m-1,d)<new Date(Date.now()-60*864e5))y=c+1}
   return y+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0')}
 /* זיהוי ממצא ב-AI: Gemini דרך Firebase AI Logic של אותו פרויקט (expiry-tracker-ebf92) — בלי שרת, מפתח ה-Web הציבורי */
-const AI_MODELS=['gemini-3.8-flash','gemini-3.5-flash-lite','gemini-flash-latest'];
+const AI_MODELS=['gemini-3.5-flash','gemini-3-flash-preview','gemini-3.5-flash-lite']; // 16.11: 3.8-flash/flash-latest לא עונים בפרויקט
 let aiOff=false;
 const AI_PROMPT=`זהו צילום של ממצא (שלט מחיר מבצע) מרשת שופרסל בישראל. קרא אותו בדיוק והחזר JSON בלבד.
 חוקים:
@@ -1465,6 +1603,21 @@ async function aiReadTag(dataUrl){
       return out}
     catch(err){console.log('AI',m,err)}finally{clearTimeout(t)}}
   return null}
+/* קריאה כללית ל-Gemini → JSON (טקסט ו/או תמונות) */
+async function aiJSON(parts,ms=90000){
+  if(aiOff)throw new Error('AI off');
+  const body=JSON.stringify({contents:[{role:'user',parts}],generationConfig:{temperature:0,responseMimeType:'application/json'}});
+  let last=null;
+  for(const m of AI_MODELS){
+    const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),ms);
+    try{const r=await fetch(`https://firebasevertexai.googleapis.com/v1beta/projects/expiry-tracker-ebf92/models/${m}:generateContent`,
+        {method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':FS_KEY},body,signal:ctl.signal});
+      if(r.status===403){aiOff=true;throw new Error('AI 403')}
+      if(!r.ok){last=r.status;continue}
+      const j=await r.json(),txt=(j.candidates?.[0]?.content?.parts||[]).filter(p=>!p.thought).map(p=>p.text||'').join('');
+      return JSON.parse(txt.replace(/^```(json)?|```$/g,'').trim())}
+    catch(err){if(aiOff)throw err;last=err}finally{clearTimeout(t)}}
+  throw new Error('AI not available '+last)}
 document.addEventListener('change',async e=>{
   if(!['prFile','prGal'].includes(e.target.id)||!e.target.files[0])return;
   const f=e.target.files[0],img=await shrinkImg(f,1400);promoAdd=false;promoDraft={img,dealQty:1};
@@ -1522,6 +1675,9 @@ function applySearch(){
   body.querySelectorAll('.card').forEach(c=>{const rows=c.querySelectorAll('.gl[data-s],.pr2[data-s]');if(!rows.length)return;
     c.style.display=[...rows].some(r=>r.style.display!=='none')?'':'none'});
   body.querySelectorAll('.ar-sec').forEach(c=>{c.style.display=[...c.querySelectorAll('.ar-b')].some(r=>r.style.display!=='none')?'':'none'});
+  body.querySelectorAll('.prg').forEach(c=>c.classList.toggle('q',!!q));
+  body.querySelectorAll('.pg').forEach(g=>{g.style.display=!q||[...g.querySelectorAll('.pr2')].some(r=>r.style.display!=='none')?'':'none'});
+  body.querySelectorAll('.dm[data-s]').forEach(r=>{const s=r.dataset.s;r.style.display=!q||s.includes(q)?'':'none'});
 }
 document.addEventListener('input',e=>{if(e.target.id==='listQ'){listQ=e.target.value;applySearch()}});
 
@@ -1593,13 +1749,18 @@ document.addEventListener('click',async e=>{
       toast('נשמר ✓');await loadExpiry()}
     if(act==='ex-del'){const x=expiry.find(q=>q.id===id);if(!x||!confirm('למחוק את '+x.name+'?'))return;await fsDel('products_'+b+'/'+id);toast('נמחק');await loadExpiry()}
     if(act==='tk-add'){const d=v('tkDesc');if(!d){toast('חסר תיאור');return}a.disabled=true;
-      await fsAdd('tickets_'+b,{description:d,category:v('tkCat'),dateReported:iso(new Date()),status:'open',addedBy:'ניהול +',addedAt:new Date()});
+      await fsAdd(tkCol(b),{description:d,category:v('tkCat'),dateReported:iso(new Date()),status:'open',addedBy:'ניהול +',addedAt:new Date()});
       toast('נשמר ✓');await loadTickets()}
-    if(act==='tk-close'){if(!confirm('לסמן כטופל?'))return;await fsPatch('tickets_'+b+'/'+id,{status:'closed',closedAt:new Date()});toast('סומן כטופל ✓');await loadTickets()}
+    if(act==='tk-close'){if(!confirm('לסמן כטופל?'))return;await fsPatch(tkCol(b)+'/'+id,{status:'completed',dateCompleted:iso(new Date())});toast('סומן כטופל ✓');await loadTickets()}
     if(act==='push'){await enablePush()}
     if(act==='share-inst'){const u=new URL('install.html',location.href).href,t='ניהול+ — מדריך התקנה · Install guide · Инструкция по установке: '+u;
       if(navigator.share)navigator.share({title:'ניהול+',text:t}).catch(()=>{});else{navigator.clipboard?.writeText(u);toast('הקישור הועתק')}}
     if(act==='lib'){go(id)}
+    if(act==='dm-menu'){dailyQ.menu=dailyQ.menu===id?null:id;renderApp('daily')}
+    if(act==='dm-del'){const x=(LISTS.daily||[]).find(q=>q.id===id);dailyQ.menu=null;if(!x||!confirm('למחוק את „'+x.title+'”?'))return renderApp('daily');
+      await fsDel('ma_daily/'+id);LISTS.daily=LISTS.daily.filter(q=>q.id!==id);toast('נמחק');renderApp('daily')}
+    if(act==='dm-body'){if(dailyQ.bodyOpen===id){dailyQ.bodyOpen=null;return renderApp('daily')}
+      dailyQ.bodyOpen=id;renderApp('daily');if(dailyQ.body[id]==null){try{const d=await fsGet('ma_daily/'+id);dailyQ.body[id]=d?.body||''}catch{dailyQ.body[id]='⚠️ אין חיבור'}renderApp('daily')}}
     if(act==='doc-q'){const k=a.dataset.k;docQ[k]=a.dataset.v;docQ.menu=null;renderApp(docShelf())}
     if(act==='doc-menu'){docQ.menu=docQ.menu===id?null:id;renderApp(docShelf())}
     if(act==='doc-open'||act==='doc-share'){const d=(LISTS.docs||[]).find(q=>q.id===id);if(!d)return;docQ.menu=null;
@@ -1613,6 +1774,7 @@ document.addEventListener('click',async e=>{
       for(let i=0;i<(+d.chunks||1);i++)await fsDel('ma_docs_bin/'+id+'_'+i).catch(()=>{});await fsDel('ma_docs/'+id);toast('נמחק');LISTS.docs=null;await loadDocs()}
     if(act==='pr-add'){promoAdd=!promoAdd;promoDraft=null;renderApp('promos')}
     if(act==='pr-old'){promoOldOpen=!promoOldOpen;renderApp('promos')}
+    if(act==='pr-grp'){promoGrpOpen.has(id)?promoGrpOpen.delete(id):promoGrpOpen.add(id);renderApp('promos')}
     if(act==='pr-manual'){promoAdd=false;promoDraft={dealQty:1};promoBusy='';renderApp('promos')}
     if(act==='pr-open'){promoOpen=promoOpen===id?null:id;promoMenu=null;renderApp('promos')}
     if(act==='pr-menu'){promoMenu=promoMenu===id?null:id;renderApp('promos')}
@@ -1809,9 +1971,11 @@ async function loadExpiry(){
 }
 async function loadTickets(){
   const b=branch;
-  try{const list=await fsList(b===118?'tickets':'tickets_'+b,['description','category','dateReported','status']);if(b!==branch)return;
+  try{const list=await fsList(tkCol(b),['description','category','dateReported','status']);if(b!==branch)return;
     tickets=list;ticketsLive=true;renderAll()}catch(e){console.log('tickets',e.message)}
 }
+// אותן קולקציות כמו באפליקציית Ticket Tracker: 118 → tickets_118, 208 → tickets (עד 16.11 כאן נקרא tickets גם ל-118 → הוצגו תקלות של 208)
+const tkCol=b=>b===118?'tickets_118':b===208?'tickets':'tickets_'+b;
 function subscribeExpiry(){expiryLive=false;expiry=[];ticketsLive=false;tickets=[];loadExpiry();loadTickets()}
 /* כתיבה ל-Firestore (חוקים פתוחים, כמו Expiry Tracker) */
 const fv=v=>v==null?{nullValue:null}:typeof v==='boolean'?{booleanValue:v}:typeof v==='number'?{integerValue:String(v)}:v instanceof Date?{timestampValue:v.toISOString()}:{stringValue:String(v)};
@@ -1860,6 +2024,7 @@ renderHome();document.body.classList.add('fab');pushLabel();
 if(qs)go(qs);
 loadLive();
 initFirebase();
+loadPromos(); // מספר המבצעים על הכפתור
 // מעבר יום אוטומטי אחרי חצות
 // בכל פתיחה — היום. אחרי חצות, או חזרה לאפליקציה אחרי 10+ דקות ברקע — חוזרים להיום
 let lastToday=iso(new Date()),hiddenAt=0;
