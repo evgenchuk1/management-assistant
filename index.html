@@ -78,6 +78,7 @@ button{font-family:inherit}
 .pg.open{background:#FBF8F1}.pg.open .pgh{border-bottom:1px solid #EFEADF}
 .prg:not(.q) .pg:not(.open) .pr2{display:none}
 .prg.q .pga{visibility:hidden}
+.old-pr:not(.op):not(.q) .pr2{display:none}
 
 /* ── home tiles (3D) ── */
 .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px 14px}
@@ -1436,7 +1437,7 @@ function renderPromos(){
   const row=p=>{const q=+p.dealQty||1,before=p.regUnit?(+p.regUnit)*q:null,left=p.until?daysFrom(p.until,startOfDay(new Date())):null;
     const codes=String(p.codes||'').split(/[,\s]+/).filter(c=>c.length>=4),open=promoOpen===p.id;
     const cond=[p.minBuy?`בקנייה מעל ₪${esc(p.minBuy)}`:'',p.maxQty?`עד ${esc(p.maxQty)} יח' ללקוח`:'',p.note?esc(p.note):''].filter(Boolean);
-    return `<div class="pr2${open?' open':''}" data-s="${esc(sKey(p.name+' '+(p.brand||'')+' '+(p.dealNo||'')))}">
+    return `<div class="pr2${open?' open':''}" data-s="${esc(sKey(p.name+' '+(p.brand||'')+' '+(p.dealNo||'')+' '+codes.join(' ')))}">
       <div class="pr2h"><button class="pr2n" data-act="pr-open" data-id="${p.id}">${esc(p.name)}</button>
         <b class="pr2p">${p.deal&&!p.price?esc(p.deal):`₪${money(p.price)}${q>1?`<small> / ${q} יח'${p.deal?' · '+esc(p.deal):''}</small>`:''}`}</b>
         <button class="pr2m" data-act="pr-menu" data-id="${p.id}" aria-label="אפשרויות">⋮</button>
@@ -1470,11 +1471,11 @@ function renderPromos(){
       <label class="sv cam">🖼️ מהגלריה<input type="file" accept="image/*" id="prGal" hidden></label>
       <button class="sv ghost" data-act="pr-manual">✍️ הזנה ידנית</button></div>
       <div class="note">בחרו צילום של הממצא מהגלריה — האפליקציה תקרא את השם, המחירים, התוקף ומס' המבצע</div></div>`:'';
-  return `<div class="pr-top">${searchBox('חיפוש מבצע…')}<button class="pr-addbtn" data-act="pr-add">＋ הוספה</button></div>`+addBox+form+
+  return `<div class="pr-top">${searchBox('חיפוש: שם / מס׳ מבצע / ברקוד…')}<button class="pr-addbtn" data-act="pr-add">＋ הוספה</button></div>`+addBox+form+
     `<div class="card prl prg${listQ?' q':''}"><h2>🏷️ מבצעים פעילים<span class="cnt">${act.length}</span></h2>${act.length?PGROUPS.map(([g,ic,he])=>{
       const items=act.filter(p=>promoCat(p)===g);if(!items.length)return'';const op=promoGrpOpen.has(g);
       return `<div class="pg${op?' open':''}"><button class="pgh" data-act="pr-grp" data-id="${g}"><span class="pgi">${ic}</span><span class="pgn">${he}</span><span class="pgc">${items.length}</span><span class="pga">${op?'▲':'▼'}</span></button>${items.map(row).join('')}</div>`}).join(''):'<div class="empty">אין מבצעים פעילים</div>'}</div>`+
-    (old.length?`<div class="card prl old-pr"><h2 class="pr-oldh" data-act="pr-old">⌛ הסתיימו<span class="cnt">${old.length}</span><span class="pr-arr">${promoOldOpen?'▲':'▼'}</span></h2>${promoOldOpen?old.map(row).join(''):''}</div>`:'')+
+    (old.length?`<div class="card prl old-pr${promoOldOpen?' op':''}${listQ?' q':''}"><h2 class="pr-oldh" data-act="pr-old">⌛ הסתיימו<span class="cnt">${old.length}</span><span class="pr-arr">${promoOldOpen?'▲':'▼'}</span></h2>${old.map(row).join('')}</div>`:'')+
     '<div class="note" style="text-align:center">הקישו על קבוצה לפתיחת הרשימה · על שם המוצר לפרטים · ⋮ לאפשרויות</div>';
 }
 /* זיהוי טקסט מתמונת הממצא (Tesseract.js, עברית+אנגלית) */
@@ -1669,13 +1670,13 @@ let listQ='';
 const sKey=t=>String(t||'').toLowerCase().replace(/["'׳״()\-.,]/g,' ').replace(/\s+/g,' ').trim();
 function searchBox(ph){return `<div class="sbox"><span>🔍</span><input id="listQ" type="search" placeholder="${ph}" value="${esc(listQ)}" autocomplete="off"><button data-act="q-clear" aria-label="ניקוי">✕</button></div>`}
 function applySearch(){
-  const q=sKey(listQ),body=document.getElementById('appBody');
+  const q=sKey(listQ),body=document.getElementById('appBody'),num=/^\d{3,}$/.test(q.replace(/\s/g,'')),qn=q.replace(/\s/g,'');
   body.querySelectorAll('.gl[data-s],.pr2[data-s],.yd-f[data-s],.ar-b[data-s]').forEach(r=>{const s=r.dataset.s;
-    r.style.display=!q||s.startsWith(q)||s.split(' ').some(w=>w.startsWith(q))||(' '+s).includes(' '+q)?'':'none'});
+    r.style.display=!q||s.startsWith(q)||s.split(' ').some(w=>w.startsWith(q))||(' '+s).includes(' '+q)||(num&&s.replace(/\s/g,' ').split(' ').some(w=>w.includes(qn)))?'':'none'});
   body.querySelectorAll('.card').forEach(c=>{const rows=c.querySelectorAll('.gl[data-s],.pr2[data-s]');if(!rows.length)return;
     c.style.display=[...rows].some(r=>r.style.display!=='none')?'':'none'});
   body.querySelectorAll('.ar-sec').forEach(c=>{c.style.display=[...c.querySelectorAll('.ar-b')].some(r=>r.style.display!=='none')?'':'none'});
-  body.querySelectorAll('.prg').forEach(c=>c.classList.toggle('q',!!q));
+  body.querySelectorAll('.prg,.old-pr').forEach(c=>c.classList.toggle('q',!!q));
   body.querySelectorAll('.pg').forEach(g=>{g.style.display=!q||[...g.querySelectorAll('.pr2')].some(r=>r.style.display!=='none')?'':'none'});
   body.querySelectorAll('.dm[data-s]').forEach(r=>{const s=r.dataset.s;r.style.display=!q||s.includes(q)?'':'none'});
 }
