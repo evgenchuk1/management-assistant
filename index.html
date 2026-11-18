@@ -374,8 +374,22 @@ body.fab .home .foot{padding-right:62px}
 .dvb .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
 .dvb .tabs button{border:1.5px solid #CFAB6F;background:#fff;border-radius:9px;padding:5px 10px;font:inherit;font-size:13.5px;font-weight:700}
 .dvb .tabs button.on{background:#203550;color:#fff}
-.dvb.zoom img,.dvb.zoom canvas{max-width:none;width:220%!important}
-.dvb.zoom .pg,.dvb.zoom .sl{font-size:22px}
+.dvb.zoomed img,.dvb.zoomed canvas{max-width:none;width:calc((100vw - 20px) * var(--z,1))!important;height:auto!important}
+.dvb.zoomed .pg,.dvb.zoomed .sl{zoom:var(--z,1)}
+.dvb.zoomed .tabs{zoom:1}
+.dvh{flex-wrap:wrap}.dvh b{order:9;flex-basis:100%;font-size:14.5px}
+.ttsbar{position:fixed;left:8px;right:8px;bottom:calc(env(safe-area-inset-bottom) + 8px);z-index:10001;background:#203550;color:#fff;border:1.5px solid #CFAB6F;border-radius:16px;
+  padding:8px 10px;box-shadow:0 6px 22px rgba(0,0,0,.35);display:none;font-size:14px}
+.ttsbar.show{display:block}
+body.tts-on #appBody,body.tts-on .dvb{padding-bottom:230px!important}
+.ttsbar .tb1{display:flex;align-items:center;gap:8px}
+.ttsbar .tbp,.ttsbar .tbs{width:44px;height:44px;border-radius:50%;border:2px solid #CFAB6F;background:#CFAB6F;color:#142338;font-size:17px;font-weight:900;cursor:pointer;flex:none}
+.ttsbar .tbs{background:transparent;color:#fff;width:38px;height:38px;font-size:14px}
+.ttsbar .tbt{flex:1;display:flex;justify-content:space-between;align-items:center}.ttsbar .tbt span{color:#C9D3E2;font-size:12.5px}
+.ttsbar .tb2{display:flex;align-items:center;gap:5px;margin-top:7px;flex-wrap:wrap}
+.ttsbar .tb2 span{color:#CFAB6F;font-weight:800;font-size:12.5px;min-width:44px}
+.ttsbar .tb2 button{border:1.5px solid #CFAB6F88;background:transparent;color:#fff;border-radius:9px;padding:4px 9px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.ttsbar .tb2 button.on{background:#CFAB6F;color:#142338;border-color:#CFAB6F}
 .dvb .msg{text-align:center;color:#5B6576;padding:30px 10px;font-size:16px}
 .dmb{margin-top:8px;padding:10px;background:#F6F3EC;border-radius:10px;font-size:14.5px;line-height:1.55;white-space:pre-wrap;max-height:50vh;overflow:auto}
 .pr-add{display:flex;gap:8px;margin-bottom:12px}
@@ -1350,30 +1364,58 @@ function renderDaily(){
         <span class="hole"></span></div>`}).join('')}</div></div>`).join('');
   return h+`<div class="ar-case">${secs}</div><div class="note" style="text-align:center">כל תיקייה = מייל יומי של יום אחד · מסגרת אדומה = סניף 118 מוזכר</div>`;
 }
-/* ── הקראה (Text-to-Speech, עברית) ── */
-const TTS={id:null};
-function ttsVoice(){try{const v=speechSynthesis.getVoices();return v.find(x=>/^he|^iw/i.test(x.lang))||null}catch{return null}}
-try{speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>{}}catch{}
+/* ── הקראה (Text-to-Speech, עברית): נגן משפט-אחר-משפט — השהיה, מהירות, 3 גוונים של קול נשי ── */
+const TTS={id:null,chunks:[],i:0,paused:false,u:null};
+const TTS_BASE=0.82;                                   // קצב בסיס — קצת יותר לאט מקודם (0.95)
+const TTS_SPEEDS=[[1,'רגיל'],[1.25,'+25%'],[1.5,'+50%']];
+const ttsPref={voice:+(ls.get('ma_tts_v')||0),speed:+(ls.get('ma_tts_s')||1)};
+function heVoices(){try{return speechSynthesis.getVoices().filter(x=>/^(he|iw)/i.test(x.lang))}catch{return []}}
+/* גוונים: כל קול עברי שקיים במכשיר (כרמית / כרמית משופרת…) + וריאציות גובה של הקול הראשון, עד 3 לפחות */
+function ttsVoices(){
+  const V=heVoices(),male=/male|זכר|asaf|אסף/i,fem=V.filter(v=>!male.test(v.name)),base=fem[0]||V[0]||null,out=[];
+  const nm=v=>v?v.name.replace(/\s*\(.*?\)\s*/g,' ').trim():'';
+  fem.forEach(v=>out.push({v,p:1,label:nm(v)+(/enhanced|premium|משופר/i.test(v.name)?' ✨':'')}));
+  if(!out.length)out.push({v:base,p:1,label:'רגיל'});
+  out[0].label='קול 1 · '+(out[0].label||'רגיל');
+  const extra=[{p:0.82,t:'רך ועמוק'},{p:1.22,t:'בהיר וצעיר'}];
+  for(const x of extra){if(out.length>=3+Math.max(0,fem.length-1))break;out.push({v:out[0].v,p:x.p,label:x.t})}
+  return out.map((o,k)=>({...o,label:k?('קול '+(k+1)+' · '+o.label):o.label}))}
+try{speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>{if(TTS.id)ttsBar()}}catch{}
 function ttsUpd(){document.querySelectorAll('[data-tts]').forEach(b=>{const on=b.dataset.tts===TTS.id;b.classList.toggle('on',on);
-  b.textContent=b.dataset.ttsl?(on?'■ עצירה':b.dataset.ttsl):(on?'■':'▶')})}
-function ttsStop(){TTS.id=null;try{speechSynthesis.cancel()}catch{}ttsUpd()}
+  b.textContent=b.dataset.ttsl?(on?'■ עצירה':b.dataset.ttsl):(on?'■':'▶')});ttsBar()}
+function ttsBar(){let el=document.getElementById('ttsBar');document.body.classList.toggle('tts-on',!!TTS.id);
+  if(!TTS.id){if(el)el.classList.remove('show');return}
+  if(!el){el=document.createElement('div');el.id='ttsBar';el.className='ttsbar';el.dir='rtl';document.body.appendChild(el)}
+  const vs=ttsVoices(),vi=Math.min(ttsPref.voice,vs.length-1);
+  el.innerHTML=`<div class="tb1"><button class="tbp" data-act="tts-pause" aria-label="${TTS.paused?'המשך':'השהיה'}">${TTS.paused?'▶':'❚❚'}</button>
+      <button class="tbs" data-act="tts-stop" aria-label="עצירה">■</button>
+      <div class="tbt"><b>${TTS.paused?'מושהה':'מקריא…'}</b><span>${Math.min(TTS.i+1,TTS.chunks.length)} / ${TTS.chunks.length}</span></div></div>
+    <div class="tb2"><span>מהירות</span>${TTS_SPEEDS.map(([r,t])=>`<button class="${ttsPref.speed===r?'on':''}" data-act="tts-speed" data-id="${r}">${t}</button>`).join('')}</div>
+    <div class="tb2"><span>קול</span>${vs.map((o,k)=>`<button class="${k===vi?'on':''}" data-act="tts-voice" data-id="${k}">${esc(o.label)}</button>`).join('')}</div>`;
+  el.classList.add('show')}
+function ttsStop(){TTS.id=null;TTS.paused=false;TTS.u=null;try{speechSynthesis.cancel()}catch{}ttsUpd()}
+function ttsNext(){
+  if(!TTS.id||TTS.paused)return;
+  if(TTS.i>=TTS.chunks.length){ttsStop();return}
+  const id=TTS.id,vs=ttsVoices(),o=vs[Math.min(ttsPref.voice,vs.length-1)]||{},u=new SpeechSynthesisUtterance(TTS.chunks[TTS.i]);
+  u.lang='he-IL';if(o.v)u.voice=o.v;u.pitch=o.p||1;u.rate=TTS_BASE*ttsPref.speed;TTS.u=u;
+  u.onend=()=>{if(TTS.id===id&&TTS.u===u&&!TTS.paused){TTS.i++;ttsBar();ttsNext()}};
+  u.onerror=e=>{if(TTS.u===u&&e.error!=='interrupted'&&e.error!=='canceled'){TTS.i++;ttsNext()}};
+  speechSynthesis.speak(u)}
+function ttsRestart(){if(!TTS.id)return;TTS.u=null;try{speechSynthesis.cancel()}catch{}if(!TTS.paused)setTimeout(ttsNext,60);ttsBar()} // מתחיל שוב את המשפט הנוכחי
+function ttsPause(){if(!TTS.id)return;TTS.paused=!TTS.paused;TTS.u=null;try{speechSynthesis.cancel()}catch{}if(!TTS.paused)ttsNext();ttsUpd()}
 function ttsSpeak(id,text){
   if(!('speechSynthesis' in window)){toast('אין אפשרות הקראה במכשיר הזה');return}
   if(TTS.id===id){ttsStop();return}
   try{speechSynthesis.cancel()}catch{}
-  const clean=String(text||'').replace(/\p{Extended_Pictographic}|️/gu,' ').replace(/[•►▶■]/g,' ').replace(/\s*\n+\s*/g,'.\n').replace(/[ \t]+/g,' ').trim();
+  const clean=String(text||'').replace(/\p{Extended_Pictographic}|\uFE0F/gu,' ').replace(/[•►▶■]/g,' ').replace(/\s*\n+\s*/g,'.\n').replace(/[ \t]+/g,' ').trim();
   const parts=clean.replace(/([.!?;:\n])\s*/g,'$1\u0001').split('\u0001').map(x=>x.trim()).filter(x=>x&&/[\p{L}\d]/u.test(x));
   if(!parts.length){toast('אין טקסט להקראה');return}
   const chunks=[];let cur='';
-  for(const p of parts){if(cur&&(cur+' '+p).length>220){chunks.push(cur);cur=p}else cur=cur?cur+' '+p:p}
+  for(const p of parts){if(cur&&(cur+' '+p).length>160){chunks.push(cur);cur=p}else cur=cur?cur+' '+p:p}
   if(cur)chunks.push(cur);
-  const fin=[];chunks.forEach(c=>{while(c.length>260){let k=c.lastIndexOf(' ',240);if(k<80)k=240;fin.push(c.slice(0,k));c=c.slice(k)}fin.push(c)});
-  TTS.id=id;const v=ttsVoice();
-  fin.forEach((c,i)=>{const u=new SpeechSynthesisUtterance(c);u.lang='he-IL';if(v)u.voice=v;u.rate=.95;
-    if(i===fin.length-1)u.onend=()=>{if(TTS.id===id){TTS.id=null;ttsUpd()}};
-    u.onerror=e=>{if(TTS.id===id&&e.error!=='interrupted'&&e.error!=='canceled'){TTS.id=null;ttsUpd()}};
-    speechSynthesis.speak(u)});
-  ttsUpd()}
+  const fin=[];chunks.forEach(c=>{while(c.length>200){let k=c.lastIndexOf(' ',180);if(k<60)k=180;fin.push(c.slice(0,k));c=c.slice(k)}fin.push(c)});
+  Object.assign(TTS,{id,chunks:fin,i:0,paused:false,u:null});ttsNext();ttsUpd()}
 const dmText=x=>{const p=jparse(x.pointsJson,[]);return (x.title||'')+'.\n'+p.join('.\n')+(x.due?'.\nלביצוע עד '+dd(x.due):'')};
 document.addEventListener('change',async e=>{
   if(e.target.id!=='dmFiles'||!e.target.files.length)return;
@@ -1468,10 +1510,15 @@ const LIB={pdfbase:'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/',pdf:'http
   jszip:'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'};
 function dvEl(){let v=document.getElementById('dv');if(v)return v;
   v=document.createElement('div');v.id='dv';v.className='dv';v.dir='rtl';
-  v.innerHTML=`<div class="dvh"><button data-act="dv-close" aria-label="סגירה">✕</button><b id="dvT"></b><button data-act="dv-zoom" aria-label="הגדלה">🔍</button><button class="ttsb" data-act="dv-say" data-tts="dv" aria-label="הקראה">▶</button><button data-act="dv-share" aria-label="שליחה">📤</button></div><div class="dvb" id="dvB"></div>`;
+  v.innerHTML=`<div class="dvh"><button data-act="dv-close" aria-label="סגירה">✕</button><b id="dvT"></b><button data-act="dv-zoom" data-id="-1" aria-label="הקטנה">−</button><button data-act="dv-zoom" data-id="1" aria-label="הגדלה">＋</button><button class="ttsb" data-act="dv-say" data-tts="dv" aria-label="הקראה">▶</button><button data-act="dv-share" aria-label="שליחה">📤</button></div><div class="dvb" id="dvB"></div>`;
   document.body.appendChild(v);return v}
-function dvClose(){if(TTS.id==='dv')ttsStop();DV.gen=(DV.gen||0)+1;const v=document.getElementById('dv');if(v){v.classList.remove('show');const bb=document.getElementById('dvB');bb.innerHTML='';bb.classList.remove('zoom')}
+function dvClose(){if(TTS.id==='dv')ttsStop();DV.gen=(DV.gen||0)+1;const v=document.getElementById('dv');if(v){v.classList.remove('show');const bb=document.getElementById('dvB');bb.innerHTML='';bb.classList.remove('zoomed');bb.style.removeProperty('--z');DV.zi=3}
   DV.urls.forEach(u=>URL.revokeObjectURL(u));DV.urls=[];DV.file=null;DV.sheets=null}
+const DVZ=[0.5,0.65,0.8,1,1.25,1.5,2,2.5,3];
+function dvZoom(d){const B=document.getElementById('dvB');if(!B)return;
+  const old=DVZ[DV.zi??3],k=Math.max(0,Math.min(DVZ.length-1,(DV.zi??3)+d));DV.zi=k;const z=DVZ[k];
+  const cx=B.scrollLeft,cy=B.scrollTop;B.style.setProperty('--z',z);B.classList.toggle('zoomed',z!==1);
+  B.scrollTop=cy*z/old;B.scrollLeft=cx*z/old;toast(Math.round(z*100)+'%')}
 const dvUrl=b=>{const u=URL.createObjectURL(b);DV.urls.push(u);return u};
 async function openDocViewer(d){
   const v=dvEl(),B=document.getElementById('dvB'),gen=DV.gen=(DV.gen||0)+1;document.getElementById('dvT').textContent=d.title||d.fname||'';
@@ -1933,8 +1980,12 @@ document.addEventListener('click',async e=>{
     if(act==='dm-sayall'){const L=(LISTS.daily||[]).filter(q=>(q.date||'')===dailyQ.day).sort((a,b)=>(a.title||'').localeCompare(b.title||''));
       ttsSpeak('day:'+dailyQ.day,'מייל יומי '+dd(dailyQ.day)+'.\n'+L.map((x,i)=>'נושא '+(i+1)+'. '+dmText(x)).join('.\n'))}
     if(act==='dm-saybody'){ttsSpeak('b'+id,dailyQ.body[id]||'')}
+    if(act==='tts-pause'){ttsPause()}
+    if(act==='tts-stop'){ttsStop()}
+    if(act==='tts-speed'){ttsPref.speed=+id;ls.set('ma_tts_s',id);ttsRestart()}
+    if(act==='tts-voice'){ttsPref.voice=+id;ls.set('ma_tts_v',id);ttsRestart()}
     if(act==='dv-close'){dvClose()}
-    if(act==='dv-zoom'){document.getElementById('dvB')?.classList.toggle('zoom')}
+    if(act==='dv-zoom'){dvZoom(+id)}
     if(act==='dv-say'){ttsSpeak('dv',document.getElementById('dvB')?.innerText||'')}
     if(act==='dv-share'){const f=DV.file;if(f&&navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f],title:DV.title}).catch(()=>{});
       else if(f){const u=URL.createObjectURL(f),l=document.createElement('a');l.href=u;l.download=f.name;document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),60000)}}
