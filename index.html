@@ -1132,9 +1132,8 @@ function renderApp(key){
     h+=card('🔧 תקלות פתוחות','Open tickets',t.length?t.map(x=>`<div class="row"><div class="sq" style="background:${ageColor(x.age)}">${x.age}</div><div class="tx"><div class="nm">${TECH_CAT[x.category]||'🔧'} ${esc(x.description||'תקלה')}</div><div class="ds">נפתח ${dd(x.dateReported)} · ${x.age} ימים</div></div>${OWN(branch)?`<button class="mini-x" data-act="tk-close" data-id="${x.id}">✓ טופל</button>`:''}</div>`).join(''):'<div class="ok">✓ אין תקלות פתוחות</div>',t.length);
   }
   if(key==='quality'){
-    h+=`<div class="card" style="text-align:center;padding:16px"><svg width="64" height="64"><use href="#i-quality"/></svg>
-      <h2 style="justify-content:center;margin:6px 0 4px">בקרוב</h2><div class="empty" style="padding:0">כאן יופיעו משימות הבדיקה של היום.</div></div>`;
-    h+=renderCleaners();
+    h+=renderClean();
+    if(!cleanEdit)h+=renderCleaners();
   }
   if(key==='person') h+=renderPeople();
   if(key==='library'){if(!LISTS.daily&&!LISTS.daily_busy){LISTS.daily_busy=1;loadDaily().finally(()=>LISTS.daily_busy=0)}h+=renderLibrary()}
@@ -1270,6 +1269,64 @@ function renderCleaners(){
     return ph?`<a class="cl" href="tel:${esc(tel)}"><span class="cln">${esc(nm)} המנקה</span><span class="clp">${esc(ph)}</span><span class="clc">📞</span></a>`
              :`<div class="cl none"><span class="cln">${esc(nm)} המנקה</span><span class="clp">אין מספר</span></div>`}).join('')+'</div>';
 }
+
+/* ═════════════ ניקיונות מיוחדים — לוח + תזכורות (Firestore ma_clean/<סניף>, שדה tasks = JSON) ═════════════
+   משימה: {id, nm, n, u:'w'|'m' (כל n שבועות/חודשים), dow: 0–6 או null, next:'YYYY-MM-DD' או '', last}
+   תזכורת: בסקירה היומית + בהתראת הבוקר 07:00 (send_ma_daily.py ב-expiry-notify) — ביום שמגיע ובכל יום של איחור */
+const CLEAN_SEED=[   // 25.11.2026 — לפי רשימת המנהל (סניף 118)
+  {id:'c1',nm:'מקרר אונליין',n:1,u:'w',dow:5,next:'2026-11-27',fixed:1},
+  {id:'c2',nm:'מקפיא און-ליין',n:2,u:'w',dow:5,next:''},
+  {id:'c3',nm:'חדר אוכל צוות — ניקיון יסודי',n:1,u:'w',dow:4,next:'2026-11-26'},
+  {id:'c4',nm:'פתחי ביוב בטריות',n:2,u:'w',dow:null,next:''},
+  {id:'c5',nm:'מקרר ירקות — אזור מאווררים',n:3,u:'m',dow:null,next:''},
+  {id:'c6',nm:'מקרר חלבי — אזור מאווררים',n:3,u:'m',dow:null,next:''},
+  {id:'c7',nm:'מבוא לחדר מדרגות (עלייה לגג)',n:0,u:'w',dow:null,next:''},
+  {id:'c8',nm:'מדרגות עלייה לחדר אוכל',n:0,u:'w',dow:null,next:''},
+  {id:'c9',nm:'ניקיון מתחת לארונות במעדניה',n:2,u:'w',dow:null,next:''}];
+const HEDAY=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+let CLEAN=null,cleanB=null,cleanEdit=null,cleanBusy=0;
+const pd=x=>{const [y,m,d]=x.split('-').map(Number);return new Date(y,m-1,d)};
+const dLeft=x=>Math.round((pd(x)-pd(iso(new Date())))/864e5);
+function addPer(x,t){const d=pd(x);if(t.u==='m')d.setMonth(d.getMonth()+t.n);else d.setDate(d.getDate()+7*t.n);
+  if(t.dow!=null)while(d.getDay()!==t.dow)d.setDate(d.getDate()+1);return iso(d)}
+const perTxt=t=>!t.n?'תדירות לא נקבעה':(t.u==='m'?(t.n===1?'פעם בחודש':`פעם ב-${t.n} חודשים`):(t.n===1?'פעם בשבוע':t.n===2?'פעם בשבועיים':`פעם ב-${t.n} שבועות`))+(t.dow!=null?' · יום '+HEDAY[t.dow]:'');
+async function loadClean(force){const b=branch;if(cleanBusy||(!force&&cleanB===b&&CLEAN))return;cleanBusy=1;
+  try{const d=await fsGet('ma_clean/'+b);let L=null;try{L=d&&d.tasks?JSON.parse(d.tasks):null}catch{}
+    if(!L&&b===118){L=JSON.parse(JSON.stringify(CLEAN_SEED));await fsSet('ma_clean/'+b,{tasks:JSON.stringify(L),updatedAt:new Date()})}
+    if(b===branch){CLEAN=L||[];cleanB=b;ls.set('ma_clean_'+b,CLEAN)}}
+  catch(e){if(b===branch&&!CLEAN){CLEAN=ls.get('ma_clean_'+b,null);cleanB=CLEAN?b:null}}
+  cleanBusy=0;renderAll()}
+async function saveClean(){ls.set('ma_clean_'+branch,CLEAN);await fsPatch('ma_clean/'+branch,{tasks:JSON.stringify(CLEAN),updatedAt:new Date()})}
+const cleanDue=()=>(CLEAN||[]).filter(t=>t.next&&dLeft(t.next)<=0);
+function cleanRow(t){const k=t.next?dLeft(t.next):null;
+  const st=k==null?'<span class="tag" style="background:#E0A526">לקבוע תאריך</span>':k<0?`<span class="tag" style="background:#B3261E">באיחור ${-k} י׳</span>`:k===0?'<span class="tag" style="background:#B3261E">היום</span>':k===1?'<span class="tag gold">מחר</span>':`<span class="tag" style="background:#EEF2F8;color:var(--navy)">בעוד ${k} י׳</span>`;
+  return `<div class="row"><div class="ic">🧽</div><div class="tx" data-act="cl-edit" data-id="${t.id}" style="cursor:pointer"><div class="nm">${esc(t.nm)}</div>
+    <div class="ds">${perTxt(t)}${t.next?' · הבא: '+dd(t.next)+' (יום '+HEDAY[pd(t.next).getDay()]+')':''}${t.last?' · בוצע: '+dd(t.last):''}</div></div>${st}
+    ${t.next&&k<=1&&t.n?`<button class="mini-x" data-act="cl-done" data-id="${t.id}">✓ בוצע</button>`:''}</div>`}
+function cleanForm(t){const o=(v,l,sel)=>`<option value="${v}"${sel?' selected':''}>${l}</option>`;
+  return `<div class="card"><h2>${t.id?'✏️ עריכת ניקיון':'＋ ניקיון חדש'}</h2><div class="frm">
+    <input id="clN" placeholder="שם הניקיון" value="${esc(t.nm||'')}" style="flex-basis:100%">
+    <select id="clF">${o('0|w','תדירות — לא נקבעה',!t.n)}${[[1,'w'],[2,'w'],[3,'w'],[4,'w'],[1,'m'],[2,'m'],[3,'m'],[6,'m']].map(([n,u])=>o(n+'|'+u,perTxt({n,u,dow:null}),t.n===n&&t.u===u)).join('')}</select>
+    <select id="clD">${o('','בכל יום בשבוע',t.dow==null)}${HEDAY.slice(0,6).map((h,i)=>o(i,'יום '+h,t.dow===i)).join('')}</select>
+    <label style="flex:1 1 100%;font-size:13px;color:var(--muted)">הפעם הבאה<input id="clX" type="date" value="${esc(t.next||'')}" style="width:100%"></label>
+    <button class="sv" data-act="cl-save" data-id="${t.id||''}">שמירה</button><button class="sv ghost" data-act="cl-cancel">ביטול</button>
+    ${t.id?`<button class="sv ghost" style="color:#B3261E" data-act="cl-del" data-id="${t.id}">מחיקה</button>`:''}</div></div>`}
+function renderClean(){
+  if(cleanB!==branch||!CLEAN){loadClean();return '<div class="card"><div class="empty">⏳ טוען ניקיונות…</div></div>'}
+  if(cleanEdit)return cleanForm(cleanEdit==='new'?{}:CLEAN.find(t=>t.id===cleanEdit)||{});
+  const due=cleanDue(),srt=[...CLEAN].sort((a,b)=>(a.next||'9999').localeCompare(b.next||'9999'));
+  let h=`<div class="card"><h2>🧹 ניקיונות מיוחדים — היום${due.length?`<span class="cnt">${due.length}</span>`:''}</h2>${due.length?due.map(cleanRow).join(''):'<div class="ok">✓ אין ניקיון מיוחד היום</div>'}</div>`;
+  h+=`<div class="card"><h2>📋 כל הניקיונות<span class="cnt">${CLEAN.length}</span></h2>${srt.map(cleanRow).join('')}
+    <div class="note">לחיצה על שם — עריכה (תדירות, יום, תאריך הפעם הבאה). «✓ בוצע» — התאריך הבא נקבע אוטומטית. תזכורת — בסקירה היומית ובהתראת 07:00.</div>
+    <div class="mini-row"><button class="mini" data-act="cl-new">＋ ניקיון חדש</button></div></div>`;
+  const t0=pd(iso(new Date()));t0.setDate(t0.getDate()-t0.getDay());const weeks=[];
+  for(let w=0;w<8;w++){const a=new Date(t0);a.setDate(a.getDate()+7*w);const z=new Date(a);z.setDate(z.getDate()+6);weeks.push({a,z,it:[]})}
+  const end=iso(weeks[7].z),today=iso(new Date());
+  for(const t of CLEAN){if(!t.next)continue;let x=t.next,g=0;while(x<=end&&g++<60){const dx=pd(x),w=weeks.find(W=>dx>=W.a&&dx<=W.z)||(dx<weeks[0].a?weeks[0]:null);if(w)w.it.push([x,t.nm]);if(!t.n)break;x=addPer(x,t)}}
+  h+=`<div class="card"><h2>📅 לוח ניקיונות — 8 שבועות</h2>${weeks.map((W,i)=>`<div class="row" style="align-items:flex-start"><div class="tx"><div class="nm" style="font-size:15px">${i===0?'השבוע':i===1?'שבוע הבא':'שבוע'}<span style="color:var(--muted);font-weight:600"> · ${dd(iso(W.a))}–${dd(iso(W.z))}</span></div>
+    <div class="ds">${W.it.sort((a,b)=>a[0].localeCompare(b[0])).map(([x,n])=>`<div>• ${x<today?'<b style="color:#B3261E">באיחור</b> — ':`יום ${HEDAY[pd(x).getDay()]} ${dd(x)} — `}${esc(n)}</div>`).join('')||'—'}</div></div></div>`).join('')}
+    ${CLEAN.some(t=>!t.next)?`<div class="note" style="color:#A06A00">⚠ ללא תאריך (לא בלוח): ${CLEAN.filter(t=>!t.next).map(t=>esc(t.nm)).join(' · ')}</div>`:''}</div>`;
+  return h}
 async function unlockEmps(){
   const inp=document.getElementById('empCode'),code=(inp?.value||'').trim();if(!code||!LISTS.empEnc)return;
   try{LISTS.person=await decEmps(LISTS.empEnc,code);ls.set('ma_emp_k',code);const t=stack.at(-1)||'';if(t.startsWith('app:'))renderApp(t.slice(4))}
@@ -1972,6 +2029,15 @@ document.addEventListener('click',async e=>{
       toast('נשמר ✓');await loadTickets()}
     if(act==='tk-close'){if(!confirm('לסמן כטופל?'))return;await fsPatch(tkCol(b)+'/'+id,{status:'completed',dateCompleted:iso(new Date())});toast('סומן כטופל ✓');await loadTickets()}
     if(act==='push'){await enablePush()}
+    if(act==='cl-new'||act==='cl-edit'){cleanEdit=act==='cl-new'?'new':id;renderApp('quality');document.getElementById('appBody').scrollTop=0}
+    if(act==='cl-cancel'){cleanEdit=null;renderApp('quality')}
+    if(act==='cl-save'){const nm=v('clN');if(!nm){toast('חסר שם');return}const [n,u]=v('clF').split('|'),dw=v('clD');
+      let t=id&&CLEAN.find(q=>q.id===id);if(!t){t={id:'c'+Date.now().toString(36)};CLEAN.push(t)}
+      Object.assign(t,{nm,n:+n,u,dow:dw===''?null:+dw,next:v('clX')});a.disabled=true;await saveClean();cleanEdit=null;toast('נשמר ✓');renderApp('quality')}
+    if(act==='cl-del'){const t=CLEAN.find(q=>q.id===id);if(!t||!confirm('למחוק את «'+t.nm+'»?'))return;CLEAN.splice(CLEAN.indexOf(t),1);await saveClean();cleanEdit=null;toast('נמחק');renderApp('quality')}
+    if(act==='cl-done'){const t=CLEAN.find(q=>q.id===id);if(!t)return;const today=iso(new Date());
+      let x=t.next&&t.next<=today?t.next:today;do{x=addPer(x,t)}while(x<=today);t.last=today;t.next=x;a.disabled=true;await saveClean();
+      toast('✓ בוצע · הבא: '+dd(x));renderAll()}
     if(act==='share-inst'){const u=new URL('install.html',location.href).href,t='ניהול+ — מדריך התקנה · Install guide · Инструкция по установке: '+u;
       if(navigator.share)navigator.share({title:'ניהול+',text:t}).catch(()=>{});else{navigator.clipboard?.writeText(u);toast('הקישור הועתק')}}
     if(act==='lib'){go(id)}
@@ -2082,7 +2148,9 @@ function panelData(d){
     `<div class="it"><span class="k" style="color:var(--red)">🔴 היום (${e.today.length}):</span> ${ex(e.today)||'—'}</div>`+
     `<div class="it"><span class="k" style="color:var(--orange)">🟠 מחר (${e.tomorrow.length}):</span> ${ex(e.tomorrow)||'—'}</div>`;
   const techH=!ticketsLive?'<div class="mut">טוען…</div>':(t.length?t.slice(0,6).map(x=>`<div class="it"><span class="dot" style="background:${ageColor(x.age)}"></span>${esc(x.description)} <span class="mut">(${x.age} י׳)</span></div>`).join('')+(t.length>6?`<div class="mut">+ עוד ${t.length-6}</div>`:''):'<div class="it ok">✓ אין תקלות פתוחות</div>');
-  const quality='<div class="mut">בקרוב — אפליקציה בפיתוח</div>';
+  if(cleanB!==branch||!CLEAN)loadClean();
+  const cd=(CLEAN&&cleanB===branch)?(CLEAN.filter(t=>t.next&&t.next<=iso(d))):null;
+  const quality=!cd?'<div class="mut">טוען…</div>':cd.length?cd.map(t=>`<div class="it">🧽 ${esc(t.nm)}${t.next<iso(d)?' <span class="k" style="color:var(--maroon)">(באיחור)</span>':''}</div>`).join(''):'<div class="it ok">✓ אין ניקיון מיוחד היום</div>';
   return {spira,orders,sidur,expiry:expiryH,tech:techH,quality,counts:{orders:o.length,sidur:sd.ok?sd.total:0,tech:t.length}};
 }
 const PANELS=[
@@ -2224,7 +2292,7 @@ async function fsPatch(path,obj){const q=Object.keys(obj).map(k=>'&updateMask.fi
 async function fsDel(path){const r=await fetch(FS_BASE+path+'?key='+FS_KEY,{method:'DELETE'});if(!r.ok)throw new Error(r.status)}
 async function fsGet(path){const r=await fetch(FS_BASE+path+'?key='+FS_KEY,{cache:'no-store'});if(r.status===404)return null;if(!r.ok)throw new Error(r.status);
   const j=await r.json(),o={};for(const [k,v] of Object.entries(j.fields||{}))o[k]=v.stringValue??v.integerValue??v.booleanValue??v.timestampValue??null;return o}
-function initFirebase(){loadExpiry();loadTickets();setInterval(()=>{loadExpiry();loadTickets()},120000)}
+function initFirebase(){loadExpiry();loadTickets();loadClean();setInterval(()=>{loadExpiry();loadTickets();if(!cleanEdit)loadClean(1)},120000)}
 
 /* ═════════════ INIT ═════════════ */
 // ?day=2026-11-08 — לבדיקה של יום אחר
